@@ -1,0 +1,52 @@
+services:
+  back:
+    build:
+      context: .
+      dockerfile: back.Dockerfile
+    container_name: back
+    volumes:
+      - ./back:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  front:
+    build:
+      context: .
+      dockerfile: front.Dockerfile
+    container_name: front
+    volumes:
+      - ./front:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - back
+
+  db:
+    image: postgres:16
+    container_name: db
+    environment:
+      POSTGRES_DB: laravel
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+
+  pgadmin:
+    image: dpage/pgadmin4:7
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: bgdnyrmln@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+
+volumes:
+  pgdata:
