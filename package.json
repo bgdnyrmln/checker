@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@qirolab/nuxt-sanctum-authentication": "^0.1.15"
+  }
+}
