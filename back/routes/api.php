@@ -9,7 +9,9 @@ use App\Http\Controllers\Api\EmployeeRegisterController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/invites', [InviteController::class, 'create']);
 });
-Route::post('/register/employee', [EmployeeRegisterController::class, 'register']);
+Route::post('/register/member', [EmployeeRegisterController::class, 'register']);
+Route::get('/invites/validate/{token}', [InviteController::class, 'validateToken']);
+
 
 
 

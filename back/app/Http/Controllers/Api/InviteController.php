@@ -14,7 +14,7 @@ class InviteController extends Controller
         $user = $request->user();
 
         // only company owner
-        if ($user->role !== 'director') {
+        if ($user->role !== 'admin') {
             abort(403);
         }
 
@@ -25,7 +25,25 @@ class InviteController extends Controller
         ]);
 
         return response()->json([
-            'link' => config('app.frontend_url') . '/register/employee?token=' . $invite->token
+            'link' => config('app.frontend_url') . 'auth/register?token=' . $invite->token
+        ]);
+    }
+
+    public function validateToken($token)
+    {
+        $invite = Invite::where('token', $token)
+                        ->whereNull('used_at') // ensure it's not already used
+                        ->first();
+
+        if (!$invite) {
+            return response()->json([
+                'message' => 'Invalid or expired invite token.'
+            ], 403);
+        }
+
+        return response()->json([
+            'message' => 'Invite token is valid.',
+            'invite' => $invite
         ]);
     }
 }
