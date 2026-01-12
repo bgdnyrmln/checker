@@ -89,7 +89,7 @@ const submit = async () => {
       <button class="btn" :disabled="loading">
         Register
       </button>
-
+      <a href="/auth/register">Have a registration invite?</a>
       <p v-if="error" class="error">{{ error }}</p>
       <p v-if="success" class="success">Company registered</p>
     </form>

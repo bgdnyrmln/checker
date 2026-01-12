@@ -1,15 +1,12 @@
 <template>
-  <div class="p-8">
-    <h1 class="text-2xl font-bold mb-4">Hello, Index Page</h1>
-
-    <div v-if="loading">Loading user info...</div>
-    <div v-else-if="error" class="text-red-500">{{ error }}</div>
-    <div v-else>
-      <p><strong>ID:</strong> {{ user.id }}</p>
-      <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-    </div>
+  <div v-if="loading">Loading user info...</div>
+  <div v-else-if="error" class="text-red-500">{{ error }}</div>
+  <div v-else>
+    <p><strong>ID:</strong> {{ user.id }}</p>
+    <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
   </div>
+  <a href="/manager/personal-cabinet">Go to Manager Dashboard</a>
 </template>
 
 <script setup>

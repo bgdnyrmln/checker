@@ -1,36 +1,47 @@
 <script setup>
+definePageMeta({
+  middleware: 'guest'
+})
+
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
-// Router & route
+/* ----------------------------------
+   Axios base config
+---------------------------------- */
+axios.defaults.baseURL = 'http://localhost:8000'
+axios.defaults.withCredentials = true
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+
+/* ----------------------------------
+   Router
+---------------------------------- */
 const route = useRoute()
-const router = useRouter()
 
-// Invite token from URL
-const inviteToken = route.query.token || ''
+/* ----------------------------------
+   State
+---------------------------------- */
+const inviteToken = ref(route.query.token || '')
+const tokenInput = ref('')
 
-// Form state
+const pageAllowed = ref(false)
+const loading = ref(false)
+const error = ref('')
+const success = ref('')
+
 const form = ref({
   first_name: '',
   last_name: '',
   email: '',
   password: '',
   password_confirmation: '',
-  token: route.query.token
+  token: inviteToken.value
 })
 
-const loading = ref(false)
-const error = ref('')
-const success = ref('')
-const pageAllowed = ref(false) // controls page access
-
-// Axios config
-axios.defaults.baseURL = 'http://localhost:8000'
-axios.defaults.withCredentials = true
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-
-// Fetch CSRF token
+/* ----------------------------------
+   CSRF
+---------------------------------- */
 const getCsrfToken = async () => {
   await axios.get('/sanctum/csrf-cookie')
 
@@ -44,24 +55,50 @@ const getCsrfToken = async () => {
   axios.defaults.headers.common['X-XSRF-TOKEN'] = token
 }
 
-// Validate invite token on mount
-onMounted(async () => {
-  if (!inviteToken) {
-    error.value = 'Invite token missing'
-    return
-  }
+/* ----------------------------------
+   Invite validation
+---------------------------------- */
+const validateToken = async (token) => {
+  error.value = ''
+  loading.value = true
 
   try {
-    // Check with backend if token is valid
-    await axios.get(`/api/invites/validate/${inviteToken}`)
+    await axios.get(`/api/invites/validate/${token}`)
+    inviteToken.value = token
+    form.value.token = token
     pageAllowed.value = true
-  } catch (e) {
-    error.value = 'Invalid or expired invite link'
+  } catch {
+    error.value = 'Invalid or expired invite token'
     pageAllowed.value = false
+  } finally {
+    loading.value = false
+  }
+}
+
+/* ----------------------------------
+   Initial validation (URL token)
+---------------------------------- */
+onMounted(() => {
+  if (inviteToken.value) {
+    validateToken(inviteToken.value)
   }
 })
 
-// Submit registration
+/* ----------------------------------
+   Manual token submit
+---------------------------------- */
+const submitToken = () => {
+  if (!tokenInput.value) {
+    error.value = 'Please enter an invite token'
+    return
+  }
+
+  validateToken(tokenInput.value)
+}
+
+/* ----------------------------------
+   Registration submit
+---------------------------------- */
 const submit = async () => {
   loading.value = true
   error.value = ''
@@ -79,12 +116,30 @@ const submit = async () => {
 }
 </script>
 
+
+
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-    <div v-if="error && !pageAllowed" class="text-center text-red-500">
-      {{ error }}
+    <!-- TOKEN INPUT -->
+    <div v-if="!pageAllowed" class="bg-white p-8 rounded shadow w-full max-w-md">
+      <h1 class="text-xl font-bold mb-4 text-center">Enter Invite Token</h1>
+
+      <form @submit.prevent="submitToken" class="space-y-3">
+        <input
+          v-model="tokenInput"
+          placeholder="Invite token"
+          class="input"
+        />
+
+        <button class="btn" :disabled="loading">
+          {{ loading ? 'Checking...' : 'Continue' }}
+        </button>
+
+        <p v-if="error" class="error">{{ error }}</p>
+      </form>
     </div>
 
+    <!-- REGISTRATION FORM -->
     <form
       v-else
       @submit.prevent="submit"
@@ -103,7 +158,7 @@ const submit = async () => {
         class="input"
       />
 
-      <button class="btn w-full" :disabled="loading">
+      <button class="btn" :disabled="loading">
         {{ loading ? 'Registering...' : 'Register' }}
       </button>
 
@@ -112,18 +167,3 @@ const submit = async () => {
     </form>
   </div>
 </template>
-
-<style scoped>
-.input {
-  @apply w-full border px-3 py-2 rounded;
-}
-.btn {
-  @apply w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition;
-}
-.error {
-  @apply text-red-500 text-sm;
-}
-.success {
-  @apply text-green-600 text-sm;
-}
-</style>
