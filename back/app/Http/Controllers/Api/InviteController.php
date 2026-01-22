@@ -25,7 +25,7 @@ class InviteController extends Controller
         ]);
 
         return response()->json([
-            'link' => config('app.frontend_url') . 'auth/register?token=' . $invite->token
+            'link' => config('app.frontend_url') . '/auth/register?token=' . $invite->token
         ]);
     }
 

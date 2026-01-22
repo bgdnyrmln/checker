@@ -16,4 +16,10 @@ class TimeLog extends Model
         'checked_in_at' => 'datetime',
         'checked_out_at' => 'datetime',
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

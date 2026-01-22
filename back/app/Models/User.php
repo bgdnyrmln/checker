@@ -30,4 +30,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Company::class);
     }
+
+
+    public function timeLogs()
+    {
+        return $this->hasMany(TimeLog::class);
+    }
+
 }

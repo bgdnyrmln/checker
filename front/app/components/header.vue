@@ -1,5 +1,54 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+
+const config = useRuntimeConfig()
+const user = ref(null)
+
+axios.defaults.baseURL = config.public.apiBase
+axios.defaults.withCredentials = true
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+
+const setCsrfToken = async () => {
+  await axios.get('/sanctum/csrf-cookie')
+
+  const token = decodeURIComponent(
+    document.cookie
+      .split('; ')
+      .find(c => c.startsWith('XSRF-TOKEN='))
+      ?.split('=')[1] || ''
+  )
+
+  axios.defaults.headers.common['X-XSRF-TOKEN'] = token
+}
+
+// Fetch authenticated user
+const fetchUser = async () => {
+  try {
+    const res = await axios.get('/api/user')
+    user.value = res.data
+  } catch {
+    user.value = null
+  }
+}
+
+// Logout
+const logout = async () => {
+  try {
+    await setCsrfToken()
+    await axios.post('/logout')
+    user.value = null
+    navigateTo('/auth/login')
+  } catch (e) {
+    console.error('Logout failed', e)
+  }
+}
+
+onMounted(fetchUser)
+</script>
+
 <template>
-  <header class="h-14 border-b flex items-center justify-between px-6">
+  <header class="h-14 border-b flex items-center justify-between px-6 bg-white">
     <!-- Brand -->
     <NuxtLink to="/" class="font-semibold text-lg">
       Checker
@@ -32,33 +81,3 @@
     </div>
   </header>
 </template>
-
-<script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
-
-const config = useRuntimeConfig()
-
-const user = ref(null)
-
-axios.defaults.withCredentials = true
-axios.defaults.baseURL = config.public.apiBase
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-
-const fetchUser = async () => {
-  try {
-    const res = await axios.get('/api/user')
-    user.value = res.data
-  } catch {
-    user.value = null
-  }
-}
-
-const logout = async () => {
-  await axios.post('/logout')
-  user.value = null
-  navigateTo('/auth/login')
-}
-
-onMounted(fetchUser)
-</script>

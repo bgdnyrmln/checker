@@ -6,6 +6,7 @@ export default defineNuxtRouteMiddleware(async () => {
       credentials: 'include'
     })
   } catch {
-    return navigateTo('/auth/login')
+    return window.location.href = '/auth/login'
+
   }
 })

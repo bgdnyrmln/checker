@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async () => {
     })
 
     // user is logged in → go home
-    return navigateTo('/')
+    window.location.href = '/'
   } catch {
     // guest → allowed
   }

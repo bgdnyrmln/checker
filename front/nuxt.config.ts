@@ -12,5 +12,7 @@ export default defineNuxtConfig({
       apiBase: 'http://localhost:8000'
     }
   },
-  
+
+  css: ['/assets/style.css'],
+
 })
