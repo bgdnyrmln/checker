@@ -20,15 +20,15 @@ onMounted(fetchUser);
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#D8E2DC] text-[#1A1423]">
+  <div class="bg-[#D8E2DC] text-[#1A1423] flex flex-col justify-center min-h-screen">
     <main class="flex flex-col items-center justify-center px-6 text-center mt-20">
-      <h2 class="text-4xl font-bold leading-tight max-w-2xl">
+      <h2 class="text-xl font-bold leading-tight max-w-2xl">
         Track work time.
-        <span class="text-[#A67F8E]">Simply.</span>
-        <span class="text-[#0B5351]">Reliably.</span>
+        <span class="text-[#A67F8E] text-xl">Simply.</span>
+        <span class="text-[#0B5351] text-xl">Reliably.</span>
       </h2>
 
-      <p class="mt-6 max-w-xl text-[#636B61]">
+      <p class="mt-6 max-w-xl text-[#636B61] text-xs">
         Checker helps teams manage attendance, work hours, and accountability —
         without friction.
       </p>
@@ -38,8 +38,8 @@ onMounted(fetchUser);
           Check In
         </NuxtLink>
 
-        <NuxtLink v-if="user" to="/stats" class="px-6 py-3 rounded bg-[#0B5351] text-white font-medium hover:opacity-90 transition">
-          View Stats
+        <NuxtLink v-if="user" to="/personal-cabinet" class="px-6 py-3 rounded bg-[#0B5351] text-white font-medium hover:opacity-90 transition">
+          View Personal Cabinet
         </NuxtLink>
 
         <NuxtLink v-else to="/auth/login" class="px-6 py-3 rounded bg-[#0B5351] text-white font-medium hover:opacity-90 transition">
@@ -55,42 +55,8 @@ onMounted(fetchUser);
         </NuxtLink>
       </div>
     </main>
-    <!-- Features 
-    <section class="mt-32 px-8 max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
-      <div class="card">
-        <h3 class="card-title">Attendance</h3>
-        <p class="card-text">
-          One-click check in & check out with accurate timestamps.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3 class="card-title">Invites</h3>
-        <p class="card-text">
-          Secure invite links to onboard your team instantly.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3 class="card-title">Reports</h3>
-        <p class="card-text">
-          Clear daily and monthly work summaries.
-        </p>
-      </div>
-    </section> -->
   </div>
 </template>
 
 <style scoped>
-.card {
-  @apply bg-white rounded-xl p-6 shadow-sm border border-black/5;
-}
-
-.card-title {
-  @apply text-lg font-semibold mb-2;
-}
-
-.card-text {
-  @apply text-sm text-[#636B61];
-}
 </style>

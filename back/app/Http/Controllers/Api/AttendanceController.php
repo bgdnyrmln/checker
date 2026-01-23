@@ -60,22 +60,66 @@ class AttendanceController extends Controller
 
     public function personalTime(Request $request)
     {
-        $date = $request->query('date', now()->toDateString());
-        $employee = $request->user()->id;
-        $timeLogs = TimeLog::where('user_id', $employee)
-            ->whereDate('checked_in_at', $date)
+        $user = $request->user();
+
+        $startDate = Carbon::parse($request->query('start_date'))->startOfDay();
+        $endDate   = Carbon::parse($request->query('end_date'))->endOfDay();
+
+        // Fetch user timelogs in range
+        $timeLogs = TimeLog::where('user_id', $user->id)
+            ->whereBetween('checked_in_at', [$startDate, $endDate])
+            ->orderBy('checked_in_at')
             ->get();
-        return [
-            'date' => $date,
-            'checked_in_at' => $timeLogs->first()?->checked_in_at,
-            'checked_out_at' => $timeLogs->last()?->checked_out_at,
-            'total_time_seconds' => $timeLogs->reduce(function ($carry, $log) {
-                $checkedInAt = $log->checked_in_at ?? now();
-                $checkedOutAt = $log->checked_out_at ?? now();
-                return $carry + $checkedInAt->diffInSeconds($checkedOutAt);
-            },0)
-        ];
+
+        // Group logs by date
+        $dailyLogs = $timeLogs->groupBy(function ($log) {
+            return $log->checked_in_at->toDateString();
+        });
+
+        // Build full date range (same as employeeTime)
+        $period = new \DatePeriod(
+            $startDate,
+            new \DateInterval('P1D'),
+            $endDate->copy()->addDay()
+        );
+
+        $daily = [];
+
+        foreach ($period as $date) {
+            $date = Carbon::instance($date);
+            $dayKey = $date->toDateString();
+
+            $logs = $dailyLogs[$dayKey] ?? collect();
+
+            $totalSeconds = $logs->reduce(function ($carry, $log) {
+                $out = $log->checked_out_at ?? now();
+                return $carry + $log->checked_in_at->diffInSeconds($out);
+            }, 0);
+
+            $daily[] = [
+                'date' => $date->format('d-m-Y'),
+                'checked_in_at' => $logs->first()?->checked_in_at?->format('H:i'),
+                'checked_out_at' => $logs->last()?->checked_out_at?->format('H:i'),
+                'total_time_seconds' => $totalSeconds,
+            ];
+        }
+
+        return response()->json([
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'email' => $user->email,
+
+            'checked_in_at' => $timeLogs->first()?->checked_in_at?->format('H:i'),
+            'checked_out_at' => $timeLogs->last()?->checked_out_at?->format('H:i'),
+            'total_time_seconds' => collect($daily)->sum('total_time_seconds'),
+
+            'daily' => $daily,
+        ]);
     }
+
+
+
 
     public function employeeTime(Request $request)
     {

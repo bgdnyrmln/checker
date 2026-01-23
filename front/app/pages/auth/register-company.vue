@@ -63,35 +63,39 @@ const submit = async () => {
 
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="min-h-screen flex items-center justify-center">
     <form
       @submit.prevent="submit"
-      class="bg-white p-8 rounded shadow w-full max-w-md space-y-3"
+      class="bg-white p-8 rounded w-[55rem] h-[50rem] shadow flex flex-col justify-around"
     >
-      <h1 class="text-xl font-bold text-center">Company Registration</h1>
-
-      <input v-model="form.company_name" placeholder="Company name" class="input" />
-      <input v-model="form.company_email" placeholder="Company email" class="input" />
-
+      <h1 class="text-xl font-bold text-center pb-[2rem]">Company Registration</h1>
+      <div class="flex flex-col gap-[1rem]">
+        <input v-model="form.company_name" placeholder="Company name" class="input" />
+        <input v-model="form.company_email" placeholder="Company email" class="input" />
+      </div>
       <hr />
+      <div class="flex flex-col gap-[1rem]">
+        <input v-model="form.first_name" placeholder="First name" class="input" />
+        <input v-model="form.last_name" placeholder="Last name" class="input" />
+        <input v-model="form.email" placeholder="Admin email" class="input" />
+        <input type="password" v-model="form.password" placeholder="Password" class="input" />
+        <input
+          type="password"
+          v-model="form.password_confirmation"
+          placeholder="Confirm password"
+          class="input"
+        />
 
-      <input v-model="form.first_name" placeholder="First name" class="input" />
-      <input v-model="form.last_name" placeholder="Last name" class="input" />
-      <input v-model="form.email" placeholder="Admin email" class="input" />
-      <input type="password" v-model="form.password" placeholder="Password" class="input" />
-      <input
-        type="password"
-        v-model="form.password_confirmation"
-        placeholder="Confirm password"
-        class="input"
-      />
-
-      <button class="btn" :disabled="loading">
-        Register
-      </button>
-      <a href="/auth/register">Have a registration invite?</a>
-      <p v-if="error" class="error">{{ error }}</p>
-      <p v-if="success" class="success">Company registered</p>
+        <button class="btn-primary" :disabled="loading">
+          Register
+        </button>
+        <p v-if="error" class="error">{{ error }}</p>
+        <p v-if="success" class="success">Company registered</p>
+        <div class="flex justify-between">
+          <a href="/auth/register">Have a registration invite?</a>
+          <a href="/auth/login">Already have an account?</a>
+        </div>
+      </div>
     </form>
   </div>
 </template>

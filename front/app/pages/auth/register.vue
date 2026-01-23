@@ -119,9 +119,9 @@ const submit = async () => {
 
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+  <div class="min-h-screen flex items-center justify-center p-4">
     <!-- TOKEN INPUT -->
-    <div v-if="!pageAllowed" class="bg-white p-8 rounded shadow w-full max-w-md">
+    <div v-if="!pageAllowed" class="p-8 rounded shadow w-full max-w-md">
       <h1 class="text-xl font-bold mb-4 text-center">Enter Invite Token</h1>
 
       <form @submit.prevent="submitToken" class="space-y-3">

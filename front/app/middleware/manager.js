@@ -11,5 +11,6 @@ export default defineNuxtRouteMiddleware(async () => {
         return window.location.href = '/'
     }
   } catch {
+    return window.location.href = '/'
   }
 })

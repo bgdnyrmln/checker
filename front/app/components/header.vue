@@ -48,7 +48,7 @@ onMounted(fetchUser)
 </script>
 
 <template>
-  <header class="h-14 border-b flex items-center justify-between px-6 bg-white">
+  <header class="h-[4rem] flex items-center justify-between px-6 bg-transparent absolute w-[141.5rem] z-10 ml-[2.5rem]">
     <!-- Brand -->
     <NuxtLink to="/" class="font-semibold text-lg">
       Checker

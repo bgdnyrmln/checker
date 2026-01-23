@@ -20,6 +20,8 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.14.0"
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "sass": "^1.97.3",
+    "sass-loader": "^16.0.6"
   }
 }

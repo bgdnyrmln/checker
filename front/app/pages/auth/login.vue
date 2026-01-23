@@ -58,14 +58,16 @@ const login = async () => {
 
 <template>
   <div class="min-h-screen flex items-center justify-center">
-    <form @submit.prevent="login" class="w-80 space-y-3 bg-white p-6 rounded shadow">
-      <h1 class="text-xl font-bold text-center">Login</h1>
-
-      <input v-model="email" type="email" placeholder="Email" class="input" />
-      <input v-model="password" type="password" placeholder="Password" class="input" />
-
-      <button class="btn" :disabled="loading">Login</button>
-
+    <form @submit.prevent="login" class="w-[40rem] space-y-3 bg-white p-6 rounded shadow h-[26rem] justify-around flex flex-col">
+      <h1 class="text-xl font-bold text-center pb-[2rem]">Login</h1>
+      <div class="flex flex-col gap-[1rem]">
+        <input v-model="email" type="email" placeholder="Email" class="input text-md" />
+        <input v-model="password" type="password" placeholder="Password" class="input text-md" />
+      </div>
+      <div class="flex flex-col gap-[1rem]">
+        <button class="btn-primary" :disabled="loading">Login</button>
+        <a href="/auth/register-company">Don't have an account?</a>
+      </div>
       <p v-if="error" class="error">{{ error }}</p>
     </form>
   </div>
