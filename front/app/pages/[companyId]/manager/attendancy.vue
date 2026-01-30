@@ -4,9 +4,6 @@
     import { VueDatePicker } from '@vuepic/vue-datepicker'
     import '@vuepic/vue-datepicker/dist/main.css'
 
-    definePageMeta({
-    middleware: 'manager'
-    })
 
     // Axios defaults
     axios.defaults.baseURL = 'http://localhost:8000'
@@ -19,6 +16,7 @@
     const error = ref('')
     const selectedDate = ref(new Date())
     const rangeMode = ref('day') // day | week | month
+    const route = useRoute()
 
     // Date range helper
     const getDateRange = () => {
@@ -51,35 +49,41 @@
     }
 
     // Fetch employees
+    const companyId = ref(route.params.companyId) 
     const fetchEmployees = async () => {
-    loading.value = true
-    error.value = ''
+        loading.value = true
+        error.value = ''
 
-    try {
-        const { start_date, end_date } = getDateRange()
+        try {
+            const { start_date, end_date } = getDateRange()
+            const res = await axios.get(`/api/attendance/team/employees/${companyId.value}`, {
+                params: { start_date, end_date, range: rangeMode.value }
+            })
 
-        const res = await axios.get('/api/attendance/team/employees', {
-        params: {
-            start_date,
-            end_date,
-            range: rangeMode.value
+            employees.value = res.data
+        } catch (e) {
+            error.value = 'Failed to load employees'
+            console.error(e)
+        } finally {
+            loading.value = false
         }
-        })
+    }
 
-        employees.value = res.data
-    } catch (e) {
-        error.value = 'Failed to load employees'
-        console.error(e)
-    } finally {
-        loading.value = false
-    }
-    }
 
     onMounted(fetchEmployees)
     watch([selectedDate, rangeMode], fetchEmployees)
 </script>
 
 <template>
+    <Sidebar :items="[
+    { text: 'Home', to: `/${profileId}/manager` },
+    { text: 'Company', to: `/${profileId}/manager/company` },
+    { text: 'Team', to: `/${profileId}/manager/team`},
+    { text: 'Schedule', to: `/${profileId}/manager/schedule`},
+    { text: 'Attendancy', to: `/${profileId}/manager/attendancy`},
+    { text: 'Payrolls', to: `/${profileId}/manager/payrolls`},
+    { text: 'Invites', to: `/${profileId}/manager/invite`}
+    ]" />
   <div class="max-w-4xl mx-auto p-6 space-y-4">
     <h1 class="text-2xl font-bold text-[#1A1423]">
       Team Attendance — {{ rangeMode.toUpperCase() }}

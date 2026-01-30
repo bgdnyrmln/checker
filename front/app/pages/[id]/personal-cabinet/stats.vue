@@ -1,5 +1,9 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
+
+const route = useRoute()
+const profileId = ref()
+profileId.value = route.params.id;
 import axios from 'axios'
 import { VueDatePicker } from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -11,8 +15,8 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 // STATE
 const selectedDate = ref(new Date())
 const rangeMode = ref('day')
-const records = ref([])          // ✅ DAILY ROWS
-const stats = ref(null)          // ✅ SUMMARY
+const records = ref([])       
+const stats = ref(null)          
 const loading = ref(false)
 const error = ref('')
 
@@ -35,7 +39,7 @@ const getDateRange = () => {
   }
 
   if (rangeMode.value === 'month') {
-    start = new Date(date.getFullYear(), date.getMonth(), 1)
+    start = new Date(date.getFullYear(), date.getMonth(), 2)
     end = new Date(date.getFullYear(), date.getMonth() + 1, 0)
   }
 
@@ -45,6 +49,7 @@ const getDateRange = () => {
   }
 }
 
+
 const fetchStats = async () => {
   loading.value = true
   error.value = ''
@@ -52,12 +57,12 @@ const fetchStats = async () => {
   try {
     const { start_date, end_date } = getDateRange()
 
-    const res = await axios.get('/api/attendance/personal', {
+    const res = await axios.get(`/api/attendance/personal/${profileId.value}`, {
       params: { start_date, end_date, range: rangeMode.value }
     })
 
     stats.value = res.data
-    records.value = res.data.daily     // ✅ THIS WAS MISSING
+    records.value = res.data.daily
   } catch (e) {
     error.value = 'Failed to load attendance'
     console.error(e)
@@ -66,6 +71,7 @@ const fetchStats = async () => {
   }
 }
 
+
 onMounted(fetchStats)
 watch([selectedDate, rangeMode], fetchStats)
 </script>
@@ -73,8 +79,8 @@ watch([selectedDate, rangeMode], fetchStats)
 
 <template>
     <Sidebar :items="[
-    { text: 'Home', to: '/personal-cabinet' },
-    { text: 'Stats', to: '/personal-cabinet/stats'}
+    { text: 'Home', to: `/${profileId}/personal-cabinet` },
+    { text: 'Stats', to: `/${profileId}/personal-cabinet/stats`}
     ]" />
   <div class="pl-[20rem] pt-[5rem] pr-[5rem]">
     <h1 class="text-2xl font-bold text-[#1A1423]">

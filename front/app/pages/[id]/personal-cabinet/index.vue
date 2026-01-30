@@ -10,6 +10,10 @@ const checkedIn = ref(false)
 const checkedInAt = ref(null)
 const loading = ref(false)
 const error = ref('')
+const profileId = ref()
+const route = useRoute()
+
+profileId.value = route.params.id
 
 /**
  * 🔐 Fetch & decode CSRF token
@@ -22,22 +26,22 @@ const getCsrfToken = async () => {
       .split('; ')
       .find(c => c.startsWith('XSRF-TOKEN='))
       ?.split('=')[1] || ''
-  )
+    )
 
   axios.defaults.headers.common['X-XSRF-TOKEN'] = token
 }
 
 /**
- * 📡 Fetch current attendance status
+ * Fetch current attendance status
  */
 const fetchStatus = async () => {
-  const res = await axios.get('/api/attendance/status')
+  const res = await axios.get(`/api/attendance/status/${profileId.value}`)
   checkedIn.value = res.data.checked_in
   checkedInAt.value = res.data.checked_in_at
 }
 
 /**
- * ▶️ Check in
+ * Check in
  */
 const checkIn = async () => {
   loading.value = true
@@ -45,7 +49,7 @@ const checkIn = async () => {
 
   try {
     await getCsrfToken()
-    await axios.post('/api/attendance/check-in')
+    await axios.post(`/api/attendance/check-in/${profileId.value}`)
     await fetchStatus()
   } catch (e) {
     error.value = e.response?.data?.message || 'Check-in failed'
@@ -55,7 +59,7 @@ const checkIn = async () => {
 }
 
 /**
- * ⏹️ Check out
+ * Check out
  */
 const checkOut = async () => {
   loading.value = true
@@ -63,7 +67,7 @@ const checkOut = async () => {
 
   try {
     await getCsrfToken()
-    await axios.post('/api/attendance/check-out')
+    await axios.post(`/api/attendance/check-out/${profileId.value}`)
     await fetchStatus()
   } catch (e) {
     error.value = e.response?.data?.message || 'Check-out failed'
@@ -76,6 +80,10 @@ onMounted(fetchStatus)
 </script>
 
 <template>
+    <Sidebar :items="[
+    { text: 'Home', to: `/${profileId}/personal-cabinet` },
+    { text: 'Stats', to: `/${profileId}/personal-cabinet/stats`}
+    ]" />
   <div class="p-6 max-w-md mx-auto">
     <h1 class="text-xl font-bold mb-4">Attendance</h1>
 

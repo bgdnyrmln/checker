@@ -14,9 +14,7 @@ return new class extends Migration
             $table->string('last_name', 30);
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role', ['admin', 'employee'])->default('employee');
-            $table->foreignId('company_id')->constrained('companies')->cascadeOnDelete();
-            $table->timestamps(); // adds created_at & updated_at
+            $table->timestamps();
         });
     }
 

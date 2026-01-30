@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('time_logs', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+        $table->foreignId('profile_id')->constrained('company_user')->cascadeOnDelete();
         $table->timestamp('checked_in_at');
         $table->timestamp('checked_out_at')->nullable();
         $table->timestamps();

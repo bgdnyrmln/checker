@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TimeLog extends Model
 {
     protected $fillable = [
-        'user_id',
+        'profile_id',
         'checked_in_at',
         'checked_out_at',
     ];
@@ -18,8 +18,14 @@ class TimeLog extends Model
     ];
 
 
+    public function profile()
+    {
+        return $this->belongsTo(CompanyUser::class, 'profile_id', 'id');
+    }
+
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->profile->user();
     }
 }

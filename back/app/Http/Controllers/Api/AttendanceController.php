@@ -9,9 +9,9 @@ use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
-    public function status(Request $request)
+    public function status(Request $request, $profile_id)
     {
-        $log = TimeLog::where('user_id', $request->user()->id)
+        $log = TimeLog::where('profile_id', $profile_id)
             ->whereNull('checked_out_at')
             ->latest()
             ->first();
@@ -22,9 +22,9 @@ class AttendanceController extends Controller
         ]);
     }
 
-    public function checkIn(Request $request)
+    public function checkIn(Request $request, $profile_id)
     {
-        $exists = TimeLog::where('user_id', $request->user()->id)
+        $exists = TimeLog::where('profile_id', $profile_id)
             ->whereNull('checked_out_at')
             ->exists();
 
@@ -33,16 +33,16 @@ class AttendanceController extends Controller
         }
 
         TimeLog::create([
-            'user_id' => $request->user()->id,
+            'profile_id' => $profile_id,
             'checked_in_at' => now(),
         ]);
 
         return response()->json(['message' => 'Checked in']);
     }
 
-    public function checkOut(Request $request)
+    public function checkOut(Request $request, $profile_id)
     {
-        $log = TimeLog::where('user_id', $request->user()->id)
+        $log = TimeLog::where('profile_id', $profile_id)
             ->whereNull('checked_out_at')
             ->latest()
             ->first();
@@ -58,16 +58,14 @@ class AttendanceController extends Controller
         return response()->json(['message' => 'Checked out']);
     }
 
-    public function personalTime(Request $request)
+    public function personalTime(Request $request, $profile_id)
     {
-        $user = $request->user();
-
-        $startDate = Carbon::parse($request->query('start_date'))->startOfDay();
-        $endDate   = Carbon::parse($request->query('end_date'))->endOfDay();
-
-        // Fetch user timelogs in range
-        $timeLogs = TimeLog::where('user_id', $user->id)
-            ->whereBetween('checked_in_at', [$startDate, $endDate])
+        // Fetch timelogs for the given profile
+        $timeLogs = TimeLog::where('profile_id', $profile_id)
+            ->whereBetween('checked_in_at', [
+                Carbon::parse($request->query('start_date'))->startOfDay(),
+                Carbon::parse($request->query('end_date'))->endOfDay()
+            ])
             ->orderBy('checked_in_at')
             ->get();
 
@@ -76,7 +74,9 @@ class AttendanceController extends Controller
             return $log->checked_in_at->toDateString();
         });
 
-        // Build full date range (same as employeeTime)
+        $startDate = Carbon::parse($request->query('start_date'))->startOfDay();
+        $endDate   = Carbon::parse($request->query('end_date'))->endOfDay();
+
         $period = new \DatePeriod(
             $startDate,
             new \DateInterval('P1D'),
@@ -105,59 +105,59 @@ class AttendanceController extends Controller
         }
 
         return response()->json([
-            'id' => $user->id,
-            'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
-            'email' => $user->email,
-
-            'checked_in_at' => $timeLogs->first()?->checked_in_at?->format('H:i'),
-            'checked_out_at' => $timeLogs->last()?->checked_out_at?->format('H:i'),
-            'total_time_seconds' => collect($daily)->sum('total_time_seconds'),
-
+            'profile_id' => $profile_id,
             'daily' => $daily,
+            'total_time_seconds' => collect($daily)->sum('total_time_seconds'),
+            'first_checked_in' => $timeLogs->first()?->checked_in_at?->format('H:i'),
+            'last_checked_out' => $timeLogs->last()?->checked_out_at?->format('H:i'),
         ]);
     }
 
 
 
 
-    public function employeeTime(Request $request)
+    public function employeeTime(Request $request, $company_id)
     {
         $startDate = Carbon::parse($request->query('start_date'))->startOfDay();
         $endDate   = Carbon::parse($request->query('end_date'))->endOfDay();
 
-        $employees = $request->user()->company->users()
-            ->with(['timeLogs' => function ($query) use ($startDate, $endDate) {
+        // Check if the user belongs to the requested company
+        $company = $request->user()->companies()->wherePivot('company_id', $company_id)->first();
+        if (!$company) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Fetch all company_user profiles for this company
+        $profiles = \App\Models\CompanyUser::where('company_id', $company_id)
+            ->with(['user', 'timeLogs' => function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('checked_in_at', [$startDate, $endDate])
                     ->orderBy('checked_in_at');
             }])
             ->get();
 
-        $data = $employees->map(function ($employee) use ($startDate, $endDate) {
+        // Group logs per user
+        $employees = $profiles->groupBy('user_id')->map(function ($userProfiles) use ($startDate, $endDate) {
+            $user = $userProfiles->first()->user;
 
-            // Group logs by date
-            $dailyLogs = $employee->timeLogs->groupBy(function ($log) {
-                return $log->checked_in_at->toDateString();
-            });
+            $dailyLogs = [];
 
-            // Build full date range
+            // Loop through each day in the range
             $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate->copy()->addDay());
-
-            $daily = [];
-
             foreach ($period as $date) {
-                $date = Carbon::instance($date); // <-- FIX HERE
+                $date = Carbon::instance($date);
                 $dayKey = $date->toDateString();
 
-                $logs = $dailyLogs[$dayKey] ?? collect();
+                // Collect all logs for this user across all profiles for this day
+                $logs = collect();
+                foreach ($userProfiles as $profile) {
+                    $profileLogs = $profile->timeLogs->filter(fn($log) => $log->checked_in_at->toDateString() === $dayKey);
+                    $logs = $logs->merge($profileLogs);
+                }
 
-                $totalSeconds = $logs->reduce(function ($carry, $log) {
-                    $out = $log->checked_out_at ?? now();
-                    return $carry + $log->checked_in_at->diffInSeconds($out);
-                }, 0);
+                $totalSeconds = $logs->reduce(fn($carry, $log) => $carry + $log->checked_in_at->diffInSeconds($log->checked_out_at ?? now()), 0);
 
-                $daily[] = [
-                    'date' => $date->format('d-m-Y'), // formatted
+                $dailyLogs[] = [
+                    'date' => $date->format('d-m-Y'),
                     'checked_in_at' => $logs->first()?->checked_in_at?->format('H:i'),
                     'checked_out_at' => $logs->last()?->checked_out_at?->format('H:i'),
                     'total_time_seconds' => $totalSeconds,
@@ -165,21 +165,19 @@ class AttendanceController extends Controller
             }
 
             return [
-                'id' => $employee->id,
-                'first_name' => $employee->first_name,
-                'last_name' => $employee->last_name,
-                'email' => $employee->email,
-
-                'checked_in_at' => $employee->timeLogs->first()?->checked_in_at?->format('H:i'),
-                'checked_out_at' => $employee->timeLogs->last()?->checked_out_at?->format('H:i'),
-                'total_time_seconds' => collect($daily)->sum('total_time_seconds'),
-
-                'daily' => $daily,
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'email' => $user->email,
+                'total_time_seconds' => collect($dailyLogs)->sum('total_time_seconds'),
+                'daily' => $dailyLogs,
             ];
-        });
+        })->values(); // reset keys
 
-        return response()->json($data);
+        return response()->json($employees);
     }
+
+
 
 }
 
