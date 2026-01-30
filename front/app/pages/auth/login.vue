@@ -2,10 +2,6 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
-definePageMeta({
-  middleware: 'guest'
-})
-
 
 // Axios global defaults
 axios.defaults.baseURL = 'http://localhost:8000'
@@ -21,7 +17,7 @@ const loading = ref(false)
 const getCsrfToken = async () => {
   await axios.get('/sanctum/csrf-cookie')
 
-  const token = decodeURIComponent(
+  const token = decodeURIComponent( 
     document.cookie
       .split('; ')
       .find(c => c.startsWith('XSRF-TOKEN='))

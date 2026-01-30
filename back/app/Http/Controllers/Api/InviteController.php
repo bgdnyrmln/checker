@@ -12,14 +12,13 @@ class InviteController extends Controller
     public function create(Request $request)
     {
         $user = $request->user();
+        $companyProfile = $user->profiles()->where('role', 'manager')->first();
 
-        // only company owner
-        if ($user->role !== 'admin') {
-            abort(403);
+        if (!$companyProfile) {
+            abort(403, 'You are not manager of any company.');
         }
-
         $invite = Invite::create([
-            'company_id' => $user->company_id,
+            'company_id' => $companyProfile->company_id,
             'token' => Str::uuid(),
             'expires_at' => now()->addDays(7),
         ]);
@@ -32,7 +31,7 @@ class InviteController extends Controller
     public function validateToken($token)
     {
         $invite = Invite::where('token', $token)
-                        ->whereNull('used_at') // ensure it's not already used
+                        ->whereNull('used_at')
                         ->first();
 
         if (!$invite) {

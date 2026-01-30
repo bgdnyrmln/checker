@@ -22,7 +22,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/invites', [InviteController::class, 'create']);
     Route::get('user/role/{company}', [UserController::class, 'role']);
     Route::get('user/profiles', [UserController::class, 'profiles']);
-
 });
 
 Route::post('/register/member', [EmployeeRegisterController::class, 'register']);

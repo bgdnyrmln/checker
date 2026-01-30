@@ -76,13 +76,13 @@
 
 <template>
     <Sidebar :items="[
-    { text: 'Home', to: `/${profileId}/manager` },
-    { text: 'Company', to: `/${profileId}/manager/company` },
-    { text: 'Team', to: `/${profileId}/manager/team`},
-    { text: 'Schedule', to: `/${profileId}/manager/schedule`},
-    { text: 'Attendancy', to: `/${profileId}/manager/attendancy`},
-    { text: 'Payrolls', to: `/${profileId}/manager/payrolls`},
-    { text: 'Invites', to: `/${profileId}/manager/invite`}
+    { text: 'Home', to: `/${companyId}/manager` },
+    { text: 'Company', to: `/${companyId}/manager/company` },
+    { text: 'Team', to: `/${companyId}/manager/team`},
+    { text: 'Schedule', to: `/${companyId}/manager/schedule`},
+    { text: 'Attendancy', to: `/${companyId}/manager/attendancy`},
+    { text: 'Payrolls', to: `/${companyId}/manager/payrolls`},
+    { text: 'Invites', to: `/${companyId}/manager/invite`}
     ]" />
   <div class="max-w-4xl mx-auto p-6 space-y-4">
     <h1 class="text-2xl font-bold text-[#1A1423]">

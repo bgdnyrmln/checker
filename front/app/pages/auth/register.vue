@@ -1,7 +1,4 @@
 <script setup>
-definePageMeta({
-  middleware: 'guest'
-})
 
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
