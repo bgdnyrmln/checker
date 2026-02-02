@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\TimeLog;
 use Illuminate\Http\Request;
+use App\Models\Shift;
 use Carbon\Carbon;
 
 class AttendanceController extends Controller
@@ -24,6 +25,16 @@ class AttendanceController extends Controller
 
     public function checkIn(Request $request, $profile_id)
     {
+        // 1️⃣ check if user has a shift today
+        $hasShiftToday = Shift::where('profile_id', $profile_id)
+            ->whereDate('shift_date', now()->toDateString())
+            ->exists();
+
+        if (! $hasShiftToday) {
+            abort(403, 'No shift scheduled for today');
+        }
+
+        // 2️⃣ prevent double check-in
         $exists = TimeLog::where('profile_id', $profile_id)
             ->whereNull('checked_out_at')
             ->exists();
@@ -32,6 +43,7 @@ class AttendanceController extends Controller
             abort(409, 'Already checked in');
         }
 
+        // 3️⃣ check in
         TimeLog::create([
             'profile_id' => $profile_id,
             'checked_in_at' => now(),

@@ -49,4 +49,6 @@ class CompanyController extends Controller
             'user' => $user,
         ], 201);
     }
+
+    
 }

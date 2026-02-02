@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\InviteController;
 use App\Http\Controllers\Api\EmployeeRegisterController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ShiftController;
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -22,6 +23,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/invites', [InviteController::class, 'create']);
     Route::get('user/role/{company}', [UserController::class, 'role']);
     Route::get('user/profiles', [UserController::class, 'profiles']);
+
+    Route::post('/shifts', [ShiftController::class, 'store']);
+    Route::put('/shifts/{shift}', [ShiftController::class, 'update']);
+    Route::get('/shifts/company/{company}', [ShiftController::class, 'index']);
+
 });
 
 Route::post('/register/member', [EmployeeRegisterController::class, 'register']);

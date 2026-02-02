@@ -13,6 +13,7 @@
     "@qirolab/nuxt-sanctum-authentication": "^0.1.15",
     "@vuepic/vue-datepicker": "^12.1.0",
     "axios": "^1.13.2",
+    "chart.js": "^4.5.1",
     "nuxt": "^4.2.2",
     "nuxt-auth-sanctum": "^2.1.1",
     "pinia": "^3.0.4",
