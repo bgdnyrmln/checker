@@ -16,7 +16,7 @@ const route = useRoute()
 profileId.value = route.params.id
 
 /**
- * 🔐 Fetch & decode CSRF token
+ * Fetch & decode CSRF token
  */
 const getCsrfToken = async () => {
   await axios.get('/sanctum/csrf-cookie')
