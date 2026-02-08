@@ -1,6 +1,11 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 
+definePageMeta({
+  middleware: 'auth-company'
+})
+
+
 const route = useRoute()
 const profileId = ref()
 profileId.value = route.params.id;

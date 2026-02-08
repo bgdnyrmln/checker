@@ -2,6 +2,11 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
+definePageMeta({
+  middleware: 'auth-company'
+})
+
+
 axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'

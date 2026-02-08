@@ -5,6 +5,12 @@
     import '@vuepic/vue-datepicker/dist/main.css'
 
 
+    definePageMeta({
+      middleware: 'auth-company',
+      requiresManager: true
+    })
+
+
     // Axios defaults
     axios.defaults.baseURL = 'http://localhost:8000'
     axios.defaults.withCredentials = true

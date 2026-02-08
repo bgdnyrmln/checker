@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\CompanyUserController;
 use App\Http\Controllers\Api\InviteController;
 use App\Http\Controllers\Api\EmployeeRegisterController;
 use App\Http\Controllers\Api\AttendanceController;
@@ -28,6 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/shifts/{shift}', [ShiftController::class, 'update']);
     Route::get('/shifts/company/{company}', [ShiftController::class, 'index']);
     Route::post('/announcements', [AnnouncementController::class, 'store']);
+    Route::get('/companies/{company}/employees', [CompanyUserController::class, 'index']);
+
 });
 
 Route::post('/register/member', [EmployeeRegisterController::class, 'register']);

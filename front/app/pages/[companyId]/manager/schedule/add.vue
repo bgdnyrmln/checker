@@ -3,6 +3,12 @@ import axios from 'axios'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
+definePageMeta({
+  middleware: 'auth-company',
+  requiresManager: true
+})
+
+
 const route = useRoute()
 
 // State
@@ -38,7 +44,7 @@ const fetchEmployees = async () => {
 
   try {
     await getCsrfToken()
-    const res = await axios.get(`/api/attendance/team/employees/${companyId}`)
+    const res = await axios.get(`/api/companies/${companyId}/employees`)
     employees.value = res.data
   } catch (e) {
     error.value = 'Failed to load employees'

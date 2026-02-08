@@ -2,6 +2,12 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
+definePageMeta({
+  middleware: 'auth-company',
+  requiresManager: true
+})
+
+
 
 axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true

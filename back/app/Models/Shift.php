@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -7,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class Shift extends Model
 {
     protected $fillable = [
-        'profile_id',
+        'profile_id', // this is company_user.id
         'shift_date',
         'starts_at',
         'ends_at',
@@ -21,9 +20,9 @@ class Shift extends Model
 
     public function companyUser()
     {
-        return $this->belongsTo(CompanyUser::class, 'profile_id', 'user_id');
+        // profile_id references company_user.id
+        return $this->belongsTo(CompanyUser::class, 'profile_id', 'id');
     }
-
 
     public function user()
     {
@@ -35,4 +34,3 @@ class Shift extends Model
         return $this->companyUser->company;
     }
 }
-

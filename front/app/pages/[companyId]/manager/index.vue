@@ -73,6 +73,11 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import Chart from 'chart.js/auto'
 
+definePageMeta({
+  middleware: 'auth-company',
+  requiresManager: true
+})
+
 const route = useRoute()
 const companyId = route.params.companyId
 
