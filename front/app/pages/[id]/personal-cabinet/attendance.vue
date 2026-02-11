@@ -17,11 +17,18 @@ axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
+const sidebarItems = [
+  { text: 'Dashboard', to: `/${profileId.value}/personal-cabinet` },
+  { text: 'Attendance', to: `/${profileId.value}/personal-cabinet/attendance` },
+  { text: 'Payroll', to: `/${profileId.value}/personal-cabinet/payroll` },
+]
+
+
 // STATE
 const selectedDate = ref(new Date())
 const rangeMode = ref('day')
-const records = ref([])       
-const stats = ref(null)          
+const records = ref([])
+const stats = ref(null)
 const loading = ref(false)
 const error = ref('')
 
@@ -83,10 +90,8 @@ watch([selectedDate, rangeMode], fetchStats)
 
 
 <template>
-    <Sidebar :items="[
-    { text: 'Home', to: `/${profileId}/personal-cabinet` },
-    { text: 'Stats', to: `/${profileId}/personal-cabinet/stats`}
-    ]" />
+  <Sidebar :items="sidebarItems" />
+
   <div class="pl-[20rem] pt-[5rem] pr-[5rem]">
     <h1 class="text-2xl font-bold text-[#1A1423]">
       My Attendance — {{ rangeMode.toUpperCase() }}

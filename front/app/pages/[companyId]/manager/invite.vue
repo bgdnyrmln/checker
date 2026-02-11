@@ -44,12 +44,13 @@ const getCsrfToken = async () => {
 
 const fetchInvites = async () => {
   try {
-    const res = await axios.get('/api/invites')
+    const res = await axios.get(`/api/companies/${companyId}/invites`)
     invites.value = res.data
   } catch (e) {
     console.error(e)
   }
 }
+
 
 const createInvite = async () => {
   try {

@@ -2,6 +2,9 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
+definePageMeta({
+  middleware: 'guest'
+})
 
 // Axios global defaults
 axios.defaults.baseURL = 'http://localhost:8000'

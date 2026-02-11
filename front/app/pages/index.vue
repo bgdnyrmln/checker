@@ -55,31 +55,14 @@ onMounted(fetchUser);
           without friction.
         </p>
 
-        <div class="mt-10 flex gap-4">
-          <NuxtLink v-if="user" to="/attendance" class="px-6 py-3 rounded bg-[#0B5351] text-white font-medium hover:opacity-90 transition">
-            Check In
-          </NuxtLink>
-
-          <NuxtLink v-if="user" to="/personal-cabinet" class="px-6 py-3 rounded bg-[#0B5351] text-white font-medium hover:opacity-90 transition">
-            View Personal Cabinet
-          </NuxtLink>
-
-          <NuxtLink v-else to="/auth/login" class="px-6 py-3 rounded bg-[#0B5351] text-white font-medium hover:opacity-90 transition">
-            Login
-          </NuxtLink>
-
-          <NuxtLink v-if="user && user.role === 'admin'" to="/manager/invite" class="px-6 py-3 rounded border border-[#0B5351] text-[#0B5351] font-medium hover:bg-[#0B5351] hover:text-white transition">
-            Invite Employees
-          </NuxtLink>
-
-          <NuxtLink v-if="user && user.role === 'admin'" to="/manager/team" class="px-6 py-3 rounded border border-[#0B5351] text-[#0B5351] font-medium hover:bg-[#0B5351] hover:text-white transition">
-            View Team
-          </NuxtLink>
-        </div>
+        <NuxtLink
+          to="/auth/login"
+          class="mt-6 inline-block bg-[#0B5351] text-white px-6 py-3 rounded"
+        >
+          Get Started
+        </NuxtLink>
+        
       </main>
     </div>
   </div>
 </template>
-
-<style scoped>
-</style>

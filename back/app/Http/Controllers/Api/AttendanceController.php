@@ -190,7 +190,14 @@ class AttendanceController extends Controller
         return response()->json($employees);
     }
 
+    public function hasShift($profile_id)
+    {
+        $hasShift = Shift::where('profile_id', $profile_id)
+                        ->whereDate('shift_date', now()->toDateString())
+                        ->exists();
 
+        return response()->json(['has_shift' => $hasShift]);
+    }
 
 }
 

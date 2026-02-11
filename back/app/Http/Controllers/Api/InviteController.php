@@ -10,24 +10,29 @@ use Illuminate\Support\Str;
 class InviteController extends Controller
 {
 
-    public function index(Request $request)
+    public function index(Request $request, $company)
     {
         $user = $request->user();
 
+        // Check if the user belongs to the requested company
         $companyProfile = $user->profiles()
             ->where('role', 'manager')
+            ->where('company_id', $company)
             ->first();
 
         if (!$companyProfile) {
-            abort(403, 'You are not manager of any company.');
+            abort(403, 'Unauthorized for this company.');
         }
 
-        return Invite::where('company_id', $companyProfile->company_id)
+        // Return only unused, not expired invites for this company
+        return Invite::where('company_id', $company)
             ->whereNull('used_at')
             ->where('expires_at', '>', now())
             ->latest()
             ->get();
     }
+
+
 
 
     public function create(Request $request)

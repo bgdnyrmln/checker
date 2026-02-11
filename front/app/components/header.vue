@@ -48,7 +48,7 @@ onMounted(fetchUser)
 </script>
 
 <template>
-  <header class="h-[4rem] flex items-center justify-between bg-gray-100 fixed w-[144rem] z-10 px-[4rem] mt-[-1rem]">
+  <header class="h-[4rem] flex items-center justify-between bg-[#E9EDEE] fixed w-[144rem] z-10 px-[4rem] mt-[-1rem] shadow-sm">
     <!-- Brand -->
     <NuxtLink to="/" class="font-semibold text-lg">
       Checker
@@ -56,10 +56,11 @@ onMounted(fetchUser)
     <!-- Right -->
     <div class="flex items-center gap-4">
       <template v-if="user">
-        <span class="text-sm text-gray-600">
-          {{ user.first_name }}
-        </span>
-
+        <NuxtLink to="/profile" class="text-sm hover:underline">
+          <span class="text-sm text-gray-600">
+            {{ user.first_name }}
+          </span>
+        </NuxtLink>
         <button
           @click="logout"
           class="text-sm text-red-500 hover:underline"

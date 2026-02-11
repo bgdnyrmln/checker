@@ -5,8 +5,6 @@
 
     <!-- Main content -->
     <main class="flex-1 p-6 ml-64 bg-gray-50 min-h-screen">
-      <h1 class="text-3xl font-bold mb-6">Dashboard</h1>
-
       <!-- Stats cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         <div class="bg-white shadow rounded p-4 flex flex-col">
