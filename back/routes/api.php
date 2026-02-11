@@ -10,6 +10,9 @@ use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ShiftController;
 use App\Http\Controllers\Api\AnnouncementController;
+use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\PayrollController;
+
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -23,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/attendance/team/employees/{company_id}', [AttendanceController::class, 'employeeTime']);
     Route::get('attendance/personal/{profile_id}', [AttendanceController::class, 'personalTime']);
     Route::post('/invites', [InviteController::class, 'create']);
+    Route::get('/invites', [InviteController::class, 'index']);
     Route::get('/profile', [UserController::class, 'profile']);
     Route::get('user/profiles', [UserController::class, 'profiles']);
     Route::post('/shifts', [ShiftController::class, 'store']);
@@ -30,7 +34,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/shifts/company/{company}', [ShiftController::class, 'index']);
     Route::post('/announcements', [AnnouncementController::class, 'store']);
     Route::get('/companies/{company}/employees', [CompanyUserController::class, 'index']);
-
+    Route::get('/companies/{company}/dashboard', [DashboardController::class, 'show']);
+    Route::get('/companies/{company}', [CompanyController::class, 'show']);
+    Route::put('/companies/{company}', [CompanyController::class, 'update']);
+    Route::get('/companies/{company}/payroll',[PayrollController::class, 'payroll']);
 });
 
 Route::post('/register/member', [EmployeeRegisterController::class, 'register']);

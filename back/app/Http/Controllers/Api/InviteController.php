@@ -9,6 +9,27 @@ use Illuminate\Support\Str;
 
 class InviteController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $user = $request->user();
+
+        $companyProfile = $user->profiles()
+            ->where('role', 'manager')
+            ->first();
+
+        if (!$companyProfile) {
+            abort(403, 'You are not manager of any company.');
+        }
+
+        return Invite::where('company_id', $companyProfile->company_id)
+            ->whereNull('used_at')
+            ->where('expires_at', '>', now())
+            ->latest()
+            ->get();
+    }
+
+
     public function create(Request $request)
     {
         $user = $request->user();

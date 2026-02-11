@@ -180,6 +180,7 @@ class AttendanceController extends Controller
                 'id' => $user->id,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
+                'hourly_pay' => $userProfiles->first()->hourly_pay ?? 0,
                 'email' => $user->email,
                 'total_time_seconds' => collect($dailyLogs)->sum('total_time_seconds'),
                 'daily' => $dailyLogs,

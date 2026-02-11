@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-64 min-h-screen bg-[#E8EDEE] p-4 pt-[5rem] fixed z-9">
+  <aside class="w-64 min-h-screen bg-[#E8EDEE] p-4 fixed z-9">
     <nav class="flex flex-col gap-2">
       <div v-for="item in items" :key="item.to">
         <!-- Main link -->

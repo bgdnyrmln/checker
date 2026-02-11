@@ -1,5 +1,7 @@
 <template>
   <Announcement />
   <Header />
-  <NuxtPage />
+  <div class="pt-[2.5rem]">
+    <NuxtPage />
+  </div>
 </template>

@@ -48,12 +48,11 @@ onMounted(fetchUser)
 </script>
 
 <template>
-  <header class="h-[4rem] flex items-center justify-between px-6 bg-transparent absolute w-[141.5rem] z-10 ml-[2.5rem]">
+  <header class="h-[4rem] flex items-center justify-between bg-gray-100 fixed w-[144rem] z-10 px-[4rem] mt-[-1rem]">
     <!-- Brand -->
     <NuxtLink to="/" class="font-semibold text-lg">
       Checker
     </NuxtLink>
-
     <!-- Right -->
     <div class="flex items-center gap-4">
       <template v-if="user">

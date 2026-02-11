@@ -50,5 +50,41 @@ class CompanyController extends Controller
         ], 201);
     }
 
-    
+
+    public function show($companyId, Request $request)
+    {
+        $user = $request->user();
+
+        // Make sure user belongs to this company
+        $user->companies()
+            ->where('company_id', $companyId)
+            ->firstOrFail();
+
+        return Company::findOrFail($companyId);
+    }
+
+
+    public function update($companyId, Request $request)
+    {
+        $user = $request->user();
+
+        // Only manager can update
+        $profile = CompanyUser::where('user_id', $user->id)
+            ->where('company_id', $companyId)
+            ->where('role', 'manager')
+            ->firstOrFail();
+
+        $company = Company::findOrFail($companyId);
+
+        $data = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|unique:companies,email,' . $companyId,
+        ]);
+
+        $company->update($data);
+
+        return response()->json($company);
+    }
+
+
 }
