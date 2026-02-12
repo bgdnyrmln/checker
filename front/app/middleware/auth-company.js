@@ -4,20 +4,20 @@ export default defineNuxtRouteMiddleware(async (to) => {
   let user = null
   let profiles = []
 
-  // Fetch user
   try {
-    user = await axios.get('/api/user', { withCredentials: true })
-      .then(res => res.data)
-  } catch {
-      return navigateTo('/')
+    const res = await axios.get('/api/user/profiles', {
+      withCredentials: true
+    })
+
+    user = res.data.user
+    profiles = res.data.profiles || []
+
+  } catch (e) {
+    return navigateTo('/')
   }
 
-  // Fetch profiles (CompanyUser list)
-  try {
-    profiles = await axios.get('/api/user/profiles', { withCredentials: true })
-      .then(res => res.data)
-  } catch {
-      return navigateTo('/')
+  if (!user) {
+    return navigateTo('/')
   }
 
   /**
@@ -28,15 +28,16 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const companyId = to.params.companyId?.toString()
   if (!companyId) return
 
+  // 🔥 FIXED: no more pivot
   const companyProfile = profiles.find(
-    p => p.pivot.company_id.toString() === companyId
+    p => p.company_id.toString() === companyId
   )
 
   if (!companyProfile) {
     return navigateTo('/')
   }
 
-  const role = companyProfile.pivot.role
+  const role = companyProfile.role
 
   // Role enforcement
   if (to.meta.requiresManager && role !== 'manager') {

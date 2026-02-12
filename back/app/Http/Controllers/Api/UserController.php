@@ -10,7 +10,10 @@ class UserController extends Controller
 {
     public function profiles(Request $request){
         $user = $request->user();
-        return response()->json($user->companies()->get());
+        return response()->json([
+            'user' => $user,
+            'profiles' => $user ->profiles()->with('company')->get(),
+        ]);
     }
 
     public function show($id)

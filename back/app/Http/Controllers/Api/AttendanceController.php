@@ -7,6 +7,7 @@ use App\Models\TimeLog;
 use Illuminate\Http\Request;
 use App\Models\Shift;
 use Carbon\Carbon;
+use App\Models\CompanyUser;
 
 class AttendanceController extends Controller
 {
@@ -81,6 +82,7 @@ class AttendanceController extends Controller
             ->orderBy('checked_in_at')
             ->get();
 
+        $userProfile = CompanyUser::where('id', $profile_id)->first();
         // Group logs by date
         $dailyLogs = $timeLogs->groupBy(function ($log) {
             return $log->checked_in_at->toDateString();
@@ -119,6 +121,7 @@ class AttendanceController extends Controller
         return response()->json([
             'profile_id' => $profile_id,
             'daily' => $daily,
+            'hourly_pay' => $userProfile->hourly_pay,
             'total_time_seconds' => collect($daily)->sum('total_time_seconds'),
             'first_checked_in' => $timeLogs->first()?->checked_in_at?->format('H:i'),
             'last_checked_out' => $timeLogs->last()?->checked_out_at?->format('H:i'),
