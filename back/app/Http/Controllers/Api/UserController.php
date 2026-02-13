@@ -30,7 +30,7 @@ class UserController extends Controller
             'last_name' => 'sometimes|string|max:50',
             'email' => 'sometimes|email|unique:users,email,' . $user->id
         ]);
-
+ 
         $user->update($request->only([
             'first_name',
             'last_name',

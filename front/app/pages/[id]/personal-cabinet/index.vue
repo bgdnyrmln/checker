@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import Chart from 'chart.js/auto'
@@ -8,38 +8,25 @@ definePageMeta({
   middleware: 'auth-company'
 })
 
-/* ----------------------------------
-   ROUTE
------------------------------------*/
 const route = useRoute()
 const profileId = route.params.id
 
-/* ----------------------------------
-   SIDEBAR
------------------------------------*/
 const sidebarItems = [
   { text: 'Dashboard', to: `/${profileId}/personal-cabinet` },
   { text: 'Attendance', to: `/${profileId}/personal-cabinet/attendance` },
   { text: 'Payroll', to: `/${profileId}/personal-cabinet/payroll` },
 ]
 
-/* ----------------------------------
-   AXIOS CONFIG
------------------------------------*/
 axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
-/* ----------------------------------
-   STATE
------------------------------------*/
+/* STATE */
 const checkedIn = ref(false)
 const checkedInAt = ref(null)
 const hasShiftToday = ref(false)
-
 const loading = ref(false)
 const error = ref('')
-
 const stats = ref({
   hoursWorkedToday: 0,
   hoursWorkedWeek: 0,
@@ -50,43 +37,44 @@ let attendanceChart = null
 let weeklyChart = null
 
 /* ----------------------------------
-   HELPERS
+   CURRENT TIME (Tick Every Second)
 -----------------------------------*/
-const formatDate = (date) => {
-  return date.toISOString().slice(0, 10)
-}
+const currentTime = ref(new Date())
+let tickInterval = null
+
+onMounted(() => {
+  tickInterval = setInterval(() => {
+    currentTime.value = new Date()
+  }, 1000)
+})
+
+onUnmounted(() => {
+  clearInterval(tickInterval)
+})
+
+/* ----------------------------------
+   HELPER FUNCTIONS
+-----------------------------------*/
+const formatDate = (date) => date.toISOString().slice(0, 10)
 
 const getWeekRange = () => {
   const today = new Date()
   const day = today.getDay() || 7
-
   const start = new Date(today)
   start.setDate(today.getDate() - day + 1)
-
   const end = new Date(start)
   end.setDate(start.getDate() + 6)
-
-  return {
-    start_date: formatDate(start),
-    end_date: formatDate(end)
-  }
+  return { start_date: formatDate(start), end_date: formatDate(end) }
 }
 
 const getMonthRange = () => {
   const today = new Date()
-
   const start = new Date(today.getFullYear(), today.getMonth(), 1)
   const end = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-
-  return {
-    start_date: formatDate(start),
-    end_date: formatDate(end)
-  }
+  return { start_date: formatDate(start), end_date: formatDate(end) }
 }
 
-/* ----------------------------------
-   CSRF
------------------------------------*/
+/* CSRF */
 const getCsrfToken = async () => {
   await axios.get('/sanctum/csrf-cookie')
   const token = decodeURIComponent(
@@ -98,9 +86,7 @@ const getCsrfToken = async () => {
   axios.defaults.headers.common['X-XSRF-TOKEN'] = token
 }
 
-/* ----------------------------------
-   FETCH STATUS
------------------------------------*/
+/* FETCH STATUS */
 const fetchStatus = async () => {
   try {
     const res = await axios.get(`/api/attendance/status/${profileId}`)
@@ -120,66 +106,34 @@ const fetchShiftStatus = async () => {
   }
 }
 
-/* ----------------------------------
-   FETCH STATS
------------------------------------*/
+/* FETCH STATS */
 const fetchStats = async () => {
   try {
-    /* ---- WEEK DATA (for chart + week total) ---- */
     const weekRange = getWeekRange()
-
-    const weekRes = await axios.get(
-      `/api/attendance/personal/${profileId}`,
-      { params: weekRange }
-    )
-
+    const weekRes = await axios.get(`/api/attendance/personal/${profileId}`, { params: weekRange })
     const weekDaily = weekRes.data.daily || []
 
-    /* ---- TODAY ---- */
     const todayStr = formatDate(new Date())
     const todayLog = weekDaily.find(d => d.date === todayStr)
-    stats.value.hoursWorkedToday =
-      todayLog?.total_time_seconds
-        ? todayLog.total_time_seconds / 3600
-        : 0
+    stats.value.hoursWorkedToday = todayLog?.total_time_seconds ? todayLog.total_time_seconds / 3600 : 0
 
-    /* ---- WEEK TOTAL ---- */
-    const weekSeconds = weekDaily.reduce(
-      (sum, d) => sum + (d.total_time_seconds || 0),
-      0
-    )
-
+    const weekSeconds = weekDaily.reduce((sum, d) => sum + (d.total_time_seconds || 0), 0)
     stats.value.hoursWorkedWeek = weekSeconds / 3600
 
-    /* ---- MONTH TOTAL ---- */
     const monthRange = getMonthRange()
-
-    const monthRes = await axios.get(
-      `/api/attendance/personal/${profileId}`,
-      { params: monthRange }
-    )
-
+    const monthRes = await axios.get(`/api/attendance/personal/${profileId}`, { params: monthRange })
     const monthDaily = monthRes.data.daily || []
-
-    const monthSeconds = monthDaily.reduce(
-      (sum, d) => sum + (d.total_time_seconds || 0),
-      0
-    )
-
+    const monthSeconds = monthDaily.reduce((sum, d) => sum + (d.total_time_seconds || 0), 0)
     stats.value.hoursWorkedMonth = monthSeconds / 3600
 
-    /* ---- RENDER CHART ---- */
     await nextTick()
     renderCharts(weekDaily)
-
   } catch (e) {
     console.error(e)
   }
 }
 
-/* ----------------------------------
-   CHECK IN / OUT
------------------------------------*/
+/* CHECK IN / OUT */
 const checkIn = async () => {
   loading.value = true
   try {
@@ -208,61 +162,33 @@ const checkOut = async () => {
   }
 }
 
-/* ----------------------------------
-   CHARTS
------------------------------------*/
+/* CHARTS */
 const renderCharts = (dailyLogs) => {
   const labels = dailyLogs.map(d => d.date)
-  const hours = dailyLogs.map(d =>
-    (d.total_time_seconds / 3600).toFixed(2)
-  )
+  const hours = dailyLogs.map(d => (d.total_time_seconds / 3600).toFixed(2))
 
   if (attendanceChart) attendanceChart.destroy()
   if (weeklyChart) weeklyChart.destroy()
 
-  attendanceChart = new Chart(
-    document.getElementById('attendanceChart'),
-    {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Hours Worked',
-          data: hours,
-          borderColor: '#0B5351',
-          backgroundColor: 'rgba(11,83,81,0.2)',
-          fill: true,
-          tension: 0.3
-        }]
-      }
-    }
-  )
+  attendanceChart = new Chart(document.getElementById('attendanceChart'), {
+    type: 'line',
+    data: { labels, datasets: [{ label: 'Hours Worked', data: hours, borderColor: '#0B5351', backgroundColor: 'rgba(11,83,81,0.2)', fill: true, tension: 0.3 }] }
+  })
 
-  weeklyChart = new Chart(
-    document.getElementById('weeklyChart'),
-    {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Hours',
-          data: hours,
-          backgroundColor: '#0B5351'
-        }]
-      }
-    }
-  )
+  weeklyChart = new Chart(document.getElementById('weeklyChart'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Hours', data: hours, backgroundColor: '#0B5351' }] }
+  })
 }
 
-/* ----------------------------------
-   INIT
------------------------------------*/
+/* INIT */
 onMounted(async () => {
   await fetchStatus()
   await fetchShiftStatus()
   await fetchStats()
 })
 </script>
+
 
 
 <template>
@@ -273,8 +199,8 @@ onMounted(async () => {
       <!-- Attendance card -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         <div class="bg-white shadow rounded p-4 flex flex-col items-center justify-center">
-          <span class="text-gray-500 mb-2">Your Attendance Today</span>
-          <span class="text-2xl font-bold mb-2">{{ stats.hoursWorkedToday.toFixed(2) }} hrs</span>
+          <span class="text-gray-500 mb-2">{{ currentTime.toLocaleString() }}</span>
+
 
           <!-- Check in/out button -->
           <div v-if="hasShiftToday">

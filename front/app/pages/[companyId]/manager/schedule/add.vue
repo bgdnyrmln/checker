@@ -79,7 +79,7 @@ onMounted(() => {
     { text: 'Home', to: `/${companyId}/manager` },
     { text: 'Company', to: `/${companyId}/manager/company` },
     { text: 'Team', to: `/${companyId}/manager/team`},
-    { text: 'Schedule', to: `/${companyId}/manager/schedule`, children: [{ text: 'Add Shift', to: `/${companyId}/manager/schedule/add`}]},
+    { text: 'Schedule', to: `/${companyId}/manager/schedule`, children: [{ text: '↳Add Shift', to: `/${companyId}/manager/schedule/add`}]},
     { text: 'Attendancy', to: `/${companyId}/manager/attendancy`},
     { text: 'Payrolls', to: `/${companyId}/manager/payrolls`},
     { text: 'Invites', to: `/${companyId}/manager/invite`}
