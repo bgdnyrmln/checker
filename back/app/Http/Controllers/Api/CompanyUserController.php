@@ -31,6 +31,56 @@ class CompanyUserController extends Controller
                 'last_name' => $profile->user->last_name,
                 'email' => $profile->user->email,
                 'role' => $profile->role,
+                'hourly_pay' => $profile->hourly_pay,
             ]);
     }
+
+
+    public function edit(Request $request, $companyId, $profileId)
+    {
+        // auth check
+        $allowed = $request->user()
+            ->companies()
+            ->wherePivot('company_id', $companyId)
+            ->exists();
+
+        if (!$allowed) {
+            abort(403);
+        }
+
+        $profile = CompanyUser::where('company_id', $companyId)
+            ->where('id', $profileId)
+            ->first();
+
+        if (!$profile) {
+            abort(404);
+        }
+
+        $profile->update($request->only(['role', 'hourly_pay']));
+    }
+
+
+    public function destroy(Request $request, $companyId, $profileId){
+        // auth check
+        $allowed = $request->user()
+            ->companies()
+            ->wherePivot('company_id', $companyId)
+            ->exists();
+
+        if (!$allowed) {
+            abort(403);
+        }
+
+        $profile = CompanyUser::where('company_id', $companyId)
+            ->where('id', $profileId)
+            ->first();
+
+        if (!$profile) {
+            abort(404);
+        }
+
+        $profile->delete();
+    }
+
 }
+

@@ -11,15 +11,14 @@ definePageMeta({
 const route = useRoute()
 const profileId = route.params.id
 
+
 const sidebarItems = [
   { text: 'Dashboard', to: `/${profileId}/personal-cabinet` },
   { text: 'Attendance', to: `/${profileId}/personal-cabinet/attendance` },
   { text: 'Payroll', to: `/${profileId}/personal-cabinet/payroll` },
+  { text: 'Schedule', to: `/${profileId}/personal-cabinet/schedule` }
 ]
 
-axios.defaults.baseURL = 'http://localhost:8000'
-axios.defaults.withCredentials = true
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 /* STATE */
 const checkedIn = ref(false)

@@ -30,9 +30,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user/profiles', [UserController::class, 'profiles']);
     Route::post('/shifts', [ShiftController::class, 'store']);
     Route::put('/shifts/{shift}', [ShiftController::class, 'update']);
+    Route::get('/shifts/schedule/{profile}', [ShiftController::class, 'personal']);
     Route::get('/shifts/company/{company}', [ShiftController::class, 'index']);
     Route::post('/announcements', [AnnouncementController::class, 'store']);
     Route::get('/companies/{company}/employees', [CompanyUserController::class, 'index']);
+    Route::put('/companies/{company}/employees/{employee}', [CompanyUserController::class, 'edit']);
+    Route::delete('/companies/{company}/employees/{employee}', [CompanyUserController::class, 'destroy']);
     Route::get('/companies/{company}/dashboard', [DashboardController::class, 'show']);
     Route::get('/companies/{company}', [CompanyController::class, 'show']);
     Route::put('/companies/{company}', [CompanyController::class, 'update']);

@@ -39,6 +39,15 @@ class ShiftController extends Controller
         return response()->json($shifts->get());
     }
 
+    public function personal(Request $request, $profileId)
+    {
+        $shifts = Shift::with(['companyUser.user', 'companyUser.company'])
+            ->where('profile_id', $profileId)
+            ->get();
+
+        return response()->json($shifts);
+    }
+
     // manager creates shift
     public function store(Request $request)
     {
