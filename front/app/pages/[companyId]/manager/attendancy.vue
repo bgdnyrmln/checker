@@ -34,7 +34,7 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 const today = new Date()
 const formatDate = (d) => d.toISOString().slice(0, 10)
 const startDate = ref(formatDate(new Date(today.getFullYear(), today.getMonth(), 2)))
-const endDate = ref(formatDate(new Date(today.getFullYear(), today.getMonth() + 1, 1)))
+const endDate = ref(formatDate(new Date(today.getFullYear(), today.getMonth() + 1, 0)))
 
 /* State */
 const employees = ref([])

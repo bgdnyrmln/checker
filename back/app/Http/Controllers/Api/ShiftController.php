@@ -76,4 +76,12 @@ class ShiftController extends Controller
 
         return response()->json($shift);
     }
+
+    public function destroy(Shift $shift)
+    {
+        $shift->delete();
+
+        return response()->json(null, 204);
+
+    }
 }

@@ -17,4 +17,9 @@ class Invite extends Model
         'expires_at' => 'datetime',
         'used_at' => 'datetime',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

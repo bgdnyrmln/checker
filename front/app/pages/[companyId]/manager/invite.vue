@@ -55,7 +55,7 @@ const fetchInvites = async () => {
 const createInvite = async () => {
   try {
     await getCsrfToken()
-    const res = await axios.post('/api/invites')
+    const res = await axios.post(`/api/invites/${companyId}`)
     link.value = res.data.link
 
     await fetchInvites() // refresh list

@@ -7,39 +7,66 @@
     <main class="flex-1 p-6 ml-64 bg-gray-50 min-h-screen">
       <h1 class="text-3xl font-bold mb-6">Company Team</h1>
 
-      <!-- Loading -->
-      <div v-if="loading" class="text-gray-500">
-        Loading employees...
-      </div>
+      <!-- Loading / Error -->
+      <p v-if="loading" class="text-gray-500">Loading employees...</p>
+      <p v-if="error" class="text-red-500 mb-4">{{ error }}</p>
 
-      <!-- Error -->
-      <div v-if="error" class="text-red-500 mb-4">
-        {{ error }}
+      <!-- Search -->
+      <div class="mb-4 flex gap-2">
+        <input
+          type="text"
+          v-model="searchQuery"
+          placeholder="Search by name or email..."
+          class="border rounded px-3 py-1 flex-1"
+        />
       </div>
 
       <!-- Employees Table -->
       <div v-if="!loading && employees.length" class="bg-white shadow rounded p-4">
         <table class="w-full border-collapse text-sm">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="border px-3 py-2 text-left">Name</th>
-                    <th class="border px-3 py-2 text-left">Email</th>
-                    <th class="border px-3 py-2 text-left">Role</th>
-                    <th class="border px-3 py-2 text-left">Hourly Pay</th>
-                    <th class="border px-3 py-2 text-right">Actions</th>
-                </tr>
-            </thead>
-
+          <thead class="bg-gray-100">
+            <tr>
+              <th
+                @click="sortBy('name')"
+                class="border px-3 py-2 text-left cursor-pointer"
+              >
+                Name
+                <span v-if="sortKey==='name'">{{ sortDirection==='asc' ? '▲' : '▼' }}</span>
+              </th>
+              <th
+                @click="sortBy('email')"
+                class="border px-3 py-2 text-left cursor-pointer"
+              >
+                Email
+                <span v-if="sortKey==='email'">{{ sortDirection==='asc' ? '▲' : '▼' }}</span>
+              </th>
+              <th
+                @click="sortBy('role')"
+                class="border px-3 py-2 text-left cursor-pointer"
+              >
+                Role
+                <span v-if="sortKey==='role'">{{ sortDirection==='asc' ? '▲' : '▼' }}</span>
+              </th>
+              <th
+                @click="sortBy('hourly_pay')"
+                class="border px-3 py-2 text-left cursor-pointer"
+              >
+                Hourly Pay
+                <span v-if="sortKey==='hourly_pay'">{{ sortDirection==='asc' ? '▲' : '▼' }}</span>
+              </th>
+              <th class="border px-3 py-2 text-right">Actions</th>
+            </tr>
+          </thead>
 
           <tbody>
             <tr
-              v-for="employee in employees"
+              v-for="employee in filteredEmployees"
               :key="employee.id"
               class="hover:bg-gray-50"
             >
               <!-- NAME -->
               <td class="border px-3 py-2">
-                  {{ employee.first_name }} {{ employee.last_name }}
+                {{ employee.first_name }} {{ employee.last_name }}
               </td>
 
               <!-- EMAIL -->
@@ -58,33 +85,24 @@
                     <option value="manager">Manager</option>
                   </select>
                 </div>
-
-                <span v-else>
-                  {{ employee.role }}
-                </span>
+                <span v-else>{{ employee.role }}</span>
               </td>
 
-                <!-- HOURLY PAY -->
-                <td class="border px-3 py-2">
-                    <div v-if="editingId === employee.id">
-                        <input
-                        v-model="editForm.hourly_pay"
-                        type="number"
-                        step="0.01"
-                        class="border rounded px-2 py-1 w-24"
-                        />
-                    </div>
-
-                    <span v-else>
-                        ${{ employee.hourly_pay }}
-                    </span>
-                </td>
-
-
+              <!-- HOURLY PAY -->
+              <td class="border px-3 py-2">
+                <div v-if="editingId === employee.id">
+                  <input
+                    v-model="editForm.hourly_pay"
+                    type="number"
+                    step="0.01"
+                    class="border rounded px-2 py-1 w-24"
+                  />
+                </div>
+                <span v-else>${{ employee.hourly_pay }}</span>
+              </td>
 
               <!-- ACTIONS -->
               <td class="border px-3 py-2 text-right space-x-2">
-                <!-- Edit / Confirm -->
                 <button
                   v-if="editingId !== employee.id"
                   @click="startEdit(employee)"
@@ -101,7 +119,6 @@
                   Confirm
                 </button>
 
-                <!-- Cancel (only in edit mode) -->
                 <button
                   v-if="editingId === employee.id"
                   @click="cancelEdit"
@@ -110,7 +127,6 @@
                   Cancel
                 </button>
 
-                <!-- Delete -->
                 <button
                   v-if="editingId !== employee.id"
                   @click="deleteEmployee(employee)"
@@ -121,7 +137,6 @@
               </td>
             </tr>
           </tbody>
-
         </table>
       </div>
 
@@ -134,7 +149,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -143,12 +158,11 @@ definePageMeta({
   requiresManager: true
 })
 
-/* Route */
+/* ROUTE & SIDEBAR */
 const route = useRoute()
 const router = useRouter()
 const companyId = route.params.companyId
 
-/* Sidebar */
 const sidebarItems = [
   { text: 'Home', to: `/${companyId}/manager` },
   { text: 'Company', to: `/${companyId}/manager/company` },
@@ -159,21 +173,73 @@ const sidebarItems = [
   { text: 'Invites', to: `/${companyId}/manager/invite` },
 ]
 
-/* Axios Defaults */
+/* AXIOS DEFAULTS */
 axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
-/* State */
+/* STATE */
 const employees = ref([])
 const loading = ref(false)
 const error = ref('')
+const editingId = ref(null)
 
-/* Fetch Employees */
+const editForm = ref({
+  hourly_pay: 0,
+  role: 'Employee'
+})
+
+/* SEARCH & SORT */
+const searchQuery = ref('')
+const sortKey = ref('')
+const sortDirection = ref('asc')
+
+const filteredEmployees = computed(() => {
+  let data = [...employees.value]
+
+  // SEARCH
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    data = data.filter(emp => {
+      return (
+        `${emp.first_name} ${emp.last_name}`.toLowerCase().includes(q) ||
+        emp.email.toLowerCase().includes(q)
+      )
+    })
+  }
+
+  // SORT
+  if (sortKey.value) {
+    data.sort((a, b) => {
+      let aVal = a[sortKey.value]
+      let bVal = b[sortKey.value]
+
+      // handle strings case-insensitive
+      if (typeof aVal === 'string') aVal = aVal.toLowerCase()
+      if (typeof bVal === 'string') bVal = bVal.toLowerCase()
+
+      if (aVal < bVal) return sortDirection.value === 'asc' ? -1 : 1
+      if (aVal > bVal) return sortDirection.value === 'asc' ? 1 : -1
+      return 0
+    })
+  }
+
+  return data
+})
+
+const sortBy = (key) => {
+  if (sortKey.value === key) {
+    sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortKey.value = key
+    sortDirection.value = 'asc'
+  }
+}
+
+/* FETCH EMPLOYEES */
 const fetchEmployees = async () => {
   loading.value = true
   error.value = ''
-
   try {
     const res = await axios.get(`/api/companies/${companyId}/employees`)
     employees.value = res.data
@@ -185,76 +251,45 @@ const fetchEmployees = async () => {
   }
 }
 
-/* Edit */
-const editingId = ref(null)
-
-const editForm = ref({
-  hourly_pay: 0,
-  role: 'Employee'
-})
-
-const startEdit = (employee) => {
-  editingId.value = employee.id
-
-  editForm.value.hourly_pay = employee.hourly_pay
-  editForm.value.role = employee.role
-}
-
-
-const cancelEdit = () => {
-  editingId.value = null
-}
-
+/* CRUD FUNCTIONS */
 const getCsrfToken = async () => {
   await axios.get('/sanctum/csrf-cookie')
-
-  const token = decodeURIComponent( 
-    document.cookie
-      .split('; ')
-      .find(c => c.startsWith('XSRF-TOKEN='))
-      ?.split('=')[1] || ''
+  const token = decodeURIComponent(
+    document.cookie.split('; ').find(c => c.startsWith('XSRF-TOKEN='))?.split('=')[1] || ''
   )
-
   axios.defaults.headers.common['X-XSRF-TOKEN'] = token
 }
 
-const confirmEdit = async (employee) => {
+const startEdit = (emp) => {
+  editingId.value = emp.id
+  editForm.value.hourly_pay = emp.hourly_pay
+  editForm.value.role = emp.role
+}
+
+const cancelEdit = () => (editingId.value = null)
+
+const confirmEdit = async (emp) => {
   try {
     await getCsrfToken()
-    await axios.put(`/api/companies/${companyId}/employees/${employee.id}`, {
-        hourly_pay: editForm.value.hourly_pay,
-        role: editForm.value.role
+    await axios.put(`/api/companies/${companyId}/employees/${emp.id}`, {
+      hourly_pay: editForm.value.hourly_pay,
+      role: editForm.value.role
     })
-
-    // Update UI instantly
-    employee.hourly_pay = editForm.value.hourly_pay
-    employee.role = editForm.value.role
-
+    emp.hourly_pay = editForm.value.hourly_pay
+    emp.role = editForm.value.role
     editingId.value = null
-
   } catch (e) {
     console.error(e)
     alert('Failed to update employee')
   }
 }
 
-
-
-/* Delete */
-const deleteEmployee = async (employee) => {
-  const confirmDelete = confirm(
-    `Are you sure you want to remove ${employee.first_name} ${employee.last_name}?`
-  )
-
-  if (!confirmDelete) return
-
+const deleteEmployee = async (emp) => {
+  if (!confirm(`Delete ${emp.first_name} ${emp.last_name}?`)) return
   try {
     await getCsrfToken()
-    await axios.delete(`/api/companies/${companyId}/employees/${employee.id}`)
-
-    // Remove from UI instantly
-    employees.value = employees.value.filter(e => e.id !== employee.id)
-
+    await axios.delete(`/api/companies/${companyId}/employees/${emp.id}`)
+    employees.value = employees.value.filter(e => e.id !== emp.id)
   } catch (e) {
     console.error(e)
     alert('Failed to delete employee')

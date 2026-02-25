@@ -25,10 +25,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/attendance/check-out/{profile_id}', [AttendanceController::class, 'checkOut']);
     Route::get('/attendance/team/employees/{company_id}', [AttendanceController::class, 'employeeTime']);
     Route::get('attendance/personal/{profile_id}', [AttendanceController::class, 'personalTime']);
-    Route::post('/invites', [InviteController::class, 'create']);
+    Route::post('/invites/{company_id}', [InviteController::class, 'create']);
     Route::get('/companies/{company}/invites', [InviteController::class, 'index']);
     Route::get('user/profiles', [UserController::class, 'profiles']);
     Route::post('/shifts', [ShiftController::class, 'store']);
+    Route::delete('/shifts/{shift}', [ShiftController::class, 'destroy']);
     Route::put('/shifts/{shift}', [ShiftController::class, 'update']);
     Route::get('/shifts/schedule/{profile}', [ShiftController::class, 'personal']);
     Route::get('/shifts/company/{company}', [ShiftController::class, 'index']);
@@ -40,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/companies/{company}', [CompanyController::class, 'show']);
     Route::put('/companies/{company}', [CompanyController::class, 'update']);
     Route::get('/attendance/has-shift/{profile}', [AttendanceController::class, 'hasShift']);
+    Route::post('/connect/member', [EmployeeRegisterController::class, 'connect']);
 });
 
 Route::post('/register/member', [EmployeeRegisterController::class, 'register']);

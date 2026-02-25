@@ -50,4 +50,37 @@ class EmployeeRegisterController extends Controller
             'message' => 'User registered and added to company successfully.'
         ]);
     }
+
+
+    public function connect(Request $request)
+    {
+        // Validate token
+        $request->validate([
+            'token' => 'required|string',
+            'user_id' => 'required|integer|exists:users,id',
+        ]);
+
+        // Find valid invite
+        $invite = Invite::where('token', $request->token)
+            ->whereNull('used_at')
+            ->where(function ($q) {
+                $q->whereNull('expires_at')
+                  ->orWhere('expires_at', '>', now());
+            })
+            ->firstOrFail();
+
+        $user = User::where('id', $request->user_id)->firstOrFail();
+
+        // Attach user to company with role from invite
+        $user->companies()->attach($invite->company_id, [
+            'role' => 'employee' // or you can add role field to invite if needed
+        ]);
+
+        $invite->update(['used_at' => now()]);
+
+        return response()->json([
+            'user' => $user,
+            'company_id' => $invite->company_id,
+        ]);
+    }
 }

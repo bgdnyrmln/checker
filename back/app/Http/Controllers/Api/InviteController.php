@@ -35,7 +35,7 @@ class InviteController extends Controller
 
 
 
-    public function create(Request $request)
+    public function create(Request $request, $company_id)
     {
         $user = $request->user();
         $companyProfile = $user->profiles()->where('role', 'manager')->first();
@@ -44,7 +44,7 @@ class InviteController extends Controller
             abort(403, 'You are not manager of any company.');
         }
         $invite = Invite::create([
-            'company_id' => $companyProfile->company_id,
+            'company_id' => $company_id,
             'token' => Str::uuid(),
             'expires_at' => now()->addDays(7),
         ]);
@@ -66,8 +66,15 @@ class InviteController extends Controller
             ], 403);
         }
 
+        if (!$invite->company) {
+            return response()->json([
+                'message' => 'Invite is not associated with any company.'
+            ], 403);
+        }
+
         return response()->json([
             'message' => 'Invite token is valid.',
+            'company_name' => $invite->company->name,
             'invite' => $invite
         ]);
     }
