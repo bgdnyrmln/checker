@@ -13,11 +13,14 @@ const profileId = route.params.id
 
 
 const sidebarItems = [
-  { text: 'Dashboard', to: `/${profileId}/personal-cabinet` },
-  { text: 'Attendance', to: `/${profileId}/personal-cabinet/attendance` },
-  { text: 'Payroll', to: `/${profileId}/personal-cabinet/payroll` },
-  { text: 'Schedule', to: `/${profileId}/personal-cabinet/schedule` }
+  { text: 'Dashboard',   to: `/${profileId}/personal-cabinet` },
+  { text: 'Attendance',  to: `/${profileId}/personal-cabinet/attendance` },
+  { text: 'Payroll',     to: `/${profileId}/personal-cabinet/payroll` },
+  { text: 'Schedule',    to: `/${profileId}/personal-cabinet/schedule` },
+  { text: 'Holidays',    to: `/${profileId}/personal-cabinet/holidays` },
+  { text: 'Sick Leaves', to: `/${profileId}/personal-cabinet/sick-leaves` },
 ]
+
 
 
 /* STATE */

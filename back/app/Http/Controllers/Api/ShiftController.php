@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Shift;
 use App\Models\CompanyUser;
+use App\Models\Holiday;
+use App\Models\SickLeave;
 use Illuminate\Http\Request;
+
 
 class ShiftController extends Controller
 {
@@ -54,14 +57,46 @@ class ShiftController extends Controller
         $data = $request->validate([
             'profile_id' => 'required|exists:company_user,id',
             'shift_date' => 'required|date',
-            'starts_at' => 'required|date_format:H:i',
-            'ends_at' => 'required|date_format:H:i|after:starts_at',
+            'starts_at'  => 'required|date_format:H:i',
+            'ends_at'    => 'required|date_format:H:i|after:starts_at',
         ]);
 
         $companyUser = CompanyUser::findOrFail($data['profile_id']);
+        $profileId   = $companyUser->id;
+        $shiftDate   = $data['shift_date'];
+
+        // Check approved holidays
+        $hasHoliday = Holiday::where('profile_id', $profileId)
+            ->where('is_approved', true)
+            ->where('date_start', '<=', $shiftDate)
+            ->where(function ($q) use ($shiftDate) {
+                $q->where('date_end', '>=', $shiftDate)
+                  ->orWhereNull('date_end');
+            })
+            ->exists();
+
+        if ($hasHoliday) {
+            return response()->json([
+                'message' => 'Cannot create shift: employee has an approved holiday on this date.'
+            ], 422);
+        }
+
+        // Check sick leaves
+        $hasSickLeave = SickLeave::where('profile_id', $profileId)
+            ->where('date_start', '<=', $shiftDate)
+            ->where(function ($q) use ($shiftDate) {
+                $q->where('date_end', '>=', $shiftDate)
+                  ->orWhereNull('date_end');
+            })
+            ->exists();
+
+        if ($hasSickLeave) {
+            return response()->json([
+                'message' => 'Cannot create shift: employee is on sick leave on this date.'
+            ], 422);
+        }
 
         $shift = Shift::create($data);
-
         return response()->json($shift, 201);
     }
 

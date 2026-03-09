@@ -8,6 +8,9 @@ services:
       - ./back:/app
     ports:
       - "8000:8000"
+    environment:
+      PHP_UPLOAD_MAX_FILESIZE: 10M
+      PHP_POST_MAX_SIZE: 12M
     depends_on:
       - db
 

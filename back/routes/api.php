@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ShiftController;
 use App\Http\Controllers\Api\AnnouncementController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\SickLeaveController;
+use App\Http\Controllers\Api\HolidayController;
 
 
 
@@ -42,6 +44,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/companies/{company}', [CompanyController::class, 'update']);
     Route::get('/attendance/has-shift/{profile}', [AttendanceController::class, 'hasShift']);
     Route::post('/connect/member', [EmployeeRegisterController::class, 'connect']);
+    Route::get('/sick-leaves', [SickLeaveController::class, 'index']);
+    Route::post('/sick-leaves', [SickLeaveController::class, 'store']);
+    Route::get('/sick-leaves/{sickLeave}', [SickLeaveController::class, 'show']);
+    Route::put('/sick-leaves/{sickLeave}', [SickLeaveController::class, 'update']);
+    Route::delete('/sick-leaves/{sickLeave}', [SickLeaveController::class, 'destroy']);
+    Route::get('/sick-leaves/{sickLeave}/file', [SickLeaveController::class, 'file']);
+    Route::apiResource('holidays', HolidayController::class);
 });
 
 Route::post('/register/member', [EmployeeRegisterController::class, 'register']);
