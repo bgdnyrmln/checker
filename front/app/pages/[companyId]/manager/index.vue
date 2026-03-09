@@ -79,13 +79,15 @@ const companyId = route.params.companyId
 
 // Sidebar
 const sidebarItems = [
-  { text: 'Home', to: `/${companyId}/manager` },
-  { text: 'Company', to: `/${companyId}/manager/company` },
-  { text: 'Team', to: `/${companyId}/manager/team` },
-  { text: 'Schedule', to: `/${companyId}/manager/schedule` },
+  { text: 'Home',       to: `/${companyId}/manager` },
+  { text: 'Company',    to: `/${companyId}/manager/company` },
+  { text: 'Team',       to: `/${companyId}/manager/team` },
+  { text: 'Schedule',   to: `/${companyId}/manager/schedule` },
   { text: 'Attendance', to: `/${companyId}/manager/attendancy` },
-  { text: 'Payrolls', to: `/${companyId}/manager/payrolls` },
-  { text: 'Invites', to: `/${companyId}/manager/invite` },
+  { text: 'Payrolls',   to: `/${companyId}/manager/payrolls` },
+  { text: 'Invites',    to: `/${companyId}/manager/invite` },
+  { text: 'Holidays',   to: `/${companyId}/manager/holidays` },
+  { text: 'Sick Leaves',to: `/${companyId}/manager/sick-leaves` },
 ]
 
 // Reactive state
