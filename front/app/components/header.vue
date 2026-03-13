@@ -11,18 +11,12 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 const setCsrfToken = async () => {
   await axios.get('/sanctum/csrf-cookie')
-
   const token = decodeURIComponent(
-    document.cookie
-      .split('; ')
-      .find(c => c.startsWith('XSRF-TOKEN='))
-      ?.split('=')[1] || ''
+    document.cookie.split('; ').find(c => c.startsWith('XSRF-TOKEN='))?.split('=')[1] || ''
   )
-
   axios.defaults.headers.common['X-XSRF-TOKEN'] = token
 }
 
-// Fetch authenticated user
 const fetchUser = async () => {
   try {
     const res = await axios.get('/api/user')
@@ -32,7 +26,6 @@ const fetchUser = async () => {
   }
 }
 
-// Logout
 const logout = async () => {
   try {
     await setCsrfToken()
@@ -44,40 +37,159 @@ const logout = async () => {
   }
 }
 
+const { isDark, toggleTheme } = useTheme()
+
 onMounted(fetchUser)
 </script>
 
 <template>
-  <header class="h-[4rem] flex items-center justify-between bg-[#E9EDEE] fixed w-full max-w-[144rem] z-10 px-[4rem] mt-[-1rem] shadow-sm">
-    <!-- Brand -->
-    <NuxtLink to="/" class="font-semibold text-lg">
-      Checker
-    </NuxtLink>
-    <!-- Right -->
-    <div class="flex items-center gap-4">
-      <template v-if="user">
-        <NuxtLink to="/profile" class="text-sm hover:underline">
-          <span class="text-sm text-gray-600">
-            {{ user.first_name }}
-          </span>
-        </NuxtLink>
-        <button
-          @click="logout"
-          class="text-sm text-red-500 hover:underline"
+  <header class="fixed top-[-5px] w-full max-w-[144rem] z-50">
+
+    <!-- Top accent line -->
+    <div class="h-[0.2rem] w-full bg-gradient-to-r from-transparent via-gray-400/40 to-transparent"></div>
+
+    <div
+      class="h-[5.6rem] flex items-center justify-between backdrop-blur-md px-[4rem] header-bar"
+    >
+      <!-- Brand -->
+      <NuxtLink to="/" class="group flex items-center gap-[1rem] no-underline">
+        <span
+          class="w-[2.8rem] h-[2.8rem] rounded-[0.6rem] flex items-center justify-center shadow-[0_0.2rem_0.8rem_rgba(0,0,0,0.2)] transition-transform duration-200 group-hover:scale-95"
+          :style="{ backgroundColor: 'var(--primary)' }"
         >
-          Logout
+          <span class="font-['Defonte'] text-white text-[1.6rem] leading-none">C</span>
+        </span>
+        <span
+          class="font-['Defonte'] text-[2rem] tracking-wide leading-none"
+          :style="{ color: 'var(--text-main)' }"
+        >
+          Checker
+        </span>
+      </NuxtLink>
+
+      <!-- Right -->
+      <nav class="flex items-center gap-[0.4rem]">
+
+        <!-- Theme toggle -->
+        <button
+          @click="toggleTheme"
+          class="theme-btn flex items-center justify-center w-[3.6rem] h-[3.6rem] rounded-[0.8rem] transition-all duration-200 mr-[0.8rem]"
+          :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+        >
+          <svg v-if="isDark" class="w-[1.6rem] h-[1.6rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/>
+          </svg>
+          <svg v-else class="w-[1.6rem] h-[1.6rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
+          </svg>
         </button>
-      </template>
 
-      <template v-else>
-        <NuxtLink to="/auth/login" class="text-sm hover:underline">
-          Login
-        </NuxtLink>
+        <!-- Authenticated -->
+        <template v-if="user">
+          <NuxtLink
+            to="/profile"
+            class="profile-link group flex items-center gap-[1rem] px-[1.4rem] py-[0.7rem] rounded-[0.8rem] transition-all duration-200 no-underline"
+          >
+            <div
+              class="w-[2.8rem] h-[2.8rem] rounded-full flex items-center justify-center flex-shrink-0 shadow-sm"
+              :style="{ backgroundColor: 'var(--primary)' }"
+            >
+              <span class="text-[1rem] text-white leading-none">
+                {{ user.first_name?.[0]?.toUpperCase() }}
+              </span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-[1.1rem] leading-tight" :style="{ color: 'var(--text-main)' }">{{ user.first_name }}</span>
+              <span class="text-[0.9rem] leading-tight tracking-[0.08em]" :style="{ color: 'var(--text-muted)' }">Profile</span>
+            </div>
+          </NuxtLink>
 
-        <NuxtLink to="/auth/register-company" class="text-sm hover:underline">
-          Register
-        </NuxtLink>
-      </template>
+          <div class="w-px h-[2rem] mx-[0.4rem]" :style="{ backgroundColor: 'var(--border-hover)' }"></div>
+
+          <button
+            @click="logout"
+            class="logout-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[0.8rem] rounded-[0.8rem] text-[1.1rem] tracking-[0.05em] transition-all duration-200 cursor-pointer"
+          >
+            <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 12H9m0 0l3-3m-3 3l3 3"/>
+            </svg>
+            Logout
+          </button>
+        </template>
+
+        <!-- Guest -->
+        <template v-else>
+          <NuxtLink
+            to="/auth/login"
+            class="login-link px-[1.6rem] py-[0.8rem] text-[1.1rem] tracking-[0.06em] rounded-[0.8rem] transition-all duration-200 no-underline"
+          >
+            Login
+          </NuxtLink>
+
+          <NuxtLink
+            to="/auth/register-company"
+            class="register-link relative flex items-center gap-[0.6rem] px-[1.8rem] py-[0.9rem] rounded-[0.8rem] text-[1.1rem] text-white tracking-[0.08em] transition-all duration-200 hover:-translate-y-px active:translate-y-0 overflow-hidden no-underline"
+          >
+            Register
+            <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+            </svg>
+            <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
+          </NuxtLink>
+        </template>
+
+      </nav>
     </div>
   </header>
 </template>
+
+<style scoped>
+.header-bar {
+  background-color: color-mix(in srgb, var(--bg-main) 90%, transparent);
+  border-bottom: 1px solid var(--border-hover);
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-btn {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-hover);
+  color: var(--text-muted);
+}
+.theme-btn:hover {
+  border-color: var(--primary);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-link:hover {
+  background-color: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.logout-btn {
+  color: var(--text-muted);
+}
+.logout-btn:hover {
+  color: var(--danger);
+  background-color: var(--danger-soft);
+}
+
+.login-link {
+  color: var(--text-muted);
+}
+.login-link:hover {
+  color: var(--text-main);
+  background-color: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.register-link {
+  background-color: var(--primary);
+  box-shadow: 0 0.2rem 0.8rem var(--primary-soft);
+}
+.register-link:hover {
+  background-color: var(--primary-hover);
+  box-shadow: var(--shadow-md);
+}
+</style>

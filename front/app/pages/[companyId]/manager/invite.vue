@@ -1,3 +1,146 @@
+<template>
+  <div class="page-wrapper flex">
+    <Sidebar :items="sidebarItems" />
+
+    <main class="flex-1 pl-[22rem] min-h-screen relative overflow-hidden">
+      <div class="blob blob-1 absolute top-[-6rem] right-[-6rem] w-[40rem] h-[40rem] rounded-full blur-[8rem] pointer-events-none"></div>
+      <div class="blob blob-2 absolute bottom-[-8rem] left-[6rem] w-[35rem] h-[35rem] rounded-full blur-[8rem] pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-[96rem] mx-auto py-[4rem] px-[4rem]">
+
+        <!-- Page header -->
+        <div class="mb-[4rem]">
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Manager Panel</p>
+          <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Invite Employees</h1>
+        </div>
+
+        <!-- ── Generate card ────────────────────────────────────────── -->
+        <div class="filter-card rounded-[1.6rem] p-[3rem] mb-[2rem]">
+          <div class="flex items-center gap-[1.4rem] mb-[2.4rem] pb-[2rem]" style="border-bottom: 1px solid var(--border)">
+            <div class="empty-icon w-[4rem] h-[4rem] rounded-[1rem] flex items-center justify-center flex-shrink-0">
+              <svg class="w-[1.8rem] h-[1.8rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+              </svg>
+            </div>
+            <div>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.1rem]">Invitations</p>
+              <h2 class="page-title text-[1.8rem] leading-tight">Generate Invite Link</h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-[2rem] flex-wrap">
+            <button
+              @click="createInvite"
+              class="calc-btn relative flex items-center gap-[0.8rem] px-[2.4rem] py-[1.2rem] rounded-[0.8rem] text-[1.3rem] text-white tracking-[0.06em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200"
+            >
+              <svg class="w-[1.5rem] h-[1.5rem]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+              </svg>
+              Generate Invite
+              <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
+            </button>
+
+            <!-- New link result -->
+            <transition name="fade-slide">
+              <div v-if="link" class="link-result flex items-center gap-[1.2rem] flex-1 min-w-0 px-[1.8rem] py-[1.2rem] rounded-[0.8rem]">
+                <svg class="w-[1.4rem] h-[1.4rem] flex-shrink-0 link-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+                </svg>
+                <span class="link-text text-[1.2rem] break-all flex-1">{{ link }}</span>
+                <button @click="copyLink" class="copy-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem] flex-shrink-0 transition-all duration-150">
+                  <svg v-if="!copied" class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/>
+                  </svg>
+                  <svg v-else class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                  </svg>
+                  {{ copied ? 'Copied!' : 'Copy' }}
+                </button>
+              </div>
+            </transition>
+          </div>
+        </div>
+
+        <!-- ── Invites table ─────────────────────────────────────────── -->
+        <div class="table-card rounded-[1.6rem] overflow-hidden">
+
+          <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem]">
+            <div>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Active Invites</p>
+              <p class="table-text text-[1.4rem]">{{ invites.length }} unused {{ invites.length === 1 ? 'link' : 'links' }}</p>
+            </div>
+          </div>
+
+          <table v-if="invites.length" class="w-full">
+            <thead>
+              <tr class="table-head-row">
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Invite Link</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Created</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Expires</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(invite, i) in invites"
+                :key="invite.id"
+                class="table-row"
+                :class="i % 2 === 0 ? 'row-even' : 'row-odd'"
+              >
+                <!-- Link -->
+                <td class="px-[3rem] py-[1.6rem]">
+                  <div class="flex items-center gap-[1rem]">
+                    <div class="link-dot w-[0.6rem] h-[0.6rem] rounded-full flex-shrink-0"></div>
+                    <span class="table-text text-[1.2rem] break-all font-mono">
+                      {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Created -->
+                <td class="table-text px-[3rem] py-[1.6rem] text-[1.3rem] tabular-nums whitespace-nowrap">
+                  {{ new Date(invite.created_at).toLocaleDateString('en-GB') }}
+                </td>
+
+                <!-- Expires -->
+                <td class="px-[3rem] py-[1.6rem] whitespace-nowrap">
+                  <span class="expire-badge text-[1.1rem] px-[1rem] py-[0.3rem] rounded-full" :class="isExpiringSoon(invite.expires_at) ? 'badge-warn' : 'badge-ok'">
+                    {{ new Date(invite.expires_at).toLocaleDateString('en-GB') }}
+                  </span>
+                </td>
+
+                <!-- Copy -->
+                <td class="px-[3rem] py-[1.6rem] text-right">
+                  <button
+                    @click="copyToken(invite.token)"
+                    class="action-btn copy-row-btn flex items-center gap-[0.5rem] px-[1.4rem] py-[0.7rem] rounded-[0.6rem] text-[1.1rem] ml-auto transition-all duration-150"
+                  >
+                    <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/>
+                    </svg>
+                    Copy
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Empty state (inside card) -->
+          <div v-else class="flex flex-col items-center justify-center py-[6rem] text-center">
+            <div class="empty-icon w-[5.4rem] h-[5.4rem] rounded-[1.2rem] flex items-center justify-center mb-[1.6rem]">
+              <svg class="w-[2.4rem] h-[2.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+              </svg>
+            </div>
+            <p class="table-sub text-[1.4rem] tracking-[0.06em]">No active invite links.</p>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+</template>
+
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
@@ -11,34 +154,31 @@ definePageMeta({
 const route = useRoute()
 const companyId = route.params.companyId
 
-// Sidebar
 const sidebarItems = [
-  { text: 'Home', to: `/${companyId}/manager` },
-  { text: 'Company', to: `/${companyId}/manager/company` },
-  { text: 'Team', to: `/${companyId}/manager/team` },
-  { text: 'Schedule', to: `/${companyId}/manager/schedule` },
-  { text: 'Attendance', to: `/${companyId}/manager/attendancy` },
-  { text: 'Payrolls', to: `/${companyId}/manager/payrolls` },
-  { text: 'Invites', to: `/${companyId}/manager/invite` },
+  { text: 'Home',        to: `/${companyId}/manager` },
+  { text: 'Company',     to: `/${companyId}/manager/company` },
+  { text: 'Team',        to: `/${companyId}/manager/team` },
+  { text: 'Schedule',    to: `/${companyId}/manager/schedule` },
+  { text: 'Attendance',  to: `/${companyId}/manager/attendancy` },
+  { text: 'Payrolls',    to: `/${companyId}/manager/payrolls` },
+  { text: 'Invites',     to: `/${companyId}/manager/invite` },
+  { text: 'Holidays',    to: `/${companyId}/manager/holidays` },
+  { text: 'Sick Leaves', to: `/${companyId}/manager/sick-leaves` },
 ]
 
 axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
-const link = ref('')
+const link    = ref('')
 const invites = ref([])
+const copied  = ref(false)
 
 const getCsrfToken = async () => {
   await axios.get('/sanctum/csrf-cookie')
-
   const token = decodeURIComponent(
-    document.cookie
-      .split('; ')
-      .find(c => c.startsWith('XSRF-TOKEN='))
-      ?.split('=')[1] || ''
+    document.cookie.split('; ').find(c => c.startsWith('XSRF-TOKEN='))?.split('=')[1] || ''
   )
-
   axios.defaults.headers.common['X-XSRF-TOKEN'] = token
 }
 
@@ -46,75 +186,127 @@ const fetchInvites = async () => {
   try {
     const res = await axios.get(`/api/companies/${companyId}/invites`)
     invites.value = res.data
-  } catch (e) {
-    console.error(e)
-  }
+  } catch (e) { console.error(e) }
 }
-
 
 const createInvite = async () => {
   try {
     await getCsrfToken()
     const res = await axios.post(`/api/invites/${companyId}`)
     link.value = res.data.link
+    await fetchInvites()
+  } catch (e) { console.error(e) }
+}
 
-    await fetchInvites() // refresh list
-  } catch (e) {
-    console.error(e)
-  }
+const copyLink = async () => {
+  await navigator.clipboard.writeText(link.value)
+  copied.value = true
+  setTimeout(() => (copied.value = false), 2000)
+}
+
+const copyToken = (token) => {
+  navigator.clipboard.writeText(`http://localhost:3000/auth/register?token=${token}`)
+}
+
+const isExpiringSoon = (expiresAt) => {
+  const diff = new Date(expiresAt) - new Date()
+  return diff < 1000 * 60 * 60 * 48 // within 48 hours
 }
 
 onMounted(fetchInvites)
 </script>
 
-<template>
-  <Sidebar :items="sidebarItems" />
+<style scoped>
+.page-wrapper { background-color: var(--bg-main); transition: background-color 0.3s ease; }
+.blob-1 { background-color: var(--bg-subtle); opacity: 0.5; }
+.blob-2 { background-color: var(--bg-subtle); opacity: 0.3; }
 
-  <div class="pl-[18rem] p-6">
-    <h1 class="text-2xl font-bold mb-4">Invite Employees</h1>
+.page-label  { color: var(--text-light); }
+.page-title  { color: var(--text-main); }
+.table-text  { color: var(--text-main); }
+.table-sub   { color: var(--text-muted); }
 
-    <button
-      @click="createInvite"
-      class="bg-[#0B5351] text-white px-4 py-2 rounded mb-4"
-    >
-      Generate Invite
-    </button>
+/* Generate card */
+.filter-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
 
-    <p v-if="link" class="mb-4 text-green-600">
-      New Invite: {{ link }}
-    </p>
+.empty-icon { background-color: var(--bg-subtle); color: var(--text-muted); }
 
-    <div class="bg-white shadow rounded p-4">
-      <h2 class="font-semibold mb-3">Unused Invites</h2>
+/* Generate button */
+.calc-btn {
+  background-color: var(--primary);
+  box-shadow: 0 0.2rem 0.8rem var(--primary-soft);
+  font-family: inherit;
+  cursor: pointer;
+}
+.calc-btn:hover { background-color: var(--primary-hover); box-shadow: var(--shadow-md); }
 
-      <table v-if="invites.length" class="w-full text-sm border-collapse">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="border px-3 py-2 text-left">Link</th>
-            <th class="border px-3 py-2 text-left">Expires</th>
-            <th class="border px-3 py-2 text-left">Created</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="invite in invites"
-            :key="invite.id"
-            class="hover:bg-gray-50"
-          >
-            <td class="border px-3 py-2 break-all">
-              {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
-            </td>
-            <td class="border px-3 py-2">
-              {{ new Date(invite.expires_at).toLocaleDateString() }}
-            </td>
-            <td class="border px-3 py-2">
-              {{ new Date(invite.created_at).toLocaleDateString() }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+/* New link result pill */
+.link-result {
+  background-color: color-mix(in srgb, var(--primary) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
+}
+.link-icon { color: var(--primary); opacity: 0.7; }
+.link-text  { color: var(--text-main); }
 
-      <p v-else class="text-gray-500">No active invites.</p>
-    </div>
-  </div>
-</template>
+.copy-btn {
+  background-color: color-mix(in srgb, var(--primary) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 28%, transparent);
+  color: var(--primary);
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.copy-btn:hover {
+  background-color: color-mix(in srgb, var(--primary) 22%, transparent);
+  border-color: var(--primary);
+}
+
+/* Table card */
+.table-card { background-color: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+.table-summary  { border-bottom: 1px solid var(--border); }
+.table-head-row { border-bottom: 1px solid var(--border); }
+.table-row { border-bottom: 1px solid var(--border); transition: background-color 0.15s ease; }
+.table-row:last-child { border-bottom: none; }
+.table-row:hover { background-color: var(--bg-subtle); }
+.row-even { background-color: var(--bg-card); }
+.row-odd  { background-color: color-mix(in srgb, var(--bg-subtle) 40%, transparent); }
+
+/* Active link dot */
+.link-dot { background-color: #22c55e; box-shadow: 0 0 0 3px color-mix(in srgb, #22c55e 20%, transparent); }
+
+/* Expiry badges */
+.badge-ok {
+  background-color: color-mix(in srgb, #22c55e 10%, transparent);
+  border: 1px solid color-mix(in srgb, #22c55e 25%, transparent);
+  color: #22c55e;
+}
+.badge-warn {
+  background-color: var(--danger-soft);
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);
+  color: var(--danger);
+}
+
+/* Copy row button */
+.action-btn { font-family: inherit; font-weight: 500; cursor: pointer; border: 1px solid transparent; }
+.copy-row-btn {
+  background-color: var(--bg-subtle);
+  border-color: var(--border-hover);
+  color: var(--text-muted);
+}
+.copy-row-btn:hover { border-color: var(--primary); color: var(--text-main); }
+
+/* Fade-slide transition */
+.fade-slide-enter-active,
+.fade-slide-leave-active { transition: opacity 0.3s ease, transform 0.3s ease; }
+.fade-slide-enter-from   { opacity: 0; transform: translateY(-6px); }
+.fade-slide-leave-to     { opacity: 0; transform: translateY(-6px); }
+
+main::-webkit-scrollbar { width: 6px; }
+main::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+</style>
