@@ -72,10 +72,19 @@ class InviteController extends Controller
             ], 403);
         }
 
+        // Check if the authenticated user is already connected to this company
+        $user = auth()->user();
+        if ($user && $user->companies()->where('company_id', $invite->company_id)->exists()) {
+            return response()->json([
+                'message' => 'You are already a member of this company.',
+                'company_name' => $invite->company->name,
+            ], 409);
+        }
+
         return response()->json([
-            'message' => 'Invite token is valid.',
+            'message'      => 'Invite token is valid.',
             'company_name' => $invite->company->name,
-            'invite' => $invite
+            'invite'       => $invite
         ]);
     }
 }

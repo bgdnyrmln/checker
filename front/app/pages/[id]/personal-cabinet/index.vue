@@ -138,7 +138,7 @@ onMounted(async () => {
 <template>
   <Sidebar :items="sidebarItems" />
 
-  <div class="page-wrapper flex min-h-screen pl-[22rem] relative overflow-hidden">
+  <div class="page-wrapper flex min-h-screen pl-[22rem] max-[768px]:pl-0 relative overflow-hidden">
 
     <div class="blob blob-1 absolute top-[-6rem] right-[-6rem] w-[40rem] h-[40rem] rounded-full blur-[8rem] pointer-events-none"></div>
     <div class="blob blob-2 absolute bottom-[-8rem] left-[10rem] w-[35rem] h-[35rem] rounded-full blur-[8rem] pointer-events-none"></div>

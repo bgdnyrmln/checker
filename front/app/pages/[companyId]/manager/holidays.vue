@@ -2,16 +2,16 @@
   <div class="page-wrapper flex">
     <Sidebar :items="sidebarItems" />
 
-    <main class="flex-1 pl-[22rem] min-h-screen relative overflow-hidden">
+    <main class="flex-1 pl-[22rem] max-[768px]:pl-0 min-h-screen relative overflow-hidden">
       <div class="blob blob-1 absolute top-[-6rem] right-[-6rem] w-[40rem] h-[40rem] rounded-full blur-[8rem] pointer-events-none"></div>
       <div class="blob blob-2 absolute bottom-[-8rem] left-[6rem] w-[35rem] h-[35rem] rounded-full blur-[8rem] pointer-events-none"></div>
 
-      <div class="relative z-10 max-w-[120rem] mx-auto py-[4rem] px-[4rem]">
+      <div class="relative z-10 max-w-[120rem] mx-auto py-[4rem] px-[4rem] max-[768px]:px-[1.6rem] max-[768px]:py-[2rem] max-[768px]:pt-[3rem]">
 
         <!-- Page header -->
-        <div class="mb-[4rem]">
+        <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
           <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Manager Panel</p>
-          <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Holiday Requests</h1>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Holiday Requests</h1>
         </div>
 
         <!-- Error -->
@@ -22,12 +22,12 @@
           {{ error }}
         </div>
 
-        <!-- ── Filters bar ───────────────────────────────────────────── -->
-        <div class="filter-card rounded-[1.6rem] p-[2.4rem] mb-[2rem]">
-          <div class="flex flex-wrap items-end gap-[1.6rem]">
+        <!-- ── Filters bar ── -->
+        <div class="filter-card rounded-[1.6rem] p-[2.4rem] mb-[2rem] max-[768px]:p-[1.6rem]">
+          <div class="flex flex-wrap items-end gap-[1.6rem] max-[768px]:flex-col max-[768px]:items-stretch max-[768px]:gap-[1.2rem]">
 
             <!-- Search -->
-            <div class="flex flex-col gap-[0.4rem] flex-1 min-w-[20rem]">
+            <div class="flex flex-col gap-[0.4rem] flex-1 min-w-[20rem] max-[768px]:min-w-0">
               <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Search</label>
               <div class="relative">
                 <div class="absolute left-[1.2rem] top-1/2 -translate-y-1/2 pointer-events-none search-icon">
@@ -35,12 +35,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0015.803 15.803z"/>
                   </svg>
                 </div>
-                <input
-                  v-model="searchQuery"
-                  type="text"
-                  placeholder="Search by name or reason…"
-                  class="date-input w-full pl-[3.8rem] pr-[1.4rem] py-[0.9rem] rounded-[0.8rem] text-[1.3rem] outline-none transition-all duration-200"
-                />
+                <input v-model="searchQuery" type="text" placeholder="Search by name or reason…" class="date-input w-full pl-[3.8rem] pr-[1.4rem] py-[0.9rem] rounded-[0.8rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
             </div>
 
@@ -54,50 +49,37 @@
               </select>
             </div>
 
-            <!-- Refresh -->
-            <button
-              @click="fetchHolidays"
-              class="calc-btn relative flex items-center gap-[0.8rem] px-[2rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] text-white tracking-[0.06em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200"
-            >
-              <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
-              </svg>
-              Refresh
-              <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
-            </button>
+            <!-- Refresh + pills row -->
+            <div class="flex items-center gap-[1.6rem] max-[768px]:flex-wrap max-[768px]:gap-[1rem]">
+              <button @click="fetchHolidays" class="calc-btn relative flex items-center gap-[0.8rem] px-[2rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] text-white tracking-[0.06em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200">
+                <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                </svg>
+                Refresh
+                <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
+              </button>
 
-            <!-- Quick-filter pills -->
-            <div class="flex items-center gap-[0.8rem] ml-auto">
-              <button
-                @click="filterStatus = ''"
-                class="filter-pill text-[1.1rem] px-[1.4rem] py-[0.6rem] rounded-full transition-all duration-150"
-                :class="filterStatus === '' ? 'pill-active' : 'pill-inactive'"
-              >All</button>
-              <button
-                @click="filterStatus = 'pending'"
-                class="filter-pill text-[1.1rem] px-[1.4rem] py-[0.6rem] rounded-full transition-all duration-150"
-                :class="filterStatus === 'pending' ? 'pill-active' : 'pill-inactive'"
-              >Pending</button>
-              <button
-                @click="filterStatus = 'approved'"
-                class="filter-pill text-[1.1rem] px-[1.4rem] py-[0.6rem] rounded-full transition-all duration-150"
-                :class="filterStatus === 'approved' ? 'pill-active' : 'pill-inactive'"
-              >Approved</button>
+              <!-- Quick-filter pills -->
+              <div class="flex items-center gap-[0.8rem]">
+                <button @click="filterStatus = ''" class="filter-pill text-[1.1rem] px-[1.4rem] py-[0.6rem] rounded-full transition-all duration-150" :class="filterStatus === '' ? 'pill-active' : 'pill-inactive'">All</button>
+                <button @click="filterStatus = 'pending'" class="filter-pill text-[1.1rem] px-[1.4rem] py-[0.6rem] rounded-full transition-all duration-150" :class="filterStatus === 'pending' ? 'pill-active' : 'pill-inactive'">Pending</button>
+                <button @click="filterStatus = 'approved'" class="filter-pill text-[1.1rem] px-[1.4rem] py-[0.6rem] rounded-full transition-all duration-150" :class="filterStatus === 'approved' ? 'pill-active' : 'pill-inactive'">Approved</button>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- ── Loading ──────────────────────────────────────────────── -->
+        <!-- Loading -->
         <div v-if="loading" class="flex items-center gap-[1.6rem] py-[4rem] justify-center">
           <div class="spinner w-[2.8rem] h-[2.8rem] rounded-full animate-spin"></div>
           <span class="page-label text-[1.2rem] tracking-[0.12em]">Loading holidays…</span>
         </div>
 
-        <!-- ── Table ────────────────────────────────────────────────── -->
+        <!-- ── Data ── -->
         <div v-else-if="processedHolidays.length" class="table-card rounded-[1.6rem] overflow-hidden">
 
           <!-- Summary -->
-          <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem]">
+          <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem] max-[768px]:px-[1.6rem] max-[768px]:py-[1.4rem] flex-wrap gap-[1.2rem]">
             <div>
               <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Requests</p>
               <p class="table-text text-[1.4rem]">
@@ -117,7 +99,8 @@
             </div>
           </div>
 
-          <table class="w-full">
+          <!-- ── DESKTOP TABLE ── -->
+          <table class="w-full max-[768px]:hidden">
             <thead>
               <tr class="table-head-row">
                 <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Employee</th>
@@ -129,13 +112,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(h, i) in processedHolidays"
-                :key="h.id"
-                class="table-row"
-                :class="i % 2 === 0 ? 'row-even' : 'row-odd'"
-              >
-                <!-- Employee -->
+              <tr v-for="(h, i) in processedHolidays" :key="h.id" class="table-row" :class="i % 2 === 0 ? 'row-even' : 'row-odd'">
                 <td class="px-[3rem] py-[1.6rem]">
                   <div class="flex items-center gap-[1.2rem]">
                     <div class="emp-avatar w-[3.2rem] h-[3.2rem] rounded-full flex items-center justify-center text-[1.1rem] text-white flex-shrink-0">
@@ -144,60 +121,30 @@
                     <span class="table-text text-[1.3rem]">{{ h.profile?.first_name }} {{ h.profile?.last_name }}</span>
                   </div>
                 </td>
-
-                <!-- Reason -->
                 <td class="table-text px-[3rem] py-[1.6rem] text-[1.3rem] max-w-[24rem]">
                   <span class="line-clamp-2">{{ h.content }}</span>
                 </td>
-
-                <!-- Start -->
                 <td class="table-text px-[3rem] py-[1.6rem] text-[1.3rem] tabular-nums whitespace-nowrap">{{ h.date_start }}</td>
-
-                <!-- End -->
                 <td class="px-[3rem] py-[1.6rem] text-[1.3rem] tabular-nums whitespace-nowrap" :class="h.date_end ? 'table-text' : 'table-empty'">
                   {{ h.date_end ?? '—' }}
                 </td>
-
-                <!-- Status badge -->
                 <td class="px-[3rem] py-[1.6rem]">
-                  <span
-                    class="status-badge text-[1.1rem] px-[1.1rem] py-[0.35rem] rounded-full"
-                    :class="h.is_approved ? 'badge-approved' : 'badge-pending'"
-                  >
+                  <span class="status-badge text-[1.1rem] px-[1.1rem] py-[0.35rem] rounded-full" :class="h.is_approved ? 'badge-approved' : 'badge-pending'">
                     {{ h.is_approved ? 'Approved' : 'Pending' }}
                   </span>
                 </td>
-
-                <!-- Actions -->
                 <td class="px-[3rem] py-[1.6rem]">
                   <div class="flex items-center justify-end gap-[0.8rem]">
-                    <button
-                      v-if="!h.is_approved"
-                      @click="approveHoliday(h)"
-                      class="action-btn approve-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem]"
-                    >
-                      <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
-                      </svg>
+                    <button v-if="!h.is_approved" @click="approveHoliday(h)" class="action-btn approve-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem]">
+                      <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
                       Approve
                     </button>
-                    <button
-                      v-else
-                      @click="revokeHoliday(h)"
-                      class="action-btn revoke-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem]"
-                    >
-                      <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/>
-                      </svg>
+                    <button v-else @click="revokeHoliday(h)" class="action-btn revoke-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem]">
+                      <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/></svg>
                       Revoke
                     </button>
-                    <button
-                      @click="deleteHoliday(h.id)"
-                      class="action-btn delete-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem]"
-                    >
-                      <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
-                      </svg>
+                    <button @click="deleteHoliday(h.id)" class="action-btn delete-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem]">
+                      <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
                       Delete
                     </button>
                   </div>
@@ -205,6 +152,56 @@
               </tr>
             </tbody>
           </table>
+
+          <!-- ── MOBILE CARDS ── -->
+          <div class="hidden max-[768px]:block divide-y divide-[var(--border)]">
+            <div v-for="(h, i) in processedHolidays" :key="h.id" class="holiday-card px-[1.6rem] py-[1.8rem]" :class="i % 2 === 0 ? 'row-even' : 'row-odd'">
+
+              <!-- Header: avatar + name + status badge -->
+              <div class="flex items-center justify-between gap-[1.2rem] mb-[1.2rem]">
+                <div class="flex items-center gap-[1.2rem] min-w-0">
+                  <div class="emp-avatar w-[3.6rem] h-[3.6rem] rounded-full flex items-center justify-center text-[1.3rem] text-white flex-shrink-0">
+                    {{ h.profile?.first_name?.[0]?.toUpperCase() }}
+                  </div>
+                  <p class="table-text text-[1.4rem] font-medium truncate">{{ h.profile?.first_name }} {{ h.profile?.last_name }}</p>
+                </div>
+                <span class="status-badge text-[1.1rem] px-[1.1rem] py-[0.35rem] rounded-full flex-shrink-0" :class="h.is_approved ? 'badge-approved' : 'badge-pending'">
+                  {{ h.is_approved ? 'Approved' : 'Pending' }}
+                </span>
+              </div>
+
+              <!-- Reason -->
+              <p class="table-sub text-[1.2rem] mb-[1.2rem] line-clamp-2">{{ h.content }}</p>
+
+              <!-- Date range -->
+              <div class="flex items-center gap-[1rem] mb-[1.4rem]">
+                <div class="flex items-center gap-[0.5rem]">
+                  <svg class="w-[1.2rem] h-[1.2rem] flex-shrink-0" style="color:var(--text-muted)" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+                  </svg>
+                  <span class="table-text text-[1.3rem] tabular-nums">{{ h.date_start }}</span>
+                </div>
+                <span class="table-empty text-[1.1rem]">→</span>
+                <span class="text-[1.3rem] tabular-nums" :class="h.date_end ? 'table-text' : 'table-empty'">{{ h.date_end ?? '—' }}</span>
+              </div>
+
+              <!-- Actions -->
+              <div class="flex items-center gap-[0.8rem]">
+                <button v-if="!h.is_approved" @click="approveHoliday(h)" class="action-btn approve-btn flex-1 flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem]">
+                  <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                  Approve
+                </button>
+                <button v-else @click="revokeHoliday(h)" class="action-btn revoke-btn flex-1 flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem]">
+                  <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/></svg>
+                  Revoke
+                </button>
+                <button @click="deleteHoliday(h.id)" class="action-btn delete-btn flex items-center justify-center gap-[0.5rem] px-[1.4rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem]">
+                  <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <!-- Empty state -->
@@ -260,7 +257,7 @@ const filterStatus = ref('')
 const fetchHolidays = async () => {
   loading.value = true; error.value = ''
   try {
-    const res = await axios.get(`/api/holidays`, { params: { company_id: companyId } })
+    const res = await axios.get(`/api/companies/${companyId}/holidays`)
     holidays.value = res.data
   } catch (e) {
     error.value = 'Failed to load holidays.'
@@ -274,7 +271,7 @@ const processedHolidays = computed(() => {
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase()
     data = data.filter(h =>
-      `${h.profile?.first_name} ${h.profile?.last_name}`.toLowerCase().includes(q) ||
+      `${h.first_name} ${h.last_name}`.toLowerCase().includes(q) ||
       h.content?.toLowerCase().includes(q)
     )
   }

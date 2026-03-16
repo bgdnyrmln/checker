@@ -2,7 +2,7 @@
   <div class="page-wrapper flex">
     <Sidebar :items="sidebarItems" />
 
-    <main class="flex-1 pl-[22rem] min-h-screen relative overflow-hidden">
+    <main class="flex-1 pl-[22rem] max-[768px]:pl-0 min-h-screen relative overflow-hidden">
       <!-- Ambient blobs -->
       <div class="blob blob-1 absolute top-[-6rem] right-[-6rem] w-[40rem] h-[40rem] rounded-full blur-[8rem] pointer-events-none"></div>
       <div class="blob blob-2 absolute bottom-[-8rem] left-[6rem] w-[35rem] h-[35rem] rounded-full blur-[8rem] pointer-events-none"></div>

@@ -2,20 +2,20 @@
   <div class="page-wrapper flex">
     <Sidebar :items="sidebarItems" />
 
-    <main class="flex-1 pl-[22rem] min-h-screen relative overflow-hidden">
+    <main class="flex-1 pl-[22rem] max-[768px]:pl-0 min-h-screen relative overflow-hidden">
       <div class="blob blob-1 absolute top-[-6rem] right-[-6rem] w-[40rem] h-[40rem] rounded-full blur-[8rem] pointer-events-none"></div>
       <div class="blob blob-2 absolute bottom-[-8rem] left-[6rem] w-[35rem] h-[35rem] rounded-full blur-[8rem] pointer-events-none"></div>
 
-      <div class="relative z-10 max-w-[96rem] mx-auto py-[4rem] px-[4rem]">
+      <div class="relative z-10 max-w-[96rem] mx-auto py-[4rem] px-[4rem] max-[768px]:px-[1.6rem] max-[768px]:py-[2rem] max-[768px]:pt-[3rem]">
 
         <!-- Page header -->
-        <div class="mb-[4rem]">
+        <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
           <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Manager Panel</p>
-          <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Invite Employees</h1>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Invite Employees</h1>
         </div>
 
-        <!-- ── Generate card ────────────────────────────────────────── -->
-        <div class="filter-card rounded-[1.6rem] p-[3rem] mb-[2rem]">
+        <!-- ── Generate card ── -->
+        <div class="filter-card rounded-[1.6rem] p-[3rem] mb-[2rem] max-[768px]:p-[1.6rem]">
           <div class="flex items-center gap-[1.4rem] mb-[2.4rem] pb-[2rem]" style="border-bottom: 1px solid var(--border)">
             <div class="empty-icon w-[4rem] h-[4rem] rounded-[1rem] flex items-center justify-center flex-shrink-0">
               <svg class="w-[1.8rem] h-[1.8rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -28,10 +28,10 @@
             </div>
           </div>
 
-          <div class="flex items-center gap-[2rem] flex-wrap">
+          <div class="flex items-center gap-[2rem] flex-wrap max-[768px]:flex-col max-[768px]:items-stretch max-[768px]:gap-[1.2rem]">
             <button
               @click="createInvite"
-              class="calc-btn relative flex items-center gap-[0.8rem] px-[2.4rem] py-[1.2rem] rounded-[0.8rem] text-[1.3rem] text-white tracking-[0.06em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200"
+              class="calc-btn relative flex items-center justify-center gap-[0.8rem] px-[2.4rem] py-[1.2rem] rounded-[0.8rem] text-[1.3rem] text-white tracking-[0.06em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200"
             >
               <svg class="w-[1.5rem] h-[1.5rem]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -42,12 +42,14 @@
 
             <!-- New link result -->
             <transition name="fade-slide">
-              <div v-if="link" class="link-result flex items-center gap-[1.2rem] flex-1 min-w-0 px-[1.8rem] py-[1.2rem] rounded-[0.8rem]">
-                <svg class="w-[1.4rem] h-[1.4rem] flex-shrink-0 link-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
-                </svg>
-                <span class="link-text text-[1.2rem] break-all flex-1">{{ link }}</span>
-                <button @click="copyLink" class="copy-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem] flex-shrink-0 transition-all duration-150">
+              <div v-if="link" class="link-result flex items-start gap-[1.2rem] flex-1 min-w-0 px-[1.8rem] py-[1.2rem] rounded-[0.8rem] max-[768px]:flex-col max-[768px]:gap-[1rem]">
+                <div class="flex items-start gap-[1rem] flex-1 min-w-0">
+                  <svg class="w-[1.4rem] h-[1.4rem] flex-shrink-0 link-icon mt-[0.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+                  </svg>
+                  <span class="link-text text-[1.2rem] break-all flex-1">{{ link }}</span>
+                </div>
+                <button @click="copyLink" class="copy-btn flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem] flex-shrink-0 transition-all duration-150 max-[768px]:w-full">
                   <svg v-if="!copied" class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/>
                   </svg>
@@ -61,71 +63,106 @@
           </div>
         </div>
 
-        <!-- ── Invites table ─────────────────────────────────────────── -->
+        <!-- ── Invites table card ── -->
         <div class="table-card rounded-[1.6rem] overflow-hidden">
 
-          <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem]">
+          <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem] max-[768px]:px-[1.6rem] max-[768px]:py-[1.4rem]">
             <div>
               <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Active Invites</p>
               <p class="table-text text-[1.4rem]">{{ invites.length }} unused {{ invites.length === 1 ? 'link' : 'links' }}</p>
             </div>
           </div>
 
-          <table v-if="invites.length" class="w-full">
-            <thead>
-              <tr class="table-head-row">
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Invite Link</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Created</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Expires</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
+          <template v-if="invites.length">
+
+            <!-- ── DESKTOP TABLE ── -->
+            <table class="w-full max-[768px]:hidden">
+              <thead>
+                <tr class="table-head-row">
+                  <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Invite Link</th>
+                  <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Created</th>
+                  <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Expires</th>
+                  <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(invite, i) in invites"
+                  :key="invite.id"
+                  class="table-row"
+                  :class="i % 2 === 0 ? 'row-even' : 'row-odd'"
+                >
+                  <td class="px-[3rem] py-[1.6rem]">
+                    <div class="flex items-center gap-[1rem]">
+                      <div class="link-dot w-[0.6rem] h-[0.6rem] rounded-full flex-shrink-0"></div>
+                      <span class="table-text text-[1.2rem] break-all font-mono">
+                        {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
+                      </span>
+                    </div>
+                  </td>
+                  <td class="table-text px-[3rem] py-[1.6rem] text-[1.3rem] tabular-nums whitespace-nowrap">
+                    {{ new Date(invite.created_at).toLocaleDateString('en-GB') }}
+                  </td>
+                  <td class="px-[3rem] py-[1.6rem] whitespace-nowrap">
+                    <span class="expire-badge text-[1.1rem] px-[1rem] py-[0.3rem] rounded-full" :class="isExpiringSoon(invite.expires_at) ? 'badge-warn' : 'badge-ok'">
+                      {{ new Date(invite.expires_at).toLocaleDateString('en-GB') }}
+                    </span>
+                  </td>
+                  <td class="px-[3rem] py-[1.6rem] text-right">
+                    <button @click="copyToken(invite.token)" class="action-btn copy-row-btn flex items-center gap-[0.5rem] px-[1.4rem] py-[0.7rem] rounded-[0.6rem] text-[1.1rem] ml-auto transition-all duration-150">
+                      <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/>
+                      </svg>
+                      Copy
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- ── MOBILE CARDS ── -->
+            <div class="hidden max-[768px]:block divide-y divide-[var(--border)]">
+              <div
                 v-for="(invite, i) in invites"
                 :key="invite.id"
-                class="table-row"
+                class="invite-card px-[1.6rem] py-[1.6rem]"
                 :class="i % 2 === 0 ? 'row-even' : 'row-odd'"
               >
-                <!-- Link -->
-                <td class="px-[3rem] py-[1.6rem]">
-                  <div class="flex items-center gap-[1rem]">
-                    <div class="link-dot w-[0.6rem] h-[0.6rem] rounded-full flex-shrink-0"></div>
-                    <span class="table-text text-[1.2rem] break-all font-mono">
-                      {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
+                <!-- Status dot + link -->
+                <div class="flex items-start gap-[1rem] mb-[1.2rem]">
+                  <div class="link-dot w-[0.6rem] h-[0.6rem] rounded-full flex-shrink-0 mt-[0.6rem]"></div>
+                  <span class="table-text text-[1.2rem] break-all font-mono leading-relaxed flex-1">
+                    {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
+                  </span>
+                </div>
+
+                <!-- Dates row -->
+                <div class="flex items-center gap-[1.6rem] mb-[1.4rem] flex-wrap">
+                  <div class="flex items-center gap-[0.5rem]">
+                    <span class="page-label text-[0.95rem] tracking-[0.15em] uppercase">Created</span>
+                    <span class="table-text text-[1.2rem] tabular-nums">{{ new Date(invite.created_at).toLocaleDateString('en-GB') }}</span>
+                  </div>
+                  <div class="flex items-center gap-[0.5rem]">
+                    <span class="page-label text-[0.95rem] tracking-[0.15em] uppercase">Expires</span>
+                    <span class="expire-badge text-[1.1rem] px-[0.8rem] py-[0.2rem] rounded-full" :class="isExpiringSoon(invite.expires_at) ? 'badge-warn' : 'badge-ok'">
+                      {{ new Date(invite.expires_at).toLocaleDateString('en-GB') }}
                     </span>
                   </div>
-                </td>
+                </div>
 
-                <!-- Created -->
-                <td class="table-text px-[3rem] py-[1.6rem] text-[1.3rem] tabular-nums whitespace-nowrap">
-                  {{ new Date(invite.created_at).toLocaleDateString('en-GB') }}
-                </td>
+                <!-- Copy button -->
+                <button @click="copyToken(invite.token)" class="action-btn copy-row-btn w-full flex items-center justify-center gap-[0.6rem] px-[1.4rem] py-[0.9rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-150">
+                  <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/>
+                  </svg>
+                  Copy Link
+                </button>
+              </div>
+            </div>
 
-                <!-- Expires -->
-                <td class="px-[3rem] py-[1.6rem] whitespace-nowrap">
-                  <span class="expire-badge text-[1.1rem] px-[1rem] py-[0.3rem] rounded-full" :class="isExpiringSoon(invite.expires_at) ? 'badge-warn' : 'badge-ok'">
-                    {{ new Date(invite.expires_at).toLocaleDateString('en-GB') }}
-                  </span>
-                </td>
+          </template>
 
-                <!-- Copy -->
-                <td class="px-[3rem] py-[1.6rem] text-right">
-                  <button
-                    @click="copyToken(invite.token)"
-                    class="action-btn copy-row-btn flex items-center gap-[0.5rem] px-[1.4rem] py-[0.7rem] rounded-[0.6rem] text-[1.1rem] ml-auto transition-all duration-150"
-                  >
-                    <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/>
-                    </svg>
-                    Copy
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <!-- Empty state (inside card) -->
+          <!-- Empty state -->
           <div v-else class="flex flex-col items-center justify-center py-[6rem] text-center">
             <div class="empty-icon w-[5.4rem] h-[5.4rem] rounded-[1.2rem] flex items-center justify-center mb-[1.6rem]">
               <svg class="w-[2.4rem] h-[2.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -210,7 +247,7 @@ const copyToken = (token) => {
 
 const isExpiringSoon = (expiresAt) => {
   const diff = new Date(expiresAt) - new Date()
-  return diff < 1000 * 60 * 60 * 48 // within 48 hours
+  return diff < 1000 * 60 * 60 * 48
 }
 
 onMounted(fetchInvites)
@@ -226,7 +263,6 @@ onMounted(fetchInvites)
 .table-text  { color: var(--text-main); }
 .table-sub   { color: var(--text-muted); }
 
-/* Generate card */
 .filter-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
@@ -236,7 +272,6 @@ onMounted(fetchInvites)
 
 .empty-icon { background-color: var(--bg-subtle); color: var(--text-muted); }
 
-/* Generate button */
 .calc-btn {
   background-color: var(--primary);
   box-shadow: 0 0.2rem 0.8rem var(--primary-soft);
@@ -245,7 +280,6 @@ onMounted(fetchInvites)
 }
 .calc-btn:hover { background-color: var(--primary-hover); box-shadow: var(--shadow-md); }
 
-/* New link result pill */
 .link-result {
   background-color: color-mix(in srgb, var(--primary) 8%, transparent);
   border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
@@ -267,7 +301,6 @@ onMounted(fetchInvites)
   border-color: var(--primary);
 }
 
-/* Table card */
 .table-card { background-color: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
 .table-summary  { border-bottom: 1px solid var(--border); }
 .table-head-row { border-bottom: 1px solid var(--border); }
@@ -277,10 +310,11 @@ onMounted(fetchInvites)
 .row-even { background-color: var(--bg-card); }
 .row-odd  { background-color: color-mix(in srgb, var(--bg-subtle) 40%, transparent); }
 
-/* Active link dot */
+/* Mobile invite card */
+.invite-card { transition: background-color 0.15s ease; }
+
 .link-dot { background-color: #22c55e; box-shadow: 0 0 0 3px color-mix(in srgb, #22c55e 20%, transparent); }
 
-/* Expiry badges */
 .badge-ok {
   background-color: color-mix(in srgb, #22c55e 10%, transparent);
   border: 1px solid color-mix(in srgb, #22c55e 25%, transparent);
@@ -292,7 +326,6 @@ onMounted(fetchInvites)
   color: var(--danger);
 }
 
-/* Copy row button */
 .action-btn { font-family: inherit; font-weight: 500; cursor: pointer; border: 1px solid transparent; }
 .copy-row-btn {
   background-color: var(--bg-subtle);
@@ -301,7 +334,6 @@ onMounted(fetchInvites)
 }
 .copy-row-btn:hover { border-color: var(--primary); color: var(--text-main); }
 
-/* Fade-slide transition */
 .fade-slide-enter-active,
 .fade-slide-leave-active { transition: opacity 0.3s ease, transform 0.3s ease; }
 .fade-slide-enter-from   { opacity: 0; transform: translateY(-6px); }

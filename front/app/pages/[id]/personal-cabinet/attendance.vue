@@ -96,69 +96,69 @@ onMounted(fetchAttendance)
   <div class="page-wrapper flex">
     <Sidebar :items="sidebarItems" />
 
-    <main class="flex-1 pl-[22rem] min-h-screen relative overflow-hidden">
+    <main class="flex-1 pl-[22rem] max-[768px]:pl-0 min-h-screen relative overflow-hidden">
 
       <div class="blob blob-1 absolute top-[-6rem] right-[-6rem] w-[40rem] h-[40rem] rounded-full blur-[8rem] pointer-events-none"></div>
       <div class="blob blob-2 absolute bottom-[-8rem] left-[6rem] w-[35rem] h-[35rem] rounded-full blur-[8rem] pointer-events-none"></div>
 
-      <div class="relative z-10 max-w-[96rem] mx-auto py-[4rem] px-[4rem]">
+      <div class="relative z-10 max-w-[96rem] mx-auto py-[4rem] px-[4rem] max-[768px]:px-[2rem] max-[768px]:py-[2rem] max-[768px]:pt-[3rem]">
 
         <!-- Page header -->
-        <div class="mb-[4rem]">
+        <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
           <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personal Cabinet</p>
-          <h1 class="page-title text-[3.6rem] leading-none tracking-wide">My Attendance</h1>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">My Attendance</h1>
         </div>
 
         <!-- Filters + Export bar -->
-        <div class="filter-card rounded-[1.6rem] p-[2.4rem] mb-[2.4rem]">
-          <div class="flex flex-wrap items-center gap-[1.6rem]">
+        <div class="filter-card rounded-[1.6rem] p-[2.4rem] max-[768px]:p-[1.6rem] mb-[2.4rem]">
 
-            <!-- Date inputs -->
-            <div class="flex items-center gap-[1.2rem]">
-              <div class="flex flex-col gap-[0.4rem]">
+          <!-- Date row -->
+          <div class="flex flex-wrap items-end gap-[1.2rem] mb-[1.2rem]">
+            <div class="flex items-end gap-[1rem] flex-1 min-w-0">
+              <div class="flex flex-col gap-[0.4rem] flex-1 min-w-0">
                 <label class="page-label text-[1rem] tracking-[0.15em] uppercase">From</label>
-                <input type="date" v-model="startDate" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
+                <input type="date" v-model="startDate" class="date-input w-full rounded-[0.8rem] px-[1.2rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
-              <div class="arrow-sep mt-[1.8rem] text-[1.4rem]">→</div>
-              <div class="flex flex-col gap-[0.4rem]">
+              <div class="arrow-sep text-[1.4rem] mb-[0.9rem] flex-shrink-0">→</div>
+              <div class="flex flex-col gap-[0.4rem] flex-1 min-w-0">
                 <label class="page-label text-[1rem] tracking-[0.15em] uppercase">To</label>
-                <input type="date" v-model="endDate" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
+                <input type="date" v-model="endDate" class="date-input w-full rounded-[0.8rem] px-[1.2rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
             </div>
 
             <button
               @click="fetchAttendance"
-              class="calc-btn relative flex items-center gap-[0.8rem] px-[2rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] text-white tracking-[0.06em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200 mt-[1.8rem]"
+              class="calc-btn relative flex items-center gap-[0.8rem] px-[2rem] py-[1rem] max-[480px]:py-[1.3rem] rounded-[0.8rem] text-[1.2rem] text-white tracking-[0.06em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200 flex-shrink-0"
             >
               <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
               </svg>
-              Calculate
+              <span class="max-[480px]:hidden">Calculate</span>
               <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
             </button>
+          </div>
 
-            <!-- Export buttons -->
-            <div class="flex items-center gap-[1rem] ml-auto mt-[1.8rem]">
-              <span class="page-label text-[1rem] tracking-[0.15em] uppercase mr-[0.4rem]">Export</span>
-              <button @click="exportCSV" class="export-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
-                <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
-                </svg>
-                CSV
-              </button>
-              <button @click="exportXLS" class="export-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
-                <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-7.5 0h6m-6 0A1.125 1.125 0 019 13.125v-1.5A1.125 1.125 0 0110.125 10.5m.75 2.625c.621 0 1.125.504 1.125 1.125v3"/>
-                </svg>
-                XLS
-              </button>
-              <button @click="exportPDF" class="export-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
-                <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
-                </svg>
-                PDF
-              </button>
-            </div>
+          <!-- Export row -->
+          <div class="flex items-center gap-[0.8rem] flex-wrap">
+            <span class="page-label text-[1rem] tracking-[0.15em] uppercase mr-[0.4rem]">Export</span>
+            <button @click="exportCSV" class="export-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
+              <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
+              </svg>
+              CSV
+            </button>
+            <button @click="exportXLS" class="export-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
+              <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-7.5 0h6m-6 0A1.125 1.125 0 019 13.125v-1.5A1.125 1.125 0 0110.125 10.5m.75 2.625c.621 0 1.125.504 1.125 1.125v3"/>
+              </svg>
+              XLS
+            </button>
+            <button @click="exportPDF" class="export-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
+              <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
+              </svg>
+              PDF
+            </button>
           </div>
         </div>
 
@@ -177,10 +177,10 @@ onMounted(fetchAttendance)
         <div v-else-if="attendance && attendance.daily.length" class="table-card rounded-[1.6rem] overflow-hidden">
 
           <!-- Summary header -->
-          <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem]">
+          <div class="table-summary flex items-center justify-between px-[3rem] max-[768px]:px-[2rem] py-[2rem]">
             <div>
               <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Period</p>
-              <p class="table-text text-[1.4rem]">{{ startDate }} → {{ endDate }}</p>
+              <p class="table-text text-[1.3rem] max-[480px]:text-[1.1rem]">{{ startDate }} → {{ endDate }}</p>
             </div>
             <div class="text-right">
               <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Total</p>
@@ -190,7 +190,8 @@ onMounted(fetchAttendance)
             </div>
           </div>
 
-          <table class="w-full">
+          <!-- Desktop table -->
+          <table class="w-full max-[600px]:hidden">
             <thead>
               <tr class="table-head-row">
                 <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Date</th>
@@ -224,6 +225,44 @@ onMounted(fetchAttendance)
               </tr>
             </tfoot>
           </table>
+
+          <!-- Mobile cards (shown below 600px instead of table) -->
+          <div class="hidden max-[600px]:flex flex-col divide-y" style="border-color: var(--border)">
+            <div
+              v-for="(d, i) in attendance.daily"
+              :key="`m-${d.date}`"
+              class="px-[2rem] py-[1.6rem]"
+              :class="i % 2 === 0 ? 'row-even' : 'row-odd'"
+            >
+              <div class="flex items-center justify-between mb-[0.8rem]">
+                <span class="table-text text-[1.3rem] font-medium">{{ d.date }}</span>
+                <span v-if="d.hours > 0" class="table-text text-[1.3rem] tabular-nums">
+                  {{ d.hours }}<span class="table-empty text-[1.1rem] ml-[0.2rem]">h</span>
+                </span>
+                <span v-else class="table-empty text-[1.3rem]">—</span>
+              </div>
+              <div class="flex items-center gap-[1.6rem]">
+                <div class="flex flex-col gap-[0.2rem]">
+                  <span class="page-label text-[0.9rem] tracking-[0.12em] uppercase">In</span>
+                  <span class="text-[1.2rem] tabular-nums" :class="d.timeIn === '-' ? 'table-empty' : 'table-text'">{{ d.timeIn }}</span>
+                </div>
+                <span class="arrow-sep text-[1.2rem]">→</span>
+                <div class="flex flex-col gap-[0.2rem]">
+                  <span class="page-label text-[0.9rem] tracking-[0.12em] uppercase">Out</span>
+                  <span class="text-[1.2rem] tabular-nums" :class="d.timeOut === '-' ? 'table-empty' : 'table-text'">{{ d.timeOut }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile footer -->
+            <div class="table-foot-row flex items-center justify-between px-[2rem] py-[1.6rem]">
+              <span class="table-sub text-[1.1rem] tracking-[0.12em] uppercase">Total Hours</span>
+              <span class="page-title text-[1.8rem] tabular-nums font-medium">
+                {{ attendance.totalHours.toFixed(2) }}<span class="table-sub text-[1.2rem] ml-[0.3rem]">h</span>
+              </span>
+            </div>
+          </div>
+
         </div>
 
         <!-- Empty state -->
@@ -250,7 +289,6 @@ onMounted(fetchAttendance)
 .page-label { color: var(--text-light); }
 .page-title { color: var(--text-main); }
 
-/* Filter card */
 .filter-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
@@ -262,11 +300,9 @@ onMounted(fetchAttendance)
   background-color: var(--bg-subtle);
   border: 1px solid var(--border-hover);
   color: var(--text-main);
-  colorscheme: light;
+  color-scheme: light;
 }
-
 [data-theme="dark"] .date-input { color-scheme: dark; }
-
 .date-input:focus {
   border-color: var(--primary);
   background-color: var(--bg-card);
@@ -279,69 +315,33 @@ onMounted(fetchAttendance)
   background-color: var(--primary);
   box-shadow: 0 0.2rem 0.8rem var(--primary-soft);
 }
-.calc-btn:hover {
-  background-color: var(--primary-hover);
-  box-shadow: var(--shadow-md);
-}
+.calc-btn:hover { background-color: var(--primary-hover); box-shadow: var(--shadow-md); }
 
 .export-btn {
   background-color: var(--bg-card);
   border: 1px solid var(--border-hover);
   color: var(--text-muted);
 }
-.export-btn:hover {
-  border-color: var(--primary);
-  color: var(--text-main);
-  box-shadow: var(--shadow-sm);
-}
+.export-btn:hover { border-color: var(--primary); color: var(--text-main); box-shadow: var(--shadow-sm); }
 
-/* Spinner */
-.spinner {
-  border: 1px solid var(--border-hover);
-  border-top-color: var(--primary);
-}
+.spinner { border: 1px solid var(--border-hover); border-top-color: var(--primary); }
 
-/* Error */
-.error-bar {
-  background-color: var(--danger-soft);
-  border: 1px solid var(--danger);
-  color: var(--danger);
-}
+.error-bar { background-color: var(--danger-soft); border: 1px solid var(--danger); color: var(--danger); }
 
-/* Table */
-.table-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-}
-
-.table-summary {
-  border-bottom: 1px solid var(--border);
-}
-
+.table-card { background-color: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+.table-summary { border-bottom: 1px solid var(--border); }
 .table-text  { color: var(--text-main); }
 .table-sub   { color: var(--text-muted); }
 .table-empty { color: var(--text-light); }
-
 .table-head-row { border-bottom: 1px solid var(--border); }
-
 .table-row { border-bottom: 1px solid var(--border); transition: background-color 0.15s ease; }
 .table-row:last-child { border-bottom: none; }
 .table-row:hover { background-color: var(--bg-subtle); }
-
 .row-even { background-color: var(--bg-card); }
 .row-odd  { background-color: color-mix(in srgb, var(--bg-subtle) 40%, transparent); }
+.table-foot-row { border-top: 1px solid var(--border-hover); background-color: var(--bg-subtle); }
 
-.table-foot-row {
-  border-top: 1px solid var(--border-hover);
-  background-color: var(--bg-subtle);
-}
-
-/* Empty state */
-.empty-icon {
-  background-color: var(--bg-subtle);
-  color: var(--text-light);
-}
+.empty-icon { background-color: var(--bg-subtle); color: var(--text-light); }
 
 main::-webkit-scrollbar { width: 6px; }
 main::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }

@@ -2,16 +2,16 @@
   <div class="page-wrapper flex">
     <Sidebar :items="sidebarItems" />
 
-    <main class="flex-1 pl-[22rem] min-h-screen relative overflow-hidden">
+    <main class="flex-1 pl-[22rem] max-[768px]:pl-0 min-h-screen relative overflow-hidden">
       <div class="blob blob-1 absolute top-[-6rem] right-[-6rem] w-[40rem] h-[40rem] rounded-full blur-[8rem] pointer-events-none"></div>
       <div class="blob blob-2 absolute bottom-[-8rem] left-[6rem] w-[35rem] h-[35rem] rounded-full blur-[8rem] pointer-events-none"></div>
 
-      <div class="relative z-10 max-w-[120rem] mx-auto py-[4rem] px-[4rem]">
+      <div class="relative z-10 max-w-[120rem] mx-auto py-[4rem] px-[4rem] max-[768px]:px-[1.6rem] max-[768px]:py-[2rem] max-[768px]:pt-[3rem]">
 
         <!-- Page header -->
-        <div class="mb-[4rem]">
+        <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
           <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Manager Panel</p>
-          <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Team Payrolls</h1>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Team Payrolls</h1>
         </div>
 
         <!-- Error -->
@@ -22,25 +22,23 @@
           {{ error }}
         </div>
 
-        <!-- ── Filters + Export ──────────────────────────────────────── -->
-        <div class="filter-card rounded-[1.6rem] p-[2.4rem] mb-[2rem]">
-          <div class="flex flex-wrap items-end gap-[1.6rem]">
-            <div class="flex items-center gap-[1.2rem]">
+        <!-- ── Filters + Export ── -->
+        <div class="filter-card rounded-[1.6rem] p-[2.4rem] mb-[2rem] max-[768px]:p-[1.6rem]">
+          <div class="flex flex-wrap items-end gap-[1.6rem] max-[768px]:flex-col max-[768px]:items-stretch max-[768px]:gap-[1.2rem]">
+
+            <div class="flex items-center gap-[1.2rem] max-[480px]:flex-col max-[480px]:items-stretch max-[480px]:gap-[1rem]">
               <div class="flex flex-col gap-[0.4rem]">
                 <label class="page-label text-[1rem] tracking-[0.15em] uppercase">From</label>
                 <input type="date" v-model="startDate" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
-              <div class="arrow-sep mt-[1.8rem] text-[1.4rem]">→</div>
+              <div class="arrow-sep mt-[1.8rem] text-[1.4rem] max-[480px]:hidden">→</div>
               <div class="flex flex-col gap-[0.4rem]">
                 <label class="page-label text-[1rem] tracking-[0.15em] uppercase">To</label>
                 <input type="date" v-model="endDate" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
             </div>
 
-            <button
-              @click="fetchEmployeesTime"
-              class="calc-btn relative flex items-center gap-[0.8rem] px-[2rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] text-white tracking-[0.06em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200"
-            >
+            <button @click="fetchEmployeesTime" class="calc-btn relative flex items-center justify-center gap-[0.8rem] px-[2rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] text-white tracking-[0.06em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200">
               <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
               </svg>
@@ -48,45 +46,36 @@
               <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
             </button>
 
-            <div class="flex items-center gap-[1rem] ml-auto">
-              <span class="page-label text-[1rem] tracking-[0.15em] uppercase mr-[0.4rem]">Export</span>
+            <div class="flex items-center gap-[1rem] max-[768px]:ml-0 ml-auto max-[480px]:flex-wrap">
+              <span class="page-label text-[1rem] tracking-[0.15em] uppercase mr-[0.4rem] max-[480px]:w-full">Export</span>
               <button @click="exportCSV" class="export-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
-                <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
-                </svg>
+                <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                 CSV
               </button>
               <button @click="exportXLS" class="export-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
-                <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75"/>
-                </svg>
+                <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75"/></svg>
                 XLS
               </button>
               <button @click="exportPDF" class="export-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
-                <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
-                </svg>
+                <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                 PDF
               </button>
             </div>
           </div>
         </div>
 
-        <!-- ── Loading ──────────────────────────────────────────────── -->
+        <!-- Loading -->
         <div v-if="loading" class="flex items-center gap-[1.6rem] py-[4rem] justify-center">
           <div class="spinner w-[2.8rem] h-[2.8rem] rounded-full animate-spin"></div>
           <span class="page-label text-[1.2rem] tracking-[0.12em]">Loading payrolls…</span>
         </div>
 
-        <!-- ── Payroll cards ────────────────────────────────────────── -->
+        <!-- ── Payroll cards ── -->
         <div v-else-if="payrolls.length" class="flex flex-col gap-[2rem]">
-          <div
-            v-for="p in payrolls"
-            :key="p.id"
-            class="table-card rounded-[1.6rem] overflow-hidden"
-          >
+          <div v-for="p in payrolls" :key="p.id" class="table-card rounded-[1.6rem] overflow-hidden">
+
             <!-- Employee header -->
-            <div class="table-summary px-[3rem] py-[2.2rem] flex items-center justify-between flex-wrap gap-[2rem]">
+            <div class="table-summary px-[3rem] py-[2.2rem] flex items-center justify-between flex-wrap gap-[2rem] max-[768px]:px-[1.6rem] max-[768px]:py-[1.6rem] max-[768px]:gap-[1.4rem]">
               <div class="flex items-center gap-[1.6rem]">
                 <div class="emp-avatar w-[4rem] h-[4rem] rounded-full flex items-center justify-center text-[1.4rem] text-white flex-shrink-0">
                   {{ p.name[0]?.toUpperCase() }}
@@ -98,24 +87,24 @@
               </div>
 
               <!-- Summary pills -->
-              <div class="flex items-center gap-[1.2rem] flex-wrap">
-                <div class="summary-pill flex flex-col items-center px-[2rem] py-[1rem] rounded-[1rem]">
+              <div class="flex items-center gap-[1.2rem] flex-wrap max-[480px]:w-full max-[480px]:gap-[0.8rem]">
+                <div class="summary-pill flex flex-col items-center px-[2rem] py-[1rem] rounded-[1rem] max-[480px]:flex-1 max-[480px]:px-[1.2rem]">
                   <p class="page-label text-[0.95rem] tracking-[0.15em] uppercase mb-[0.2rem]">Hours</p>
                   <p class="page-title text-[2rem] leading-none tabular-nums">{{ p.hoursWorked }}<span class="table-sub text-[1.1rem] ml-[0.2rem]">h</span></p>
                 </div>
-                <div class="summary-pill flex flex-col items-center px-[2rem] py-[1rem] rounded-[1rem]">
+                <div class="summary-pill flex flex-col items-center px-[2rem] py-[1rem] rounded-[1rem] max-[480px]:flex-1 max-[480px]:px-[1.2rem]">
                   <p class="page-label text-[0.95rem] tracking-[0.15em] uppercase mb-[0.2rem]">Rate</p>
                   <p class="page-title text-[2rem] leading-none tabular-nums">${{ p.hourlyPay }}<span class="table-sub text-[1.1rem] ml-[0.2rem]">/h</span></p>
                 </div>
-                <div class="summary-pill pay-pill flex flex-col items-center px-[2rem] py-[1rem] rounded-[1rem]">
-                  <p class="pay-label text-[0.95rem] tracking-[0.15em] uppercase mb-[0.2rem]">Total Pay</p>
+                <div class="summary-pill pay-pill flex flex-col items-center px-[2rem] py-[1rem] rounded-[1rem] max-[480px]:w-full max-[480px]:flex-row max-[480px]:justify-between max-[480px]:px-[1.6rem]">
+                  <p class="pay-label text-[0.95rem] tracking-[0.15em] uppercase mb-[0.2rem] max-[480px]:mb-0">Total Pay</p>
                   <p class="pay-value text-[2rem] leading-none tabular-nums font-semibold">${{ p.totalPay }}</p>
                 </div>
               </div>
             </div>
 
-            <!-- Daily breakdown table -->
-            <table class="w-full">
+            <!-- ── DESKTOP TABLE ── -->
+            <table class="w-full max-[768px]:hidden">
               <thead>
                 <tr class="table-head-row">
                   <th class="page-label px-[3rem] py-[1.4rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Date</th>
@@ -125,12 +114,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  v-for="(d, i) in p.daily"
-                  :key="d.date"
-                  class="table-row"
-                  :class="i % 2 === 0 ? 'row-even' : 'row-odd'"
-                >
+                <tr v-for="(d, i) in p.daily" :key="d.date" class="table-row" :class="i % 2 === 0 ? 'row-even' : 'row-odd'">
                   <td class="table-text px-[3rem] py-[1.4rem] text-[1.3rem]">{{ d.date }}</td>
                   <td class="px-[3rem] py-[1.4rem] text-[1.3rem] text-right tabular-nums" :class="d.hours > 0 ? 'table-text' : 'table-empty'">
                     <span v-if="d.hours > 0">{{ d.hours }}<span class="table-empty text-[1.1rem] ml-[0.2rem]">h</span></span>
@@ -154,17 +138,60 @@
                 </tr>
               </tfoot>
             </table>
+
+            <!-- ── MOBILE DAILY ROWS ── -->
+            <div class="hidden max-[768px]:block">
+              <!-- Column labels -->
+              <div class="daily-header grid grid-cols-3 px-[1.6rem] py-[1rem]">
+                <span class="page-label text-[0.9rem] tracking-[0.15em] uppercase">Date</span>
+                <span class="page-label text-[0.9rem] tracking-[0.15em] uppercase text-center">Hours</span>
+                <span class="page-label text-[0.9rem] tracking-[0.15em] uppercase text-right">Pay</span>
+              </div>
+
+              <div class="flex flex-col divide-y divide-[var(--border)]">
+                <div
+                  v-for="(d, i) in p.daily"
+                  :key="d.date"
+                  class="daily-mobile-row grid grid-cols-3 items-center px-[1.6rem] py-[1.2rem]"
+                  :class="i % 2 === 0 ? 'row-even' : 'row-odd'"
+                >
+                  <!-- Date + status badge -->
+                  <div class="flex flex-col gap-[0.3rem]">
+                    <span class="table-text text-[1.2rem] tabular-nums">{{ d.date }}</span>
+                    <span v-if="d.hours > 8" class="ot-badge self-start text-[1rem] px-[0.7rem] py-[0.15rem] rounded-full">OT</span>
+                    <span v-else-if="d.hours > 0" class="ok-badge self-start text-[1rem] px-[0.7rem] py-[0.15rem] rounded-full">Reg</span>
+                  </div>
+                  <!-- Hours -->
+                  <div class="text-center">
+                    <span v-if="d.hours > 0" class="table-text text-[1.3rem] tabular-nums">{{ d.hours }}<span class="table-empty text-[1rem] ml-[0.15rem]">h</span></span>
+                    <span v-else class="table-empty text-[1.2rem]">—</span>
+                  </div>
+                  <!-- Day pay -->
+                  <div class="text-right">
+                    <span v-if="d.hours > 0" class="table-text text-[1.3rem] tabular-nums">${{ (d.hours * p.hourlyPay).toFixed(2) }}</span>
+                    <span v-else class="table-empty text-[1.2rem]">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mobile total footer -->
+              <div class="table-foot-row flex items-center justify-between px-[1.6rem] py-[1.4rem]">
+                <span class="page-label text-[1rem] tracking-[0.15em] uppercase">Total Pay</span>
+                <span class="page-title text-[2rem] tabular-nums font-semibold">${{ p.totalPay }}</span>
+              </div>
+            </div>
+
           </div>
 
           <!-- Grand total card -->
-          <div class="grand-total-card rounded-[1.6rem] px-[3rem] py-[2.4rem] flex items-center justify-between">
+          <div class="grand-total-card rounded-[1.6rem] px-[3rem] py-[2.4rem] flex items-center justify-between max-[768px]:px-[1.6rem] max-[768px]:py-[1.6rem]">
             <div>
               <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Period</p>
-              <p class="table-text text-[1.4rem]">{{ startDate }} → {{ endDate }}</p>
+              <p class="table-text text-[1.4rem] max-[480px]:text-[1.2rem]">{{ startDate }} → {{ endDate }}</p>
             </div>
             <div class="text-right">
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Grand Total Payroll</p>
-              <p class="page-title text-[3.2rem] leading-none tabular-nums font-semibold">${{ grandTotal }}</p>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Grand Total</p>
+              <p class="page-title text-[3.2rem] max-[768px]:text-[2.4rem] leading-none tabular-nums font-semibold">${{ grandTotal }}</p>
             </div>
           </div>
         </div>

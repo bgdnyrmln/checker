@@ -10,7 +10,7 @@ const user = useState('user', () => null)
 const route = useRoute()
 
 const tokenInput  = ref('')
-const inviteToken = ref(route.query.token || '')
+const inviteToken = ref(route.query.token || null)
 const pageAllowed = ref(false)
 const companyName = ref('')
 const loading     = ref(false)
@@ -35,16 +35,34 @@ const getCSRFToken = async () => {
   axios.defaults.headers.common['X-XSRF-TOKEN'] = token
 }
 
+const alreadyConnected = ref(false)
+
 const validateToken = async (token) => {
   loading.value = true
   error.value = ''
+  alreadyConnected.value = false
   try {
     const res = await axios.get(`/api/invites/validate/${token}`)
     inviteToken.value = token
     companyName.value = res.data.company_name
-    pageAllowed.value = true
+    
+    // if backend tells us user is already a member
+    if (res.data.already_connected) {
+      alreadyConnected.value = true
+      pageAllowed.value = false
+    } else {
+      pageAllowed.value = true
+    }
   } catch (err) {
-    error.value = err.response?.data?.message || 'Invalid invite token.'
+    const status = err.response?.status
+    const message = err.response?.data?.message || 'Invalid invite token.'
+    
+    if (status === 409) {  // or whatever status your backend returns
+      alreadyConnected.value = true
+      companyName.value = err.response?.data?.company_name || ''
+    } else {
+      error.value = message
+    }
     pageAllowed.value = false
   } finally {
     loading.value = false
@@ -74,7 +92,13 @@ const submitToken = () => {
   validateToken(tokenInput.value)
 }
 
-onMounted(fetchUser)
+
+
+
+onMounted(() => {
+  fetchUser()
+  if (inviteToken.value) validateToken(inviteToken.value) 
+})
 </script>
 
 <template>
@@ -84,7 +108,7 @@ onMounted(fetchUser)
     <div class="blob blob-2 absolute bottom-[-10rem] left-[-6rem] w-[40rem] h-[40rem] rounded-full blur-[8rem] pointer-events-none"></div>
 
     <!-- ── TOKEN INPUT ── -->
-    <div v-if="!pageAllowed && !success" class="auth-card relative z-10 w-full max-w-[44rem] rounded-[2rem] p-[4.8rem]">
+    <div v-if="inviteToken == null" class="auth-card relative z-10 w-full max-w-[44rem] rounded-[2rem] p-[4.8rem]">
 
       <div class="flex justify-center mb-[3.2rem]">
         <div class="brand-icon w-[5.6rem] h-[5.6rem] rounded-[1.4rem] flex items-center justify-center">
@@ -200,6 +224,30 @@ onMounted(fetchUser)
       <h2 class="page-title text-[2.8rem] mb-[0.8rem]">You're Connected!</h2>
       <p class="page-sub text-[1.4rem] mb-[0.4rem]">Successfully joined</p>
       <p class="company-name text-[2rem] mb-[3.2rem]">{{ success }}</p>
+
+      <NuxtLink
+        to="/"
+        class="auth-btn inline-flex items-center gap-[0.8rem] px-[2.8rem] py-[1.2rem] rounded-[0.8rem] text-[1.3rem] text-white tracking-[0.06em] no-underline hover:-translate-y-px transition-all duration-200"
+      >
+        Go to Dashboard
+        <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+        </svg>
+      </NuxtLink>
+    </div>
+
+    <div v-else-if="alreadyConnected" class="auth-card relative z-10 w-full max-w-[44rem] rounded-[2rem] p-[4.8rem] text-center">
+
+      <div class="confirm-icon w-[5.6rem] h-[5.6rem] rounded-full flex items-center justify-center mx-auto mb-[3.2rem]">
+        <svg class="w-[2.8rem] h-[2.8rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+      </div>
+
+      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.8rem]">Already a Member</p>
+      <h2 class="page-title text-[2.8rem] leading-tight mb-[0.8rem]">You're already connected</h2>
+      <p class="page-sub text-[1.3rem] mb-[0.4rem]">Your account is already linked to</p>
+      <p class="company-name text-[2.2rem] mb-[3.2rem]">{{ companyName }}</p>
 
       <NuxtLink
         to="/"

@@ -50,10 +50,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/sick-leaves/{sickLeave}', [SickLeaveController::class, 'update']);
     Route::delete('/sick-leaves/{sickLeave}', [SickLeaveController::class, 'destroy']);
     Route::get('/sick-leaves/{sickLeave}/file', [SickLeaveController::class, 'file']);
-    Route::apiResource('holidays', HolidayController::class);
+    // Employee
+    Route::get('/holidays', [HolidayController::class, 'index']);
+    Route::post('/holidays', [HolidayController::class, 'store']);
+    Route::delete('/holidays/{holiday}', [HolidayController::class, 'destroy']);
+
+    // Manager
+    Route::get('/companies/{company_id}/holidays', [HolidayController::class, 'companyIndex']);
+    Route::patch('/holidays/{holiday}/approve', [HolidayController::class, 'approve']);
+    Route::put('/holidays/{holiday}', [HolidayController::class, 'update']);
 });
 
 Route::post('/register/member', [EmployeeRegisterController::class, 'register']);
 Route::get('/invites/validate/{token}', [InviteController::class, 'validateToken']);
 Route::post('/register/company', [CompanyController::class, 'register']);
-Route::get('/announcements', [AnnouncementController::class, 'index']);

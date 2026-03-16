@@ -1,18 +1,17 @@
 <template>
   <div class="page-wrapper flex">
     <Sidebar :items="sidebarItems" />
-
-    <main class="flex-1 pl-[22rem] min-h-screen relative overflow-hidden">
+    <main class="flex-1 pl-[22rem] max-[768px]:pl-0 min-h-screen relative overflow-hidden">
       <!-- Ambient blobs -->
       <div class="blob blob-1 absolute top-[-6rem] right-[-6rem] w-[40rem] h-[40rem] rounded-full blur-[8rem] pointer-events-none"></div>
       <div class="blob blob-2 absolute bottom-[-8rem] left-[6rem] w-[35rem] h-[35rem] rounded-full blur-[8rem] pointer-events-none"></div>
 
-      <div class="relative z-10 max-w-[120rem] mx-auto py-[4rem] px-[4rem]">
+      <div class="relative z-10 max-w-[120rem] mx-auto py-[4rem] px-[4rem] max-[768px]:px-[1.6rem] max-[768px]:py-[2rem] max-[768px]:pt-[3rem]">
 
         <!-- Page header -->
-        <div class="mb-[4rem]">
+        <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
           <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Manager Panel</p>
-          <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Company Team</h1>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Company Team</h1>
         </div>
 
         <!-- Error -->
@@ -26,8 +25,8 @@
         <!-- Table card -->
         <div class="table-card rounded-[1.6rem] overflow-hidden">
 
-          <!-- Table toolbar -->
-          <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem] gap-[2rem] flex-wrap">
+          <!-- Toolbar -->
+          <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem] gap-[2rem] flex-wrap max-[768px]:px-[1.6rem] max-[768px]:py-[1.6rem]">
             <div>
               <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Members</p>
               <p class="table-text text-[1.4rem]">
@@ -35,9 +34,8 @@
                 <span v-else>{{ filteredEmployees.length }} {{ filteredEmployees.length === 1 ? 'employee' : 'employees' }}</span>
               </p>
             </div>
-
             <!-- Search -->
-            <div class="search-wrapper relative flex-1 max-w-[32rem]">
+            <div class="search-wrapper relative flex-1 max-w-[32rem] max-[480px]:max-w-full max-[480px]:w-full">
               <div class="search-icon absolute left-[1.2rem] top-1/2 -translate-y-1/2 pointer-events-none">
                 <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0015.803 15.803z"/>
@@ -53,54 +51,29 @@
           </div>
 
           <!-- Loading skeleton -->
-          <div v-if="loading" class="px-[3rem] py-[4rem] flex flex-col gap-[1.6rem]">
+          <div v-if="loading" class="px-[3rem] py-[4rem] flex flex-col gap-[1.6rem] max-[768px]:px-[1.6rem]">
             <div v-for="i in 4" :key="i" class="skeleton-row rounded-[0.8rem] h-[4.8rem]"></div>
           </div>
 
-          <!-- Table -->
-          <table v-else class="w-full">
+          <!-- ── DESKTOP TABLE (hidden on mobile) ── -->
+          <table v-if="!loading" class="w-full max-[768px]:hidden">
             <thead>
               <tr class="table-head-row">
-                <th
-                  @click="sortBy('name')"
-                  class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none"
-                >
-                  <span class="flex items-center gap-[0.6rem]">
-                    Name
-                    <sort-icon :active="sortKey === 'name'" :dir="sortDirection" />
-                  </span>
+                <th @click="sortBy('name')" class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none">
+                  <span class="flex items-center gap-[0.6rem]">Name <sort-icon :active="sortKey === 'name'" :dir="sortDirection" /></span>
                 </th>
-                <th
-                  @click="sortBy('email')"
-                  class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none"
-                >
-                  <span class="flex items-center gap-[0.6rem]">
-                    Email
-                    <sort-icon :active="sortKey === 'email'" :dir="sortDirection" />
-                  </span>
+                <th @click="sortBy('email')" class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none">
+                  <span class="flex items-center gap-[0.6rem]">Email <sort-icon :active="sortKey === 'email'" :dir="sortDirection" /></span>
                 </th>
-                <th
-                  @click="sortBy('role')"
-                  class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none"
-                >
-                  <span class="flex items-center gap-[0.6rem]">
-                    Role
-                    <sort-icon :active="sortKey === 'role'" :dir="sortDirection" />
-                  </span>
+                <th @click="sortBy('role')" class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none">
+                  <span class="flex items-center gap-[0.6rem]">Role <sort-icon :active="sortKey === 'role'" :dir="sortDirection" /></span>
                 </th>
-                <th
-                  @click="sortBy('hourly_pay')"
-                  class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none"
-                >
-                  <span class="flex items-center gap-[0.6rem]">
-                    Hourly Pay
-                    <sort-icon :active="sortKey === 'hourly_pay'" :dir="sortDirection" />
-                  </span>
+                <th @click="sortBy('hourly_pay')" class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none">
+                  <span class="flex items-center gap-[0.6rem]">Hourly Pay <sort-icon :active="sortKey === 'hourly_pay'" :dir="sortDirection" /></span>
                 </th>
                 <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Actions</th>
               </tr>
             </thead>
-
             <tbody>
               <tr
                 v-for="(employee, i) in filteredEmployees"
@@ -117,10 +90,8 @@
                     <span class="table-text text-[1.3rem]">{{ employee.first_name }} {{ employee.last_name }}</span>
                   </div>
                 </td>
-
                 <!-- EMAIL -->
                 <td class="table-text px-[3rem] py-[1.6rem] text-[1.3rem]">{{ employee.email }}</td>
-
                 <!-- ROLE -->
                 <td class="px-[3rem] py-[1.6rem]">
                   <div v-if="editingId === employee.id">
@@ -135,66 +106,45 @@
                     </span>
                   </span>
                 </td>
-
                 <!-- HOURLY PAY -->
                 <td class="px-[3rem] py-[1.6rem]">
                   <div v-if="editingId === employee.id">
-                    <input
-                      v-model="editForm.hourly_pay"
-                      type="number"
-                      step="0.01"
-                      class="field-input rounded-[0.6rem] px-[1rem] py-[0.6rem] text-[1.2rem] w-[9rem] outline-none tabular-nums"
-                    />
+                    <input v-model="editForm.hourly_pay" type="number" step="0.01" class="field-input rounded-[0.6rem] px-[1rem] py-[0.6rem] text-[1.2rem] w-[9rem] outline-none tabular-nums" />
                   </div>
                   <span v-else class="table-text text-[1.3rem] tabular-nums">${{ employee.hourly_pay }}</span>
                 </td>
-
                 <!-- ACTIONS -->
                 <td class="px-[3rem] py-[1.6rem]">
                   <div class="flex items-center justify-end gap-[0.8rem]">
-                    <!-- View mode -->
                     <template v-if="editingId !== employee.id">
                       <button @click="startEdit(employee)" class="action-btn edit-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem] transition-all duration-150">
-                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/>
-                        </svg>
+                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
                         Edit
                       </button>
                       <button @click="deleteEmployee(employee)" class="action-btn delete-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem] transition-all duration-150">
-                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
-                        </svg>
+                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
                         Delete
                       </button>
                     </template>
-
-                    <!-- Edit mode -->
                     <template v-else>
                       <button @click="confirmEdit(employee)" class="action-btn confirm-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem] transition-all duration-150">
-                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
-                        </svg>
+                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
                         Confirm
                       </button>
                       <button @click="cancelEdit" class="action-btn cancel-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem] transition-all duration-150">
-                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
+                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                         Cancel
                       </button>
                     </template>
                   </div>
                 </td>
               </tr>
-
               <!-- Empty state -->
               <tr v-if="!filteredEmployees.length">
                 <td colspan="5" class="px-[3rem] py-[5rem] text-center">
                   <div class="flex flex-col items-center gap-[1.2rem]">
                     <div class="icon-badge w-[4.8rem] h-[4.8rem] rounded-[1.2rem] flex items-center justify-center mx-auto">
-                      <svg class="w-[2rem] h-[2rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
-                      </svg>
+                      <svg class="w-[2rem] h-[2rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
                     </div>
                     <p class="table-sub text-[1.3rem]">No employees found.</p>
                   </div>
@@ -202,8 +152,109 @@
               </tr>
             </tbody>
           </table>
-        </div>
 
+          <!-- ── MOBILE CARDS (hidden on desktop) ── -->
+          <div v-if="!loading" class="hidden max-[768px]:block">
+
+            <!-- Sort bar -->
+            <div class="sort-bar flex items-center gap-[0.8rem] px-[1.6rem] py-[1.2rem] overflow-x-auto">
+              <span class="page-label text-[1rem] tracking-[0.15em] uppercase flex-shrink-0">Sort:</span>
+              <button
+                v-for="col in mobileSortCols"
+                :key="col.key"
+                @click="sortBy(col.key)"
+                class="sort-chip flex items-center gap-[0.4rem] px-[1rem] py-[0.5rem] rounded-full text-[1.1rem] flex-shrink-0 transition-all duration-150"
+                :class="sortKey === col.key ? 'sort-chip-active' : ''"
+              >
+                {{ col.label }}
+                <svg v-if="sortKey === col.key" class="w-[1rem] h-[1rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" :d="sortDirection === 'asc' ? 'M4.5 15.75l7.5-7.5 7.5 7.5' : 'M19.5 8.25l-7.5 7.5-7.5-7.5'" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Cards -->
+            <div class="flex flex-col divide-y divide-[var(--border)]">
+              <div
+                v-for="employee in filteredEmployees"
+                :key="employee.id"
+                class="emp-card px-[1.6rem] py-[1.8rem]"
+              >
+                <!-- Card header: avatar + name + badge -->
+                <div class="flex items-center justify-between gap-[1.2rem] mb-[1.4rem]">
+                  <div class="flex items-center gap-[1.2rem] min-w-0">
+                    <div class="emp-avatar w-[3.6rem] h-[3.6rem] rounded-full flex items-center justify-center text-[1.3rem] text-white flex-shrink-0">
+                      {{ employee.first_name?.[0]?.toUpperCase() }}
+                    </div>
+                    <div class="min-w-0">
+                      <p class="table-text text-[1.4rem] font-medium truncate">{{ employee.first_name }} {{ employee.last_name }}</p>
+                      <p class="table-sub text-[1.1rem] truncate">{{ employee.email }}</p>
+                    </div>
+                  </div>
+                  <span class="role-badge text-[1.05rem] px-[1rem] py-[0.3rem] rounded-full capitalize flex-shrink-0" :class="employee.role === 'manager' ? 'badge-manager' : 'badge-employee'">
+                    {{ employee.role }}
+                  </span>
+                </div>
+
+                <!-- Edit mode fields -->
+                <div v-if="editingId === employee.id" class="flex flex-col gap-[1rem] mb-[1.4rem]">
+                  <div class="flex items-center gap-[1rem]">
+                    <label class="page-label text-[1rem] tracking-[0.15em] uppercase w-[9rem] flex-shrink-0">Role</label>
+                    <select v-model="editForm.role" class="field-select rounded-[0.6rem] px-[1rem] py-[0.7rem] text-[1.3rem] outline-none flex-1">
+                      <option value="employee">Employee</option>
+                      <option value="manager">Manager</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center gap-[1rem]">
+                    <label class="page-label text-[1rem] tracking-[0.15em] uppercase w-[9rem] flex-shrink-0">Hourly Pay</label>
+                    <input v-model="editForm.hourly_pay" type="number" step="0.01" class="field-input rounded-[0.6rem] px-[1rem] py-[0.7rem] text-[1.3rem] outline-none tabular-nums flex-1" />
+                  </div>
+                </div>
+
+                <!-- View mode: hourly pay row -->
+                <div v-else class="flex items-center gap-[0.6rem] mb-[1.4rem]">
+                  <span class="page-label text-[1rem] tracking-[0.15em] uppercase">Hourly Pay:</span>
+                  <span class="table-text text-[1.3rem] tabular-nums font-medium">${{ employee.hourly_pay }}</span>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="flex items-center gap-[0.8rem]">
+                  <template v-if="editingId !== employee.id">
+                    <button @click="startEdit(employee)" class="action-btn edit-btn flex-1 flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-150">
+                      <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
+                      Edit
+                    </button>
+                    <button @click="deleteEmployee(employee)" class="action-btn delete-btn flex-1 flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-150">
+                      <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+                      Delete
+                    </button>
+                  </template>
+                  <template v-else>
+                    <button @click="confirmEdit(employee)" class="action-btn confirm-btn flex-1 flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-150">
+                      <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                      Confirm
+                    </button>
+                    <button @click="cancelEdit" class="action-btn cancel-btn flex-1 flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-150">
+                      <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                      Cancel
+                    </button>
+                  </template>
+                </div>
+              </div>
+
+              <!-- Mobile empty state -->
+              <div v-if="!filteredEmployees.length" class="px-[1.6rem] py-[5rem] text-center">
+                <div class="flex flex-col items-center gap-[1.2rem]">
+                  <div class="icon-badge w-[4.8rem] h-[4.8rem] rounded-[1.2rem] flex items-center justify-center mx-auto">
+                    <svg class="w-[2rem] h-[2rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+                  </div>
+                  <p class="table-sub text-[1.3rem]">No employees found.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </main>
   </div>
@@ -238,14 +289,20 @@ axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
-const employees  = ref([])
-const loading    = ref(false)
-const error      = ref('')
-const editingId  = ref(null)
-const editForm   = ref({ hourly_pay: 0, role: 'employee' })
-const searchQuery    = ref('')
-const sortKey        = ref('')
-const sortDirection  = ref('asc')
+const employees   = ref([])
+const loading     = ref(false)
+const error       = ref('')
+const editingId   = ref(null)
+const editForm    = ref({ hourly_pay: 0, role: 'employee' })
+const searchQuery = ref('')
+const sortKey     = ref('')
+const sortDirection = ref('asc')
+
+const mobileSortCols = [
+  { key: 'name',       label: 'Name' },
+  { key: 'role',       label: 'Role' },
+  { key: 'hourly_pay', label: 'Pay' },
+]
 
 const filteredEmployees = computed(() => {
   let data = [...employees.value]
@@ -338,7 +395,7 @@ onMounted(fetchEmployees)
 .blob-1 { background-color: var(--bg-subtle); opacity: 0.5; }
 .blob-2 { background-color: var(--bg-subtle); opacity: 0.3; }
 
-/* ── Typography tokens ───────────────────────────────────────────────── */
+/* ── Typography ──────────────────────────────────────────────────────── */
 .page-label { color: var(--text-light); }
 .page-title { color: var(--text-main); }
 .table-text { color: var(--text-main); }
@@ -357,6 +414,25 @@ onMounted(fetchEmployees)
 .table-row:hover { background-color: var(--bg-subtle); }
 .row-even { background-color: var(--bg-card); }
 .row-odd  { background-color: color-mix(in srgb, var(--bg-subtle) 40%, transparent); }
+
+/* ── Mobile sort chips ───────────────────────────────────────────────── */
+.sort-bar { border-bottom: 1px solid var(--border); }
+.sort-chip {
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: inherit;
+}
+.sort-chip:hover { border-color: var(--border-hover); color: var(--text-main); }
+.sort-chip-active {
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 35%, transparent);
+  color: var(--primary);
+}
+
+/* ── Mobile employee card ────────────────────────────────────────────── */
+.emp-card { background-color: var(--bg-card); transition: background-color 0.15s ease; }
+.emp-card:active { background-color: var(--bg-subtle); }
 
 /* ── Search ──────────────────────────────────────────────────────────── */
 .search-input {
@@ -405,14 +481,12 @@ onMounted(fetchEmployees)
 
 /* ── Action buttons ──────────────────────────────────────────────────── */
 .action-btn { font-family: inherit; font-weight: 500; cursor: pointer; border: 1px solid transparent; }
-
 .edit-btn {
   background-color: var(--bg-subtle);
   border-color: var(--border-hover);
   color: var(--text-muted);
 }
 .edit-btn:hover { border-color: var(--primary); color: var(--text-main); }
-
 .delete-btn {
   background-color: color-mix(in srgb, #ef4444 8%, transparent);
   border-color: color-mix(in srgb, #ef4444 20%, transparent);
@@ -422,7 +496,6 @@ onMounted(fetchEmployees)
   background-color: color-mix(in srgb, #ef4444 16%, transparent);
   border-color: #ef4444;
 }
-
 .confirm-btn {
   background-color: color-mix(in srgb, #22c55e 12%, transparent);
   border-color: color-mix(in srgb, #22c55e 25%, transparent);
@@ -432,7 +505,6 @@ onMounted(fetchEmployees)
   background-color: color-mix(in srgb, #22c55e 20%, transparent);
   border-color: #22c55e;
 }
-
 .cancel-btn {
   background-color: var(--bg-subtle);
   border-color: var(--border);
