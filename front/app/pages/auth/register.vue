@@ -5,7 +5,6 @@ import { useRoute } from 'vue-router'
 
 definePageMeta({ middleware: 'connect' })
 
-axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 

@@ -12,17 +12,17 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-sanctum'],
 
   sanctum: {
-    baseUrl: "http://100.84.250.84:8000", // Laravel API
+    baseUrl: process.env.BACKEND_URL, // Laravel API
   },
   runtimeConfig: {
     public: {
-      apiBase: 'http://100.84.250.84:8000'
+      apiBase: process.env.BACKEND_URL
     }
   },
 
   css: ['~/assets/style.scss'],
 
-  
+ 
   tailwindcss: {
     config: {
       darkMode: ['selector', '[data-theme="dark"]'],

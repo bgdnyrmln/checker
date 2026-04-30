@@ -233,7 +233,6 @@ const sidebarItems = [
   { text: 'Sick Leaves', to: `/${profileId}/personal-cabinet/sick-leaves` },
 ]
 
-axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
@@ -292,7 +291,7 @@ const submitSickLeave = async () => {
   }
 }
 
-const viewFile = (id) => window.open(`http://localhost:8000/api/sick-leaves/${id}/file`, '_blank')
+const viewFile = (id) => window.open(`${config.public.apiBase}/api/sick-leaves/${id}/file`, '_blank')
 
 const deleteSickLeave = async (id) => {
   if (!confirm('Delete this sick leave record?')) return

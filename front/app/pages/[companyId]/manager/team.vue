@@ -285,7 +285,6 @@ const sidebarItems = [
   { text: 'Sick Leaves', to: `/${companyId}/manager/sick-leaves` },
 ]
 
-axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 

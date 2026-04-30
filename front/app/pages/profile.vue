@@ -139,7 +139,6 @@
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 
 const profile = ref(null)

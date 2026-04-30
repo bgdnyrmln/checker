@@ -23,6 +23,8 @@ services:
       - ./front:/app
     ports:
       - "3000:3000"
+    env_file:
+      - front/.env
     depends_on:
       - back
 

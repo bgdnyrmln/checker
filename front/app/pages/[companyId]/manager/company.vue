@@ -120,7 +120,6 @@ definePageMeta({
 const route = useRoute()
 const companyId = route.params.companyId
 
-axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
 
 const sidebarItems = [
