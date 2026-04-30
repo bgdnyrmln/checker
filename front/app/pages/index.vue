@@ -6,7 +6,7 @@ const user = ref(null)
 const profiles = ref([])
 const loading = ref(true)
 
-axios.defaults.baseURL = 'http://localhost:8000'
+axios.defaults.baseURL = 'http://100.84.250.84:8000'
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
