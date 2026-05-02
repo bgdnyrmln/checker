@@ -11,14 +11,24 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-sanctum'],
 
+
+  nitro: {
+    routeRules: {
+      '/api/**': {
+        proxy: 'http://back:8000/api/**'
+      }
+    }
+  },
+
   sanctum: {
-    baseUrl: process.env.BACKEND_URL, // Laravel API
+    baseUrl: '/api', // Laravel API
   },
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_BACKEND_URL
+      apiBase: '/api'
     }
   },
+
 
   css: ['~/assets/style.scss'],
 
