@@ -11,11 +11,7 @@ RUN docker-php-ext-install pdo pdo_pgsql
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
-COPY back/ .
-
-# Copy entrypoint
-COPY back.entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 8000
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+CMD sh -c "composer install && php artisan migrate && php artisan key:generate && php artisan serve --host=0.0.0.0"

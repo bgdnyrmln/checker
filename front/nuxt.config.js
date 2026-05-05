@@ -21,7 +21,7 @@ export default defineNuxtConfig({
   },
 
   sanctum: {
-    baseUrl: '/api', // Laravel API
+    baseUrl: '/', // Laravel API
   },
   runtimeConfig: {
     public: {
