@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   nitro: {
     routeRules: {
       '/api/**': {
-        proxy: 'http://back:8000/**'
+        proxy: 'http://back:8000/api/**'
       }
     }
   },
@@ -25,7 +25,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: '/'
+      apiBase: '/api'
     }
   },
 
