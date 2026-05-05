@@ -1,0 +1,1 @@
+import{u as n}from"./BBc-RNBM.js";import{Q as o,U as s,X as a,S as u}from"./CK9_rL4o.js";const d=o(()=>{const e=s(),{isAuthenticated:r}=n();if(!r.value)return;const t=e.redirect.onGuestOnly;if(t===void 0)throw new Error("`sanctum.redirect.onGuestOnly` is not defined");if(t===!1)throw a({statusCode:403});return u(t,{replace:!0})});export{d as default};

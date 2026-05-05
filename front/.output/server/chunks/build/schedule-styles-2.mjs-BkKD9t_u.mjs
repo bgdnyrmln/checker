@@ -1,0 +1,4 @@
+const schedule_vue_vue_type_style_index_1_scoped_b1fb3347_lang = ".page-wrapper[data-v-b1fb3347]{background-color:var(--bg-main);transition:background-color .3s ease}.blob-1[data-v-b1fb3347]{opacity:.5}.blob-1[data-v-b1fb3347],.blob-2[data-v-b1fb3347]{background-color:var(--bg-subtle)}.blob-2[data-v-b1fb3347]{opacity:.3}.page-label[data-v-b1fb3347]{color:var(--text-light)}.page-title[data-v-b1fb3347]{color:var(--text-main)}.spinner[data-v-b1fb3347]{border:1px solid var(--border-hover);border-top-color:var(--primary)}.error-bar[data-v-b1fb3347]{background-color:var(--danger-soft);border:1px solid var(--danger);color:var(--danger)}.calendar-card[data-v-b1fb3347]{background-color:var(--bg-card);border:1px solid var(--border);box-shadow:var(--shadow-sm);transition:background-color .3s ease,border-color .3s ease}";
+
+export { schedule_vue_vue_type_style_index_1_scoped_b1fb3347_lang as s };
+//# sourceMappingURL=schedule-styles-2.mjs-BkKD9t_u.mjs.map

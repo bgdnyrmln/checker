@@ -1,0 +1,1 @@
+import{Q as r,D as s,r as u,R as c,l as i,S as n}from"./CK9_rL4o.js";const f=r(async l=>{let e,t;try{const o=s(),a=u(o.query.token||"");return[e,t]=c(()=>i.get("/api/user",{withCredentials:!0})),await e,t(),a.value?n("/auth/connect?token="+a.value):n("/auth/connect")}catch{}});export{f as default};
