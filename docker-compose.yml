@@ -4,8 +4,10 @@ services:
       context: .
       dockerfile: back.Dockerfile
     container_name: back
+    # No volume mount — app is baked into the image
+    # Only persist Laravel storage so logs/cache survive restarts
     volumes:
-      - ./back:/app
+      - back_storage:/app/storage
     ports:
       - "8000:8000"
     environment:
@@ -19,8 +21,7 @@ services:
       context: .
       dockerfile: front.Dockerfile
     container_name: front
-    volumes:
-      - ./front:/app
+    # No volume mount — .output is baked into the image
     ports:
       - "3000:3000"
     depends_on:
@@ -38,7 +39,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-
   pgadmin:
     image: dpage/pgadmin4:7
     container_name: pgadmin
@@ -50,6 +50,6 @@ services:
     depends_on:
       - db
 
-
 volumes:
   pgdata:
+  back_storage:
