@@ -8,9 +8,7 @@ export default defineNuxtConfig({
     }
   },
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-sanctum'],
-
 
   nitro: {
     routeRules: {
@@ -25,10 +23,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: '/api'
+      apiBase: '/'
     }
   },
-
 
   css: ['~/assets/style.scss'],
 
@@ -60,6 +57,4 @@ export default defineNuxtConfig({
       },
     },
   },
-
-
 })
