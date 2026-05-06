@@ -7,6 +7,8 @@ definePageMeta({ middleware: 'guest' })
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
+
+
 const email    = ref('')
 const password = ref('')
 const error    = ref('')

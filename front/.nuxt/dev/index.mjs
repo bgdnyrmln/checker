@@ -635,6 +635,50 @@ const _inlineRuntimeConfig = {
       "/__nuxt_error": {
         "cache": false
       },
+      "/api/**": {
+        "proxy": {
+          "to": "http://back:8000/api/**",
+          "_proxyStripBase": "/api"
+        }
+      },
+      "/sanctum/csrf-cookie": {
+        "proxy": {
+          "to": "http://back:8000/sanctum/csrf-cookie"
+        }
+      },
+      "/login": {
+        "proxy": {
+          "to": "http://back:8000/login",
+          "fetchOptions": {
+            "headers": {
+              "Accept": "application/json",
+              "X-Requested-With": "XMLHttpRequest"
+            }
+          }
+        }
+      },
+      "/logout": {
+        "proxy": {
+          "to": "http://back:8000/logout",
+          "fetchOptions": {
+            "headers": {
+              "Accept": "application/json",
+              "X-Requested-With": "XMLHttpRequest"
+            }
+          }
+        }
+      },
+      "/register": {
+        "proxy": {
+          "to": "http://back:8000/register",
+          "fetchOptions": {
+            "headers": {
+              "Accept": "application/json",
+              "X-Requested-With": "XMLHttpRequest"
+            }
+          }
+        }
+      },
       "/_nuxt/builds/meta/**": {
         "headers": {
           "cache-control": "public, max-age=31536000, immutable"
@@ -648,9 +692,9 @@ const _inlineRuntimeConfig = {
     }
   },
   "public": {
-    "apiBase": "http://localhost:8000",
+    "apiBase": "/",
     "sanctum": {
-      "baseUrl": "http//localhost:8000",
+      "baseUrl": "/",
       "mode": "cookie",
       "userStateKey": "sanctum.user.identity",
       "redirectIfAuthenticated": false,
@@ -686,7 +730,7 @@ const _inlineRuntimeConfig = {
     }
   },
   "sanctum": {
-    "baseUrl": "http//localhost:8000",
+    "baseUrl": "/",
     "mode": "cookie",
     "userStateKey": "sanctum.user.identity",
     "redirectIfAuthenticated": false,
