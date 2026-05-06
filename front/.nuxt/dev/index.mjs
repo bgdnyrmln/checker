@@ -635,12 +635,6 @@ const _inlineRuntimeConfig = {
       "/__nuxt_error": {
         "cache": false
       },
-      "/api/**": {
-        "proxy": {
-          "to": "http://back:8000/**",
-          "_proxyStripBase": "/api"
-        }
-      },
       "/_nuxt/builds/meta/**": {
         "headers": {
           "cache-control": "public, max-age=31536000, immutable"
@@ -654,9 +648,9 @@ const _inlineRuntimeConfig = {
     }
   },
   "public": {
-    "apiBase": "/api",
+    "apiBase": "http://localhost:8000",
     "sanctum": {
-      "baseUrl": "/api",
+      "baseUrl": "http//localhost:8000",
       "mode": "cookie",
       "userStateKey": "sanctum.user.identity",
       "redirectIfAuthenticated": false,
@@ -692,7 +686,7 @@ const _inlineRuntimeConfig = {
     }
   },
   "sanctum": {
-    "baseUrl": "/api",
+    "baseUrl": "http//localhost:8000",
     "mode": "cookie",
     "userStateKey": "sanctum.user.identity",
     "redirectIfAuthenticated": false,

@@ -10,20 +10,13 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-sanctum'],
 
-  nitro: {
-    routeRules: {
-      '/api/**': {
-        proxy: 'http://back:8000/**'
-      }
-    }
-  },
 
   sanctum: {
-    baseUrl: '/', // Laravel API
+    baseUrl: 'http//localhost:8000', // Laravel API
   },
   runtimeConfig: {
     public: {
-      apiBase: '/'
+      apiBase: 'http://localhost:8000'
     }
   },
 
