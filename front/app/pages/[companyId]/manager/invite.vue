@@ -8,13 +8,13 @@
 
       <div class="relative z-10 max-w-[96rem] mx-auto py-[4rem] px-[4rem] max-[768px]:px-[1.6rem] max-[768px]:py-[2rem] max-[768px]:pt-[3rem]">
 
-        <!-- Page header -->
+        <!-- Lapas galvene -->
         <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
-          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Manager Panel</p>
-          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Invite Employees</h1>
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Vadības panelis</p>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Uzaicināt darbiniekus</h1>
         </div>
 
-        <!-- ── Generate card ── -->
+        <!-- ── Uzaicinājumu ģenerēšanas karte ── -->
         <div class="filter-card rounded-[1.6rem] p-[3rem] mb-[2rem] max-[768px]:p-[1.6rem]">
           <div class="flex items-center gap-[1.4rem] mb-[2.4rem] pb-[2rem]" style="border-bottom: 1px solid var(--border)">
             <div class="empty-icon w-[4rem] h-[4rem] rounded-[1rem] flex items-center justify-center flex-shrink-0">
@@ -23,8 +23,8 @@
               </svg>
             </div>
             <div>
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.1rem]">Invitations</p>
-              <h2 class="page-title text-[1.8rem] leading-tight">Generate Invite Link</h2>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.1rem]">Uzaicinājumi</p>
+              <h2 class="page-title text-[1.8rem] leading-tight">Izveidot uzaicinājuma saiti</h2>
             </div>
           </div>
 
@@ -36,11 +36,11 @@
               <svg class="w-[1.5rem] h-[1.5rem]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
               </svg>
-              Generate Invite
+              Izveidot uzaicinājumu
               <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
             </button>
 
-            <!-- New link result -->
+            <!-- Jaunā saite -->
             <transition name="fade-slide">
               <div v-if="link" class="link-result flex items-start gap-[1.2rem] flex-1 min-w-0 px-[1.8rem] py-[1.2rem] rounded-[0.8rem] max-[768px]:flex-col max-[768px]:gap-[1rem]">
                 <div class="flex items-start gap-[1rem] flex-1 min-w-0">
@@ -49,6 +49,7 @@
                   </svg>
                   <span class="link-text text-[1.2rem] break-all flex-1">{{ link }}</span>
                 </div>
+
                 <button @click="copyLink" class="copy-btn flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem] flex-shrink-0 transition-all duration-150 max-[768px]:w-full">
                   <svg v-if="!copied" class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/>
@@ -56,123 +57,87 @@
                   <svg v-else class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
                   </svg>
-                  {{ copied ? 'Copied!' : 'Copy' }}
+                  {{ copied ? 'Kopēts!' : 'Kopēt' }}
                 </button>
               </div>
             </transition>
           </div>
         </div>
 
-        <!-- ── Invites table card ── -->
+        <!-- ── Uzaicinājumu tabula ── -->
         <div class="table-card rounded-[1.6rem] overflow-hidden">
 
           <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem] max-[768px]:px-[1.6rem] max-[768px]:py-[1.4rem]">
             <div>
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Active Invites</p>
-              <p class="table-text text-[1.4rem]">{{ invites.length }} unused {{ invites.length === 1 ? 'link' : 'links' }}</p>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Aktīvie uzaicinājumi</p>
+              <p class="table-text text-[1.4rem]">{{ invites.length }} neizmantoti {{ invites.length === 1 ? 'uzaicinājums' : 'uzaicinājumi' }}</p>
             </div>
           </div>
 
           <template v-if="invites.length">
 
-            <!-- ── DESKTOP TABLE ── -->
+            <!-- DESKTOP -->
             <table class="w-full max-[768px]:hidden">
               <thead>
                 <tr class="table-head-row">
-                  <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Invite Link</th>
-                  <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Created</th>
-                  <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Expires</th>
-                  <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Action</th>
+                  <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Uzaicinājuma saite</th>
+                  <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Izveidots</th>
+                  <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Derīguma termiņš</th>
+                  <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Darbība</th>
                 </tr>
               </thead>
+
               <tbody>
-                <tr
-                  v-for="(invite, i) in invites"
-                  :key="invite.id"
-                  class="table-row"
-                  :class="i % 2 === 0 ? 'row-even' : 'row-odd'"
-                >
+                <tr v-for="(invite, i) in invites" :key="invite.id">
                   <td class="px-[3rem] py-[1.6rem]">
-                    <div class="flex items-center gap-[1rem]">
-                      <div class="link-dot w-[0.6rem] h-[0.6rem] rounded-full flex-shrink-0"></div>
-                      <span class="table-text text-[1.2rem] break-all font-mono">
-                        {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
-                      </span>
-                    </div>
-                  </td>
-                  <td class="table-text px-[3rem] py-[1.6rem] text-[1.3rem] tabular-nums whitespace-nowrap">
-                    {{ new Date(invite.created_at).toLocaleDateString('en-GB') }}
-                  </td>
-                  <td class="px-[3rem] py-[1.6rem] whitespace-nowrap">
-                    <span class="expire-badge text-[1.1rem] px-[1rem] py-[0.3rem] rounded-full" :class="isExpiringSoon(invite.expires_at) ? 'badge-warn' : 'badge-ok'">
-                      {{ new Date(invite.expires_at).toLocaleDateString('en-GB') }}
+                    <span class="table-text text-[1.2rem] break-all font-mono">
+                      {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
                     </span>
                   </td>
+                  <td class="table-text px-[3rem] py-[1.6rem]">
+                    {{ new Date(invite.created_at).toLocaleDateString('lv-LV') }}
+                  </td>
+                  <td class="px-[3rem] py-[1.6rem]">
+                    {{ new Date(invite.expires_at).toLocaleDateString('lv-LV') }}
+                  </td>
                   <td class="px-[3rem] py-[1.6rem] text-right">
-                    <button @click="copyToken(invite.token)" class="action-btn copy-row-btn flex items-center gap-[0.5rem] px-[1.4rem] py-[0.7rem] rounded-[0.6rem] text-[1.1rem] ml-auto transition-all duration-150">
-                      <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/>
-                      </svg>
-                      Copy
+                    <button @click="copyToken(invite.token)">
+                      Kopēt
                     </button>
                   </td>
                 </tr>
               </tbody>
             </table>
 
-            <!-- ── MOBILE CARDS ── -->
+            <!-- MOBILE -->
             <div class="hidden max-[768px]:block divide-y divide-[var(--border)]">
-              <div
-                v-for="(invite, i) in invites"
-                :key="invite.id"
-                class="invite-card px-[1.6rem] py-[1.6rem]"
-                :class="i % 2 === 0 ? 'row-even' : 'row-odd'"
-              >
-                <!-- Status dot + link -->
-                <div class="flex items-start gap-[1rem] mb-[1.2rem]">
-                  <div class="link-dot w-[0.6rem] h-[0.6rem] rounded-full flex-shrink-0 mt-[0.6rem]"></div>
-                  <span class="table-text text-[1.2rem] break-all font-mono leading-relaxed flex-1">
-                    {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
-                  </span>
+              <div v-for="invite in invites" :key="invite.id" class="invite-card px-[1.6rem] py-[1.6rem]">
+                <span class="table-text text-[1.2rem] break-all font-mono">
+                  {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
+                </span>
+
+                <div class="flex items-center justify-between mt-[1rem]">
+                  <span>{{ new Date(invite.created_at).toLocaleDateString('lv-LV') }}</span>
+                  <span>{{ new Date(invite.expires_at).toLocaleDateString('lv-LV') }}</span>
                 </div>
 
-                <!-- Dates row -->
-                <div class="flex items-center gap-[1.6rem] mb-[1.4rem] flex-wrap">
-                  <div class="flex items-center gap-[0.5rem]">
-                    <span class="page-label text-[0.95rem] tracking-[0.15em] uppercase">Created</span>
-                    <span class="table-text text-[1.2rem] tabular-nums">{{ new Date(invite.created_at).toLocaleDateString('en-GB') }}</span>
-                  </div>
-                  <div class="flex items-center gap-[0.5rem]">
-                    <span class="page-label text-[0.95rem] tracking-[0.15em] uppercase">Expires</span>
-                    <span class="expire-badge text-[1.1rem] px-[0.8rem] py-[0.2rem] rounded-full" :class="isExpiringSoon(invite.expires_at) ? 'badge-warn' : 'badge-ok'">
-                      {{ new Date(invite.expires_at).toLocaleDateString('en-GB') }}
-                    </span>
-                  </div>
-                </div>
-
-                <!-- Copy button -->
-                <button @click="copyToken(invite.token)" class="action-btn copy-row-btn w-full flex items-center justify-center gap-[0.6rem] px-[1.4rem] py-[0.9rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-150">
-                  <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/>
-                  </svg>
-                  Copy Link
+                <button @click="copyToken(invite.token)" class="mt-[1rem] w-full">
+                  Kopēt
                 </button>
               </div>
             </div>
 
           </template>
 
-          <!-- Empty state -->
+          <!-- Empty -->
           <div v-else class="flex flex-col items-center justify-center py-[6rem] text-center">
-            <div class="empty-icon w-[5.4rem] h-[5.4rem] rounded-[1.2rem] flex items-center justify-center mb-[1.6rem]">
-              <svg class="w-[2.4rem] h-[2.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
-              </svg>
-            </div>
-            <p class="table-sub text-[1.4rem] tracking-[0.06em]">No active invite links.</p>
+            <p class="table-sub text-[1.4rem] tracking-[0.06em]">
+              Nav aktīvu uzaicinājumu saišu.
+            </p>
           </div>
 
         </div>
+
       </div>
     </main>
   </div>
@@ -191,17 +156,19 @@ definePageMeta({
 const route = useRoute()
 const companyId = route.params.companyId
 
+
 const sidebarItems = [
-  { text: 'Home',        to: `/${companyId}/manager` },
-  { text: 'Company',     to: `/${companyId}/manager/company` },
-  { text: 'Team',        to: `/${companyId}/manager/team` },
-  { text: 'Schedule',    to: `/${companyId}/manager/schedule` },
-  { text: 'Attendance',  to: `/${companyId}/manager/attendancy` },
-  { text: 'Payrolls',    to: `/${companyId}/manager/payrolls` },
-  { text: 'Invites',     to: `/${companyId}/manager/invite` },
-  { text: 'Holidays',    to: `/${companyId}/manager/holidays` },
-  { text: 'Sick Leaves', to: `/${companyId}/manager/sick-leaves` },
+  { text: 'Sākums',       to: `/${companyId}/manager` },
+  { text: 'Uzņēmums',     to: `/${companyId}/manager/company` },
+  { text: 'Komanda',       to: `/${companyId}/manager/team` },
+  { text: 'Grafiks',      to: `/${companyId}/manager/schedule` },
+  { text: 'Apmeklējumi',   to: `/${companyId}/manager/attendancy` },
+  { text: 'Algas',         to: `/${companyId}/manager/payrolls` },
+  { text: 'Ielūgumi',      to: `/${companyId}/manager/invite` },
+  { text: 'Brīvdienas',    to: `/${companyId}/manager/holidays` },
+  { text: 'Slimības atvaļinājumi', to: `/${companyId}/manager/sick-leaves` },
 ]
+
 
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'

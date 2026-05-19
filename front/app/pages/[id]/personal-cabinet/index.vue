@@ -10,12 +10,12 @@ const route = useRoute()
 const profileId = route.params.id
 
 const sidebarItems = [
-  { text: 'Dashboard',   to: `/${profileId}/personal-cabinet` },
-  { text: 'Attendance',  to: `/${profileId}/personal-cabinet/attendance` },
-  { text: 'Payroll',     to: `/${profileId}/personal-cabinet/payroll` },
-  { text: 'Schedule',    to: `/${profileId}/personal-cabinet/schedule` },
-  { text: 'Holidays',    to: `/${profileId}/personal-cabinet/holidays` },
-  { text: 'Sick Leaves', to: `/${profileId}/personal-cabinet/sick-leaves` },
+  { text: 'Sākums',       to: `/${profileId}/personal-cabinet` },
+  { text: 'Apmeklējumi',  to: `/${profileId}/personal-cabinet/attendance` },
+  { text: 'Algas',        to: `/${profileId}/personal-cabinet/payroll` },
+  { text: 'Grafiks',      to: `/${profileId}/personal-cabinet/schedule` },
+  { text: 'Brīvdienas',   to: `/${profileId}/personal-cabinet/holidays` },
+  { text: 'Slimības atvaļinājumi', to: `/${profileId}/personal-cabinet/sick-leaves` },
 ]
 
 const checkedIn = ref(false)
@@ -78,13 +78,13 @@ const fetchStats = async () => {
 const checkIn = async () => {
   loading.value = true; error.value = ''
   try { await getCsrfToken(); await axios.post(`/api/attendance/check-in/${profileId}`); await fetchStatus(); await fetchStats() }
-  catch (e) { error.value = e.response?.data?.message || 'Check-in failed' }
+  catch (e) { error.value = e.response?.data?.message || 'Ierašanās reģistrēšana neizdevās' }
   finally { loading.value = false }
 }
 const checkOut = async () => {
   loading.value = true; error.value = ''
   try { await getCsrfToken(); await axios.post(`/api/attendance/check-out/${profileId}`); await fetchStatus(); await fetchStats() }
-  catch (e) { error.value = e.response?.data?.message || 'Check-out failed' }
+  catch (e) { error.value = e.response?.data?.message || 'Izejas reģistrēšana neizdevās' }
   finally { loading.value = false }
 }
 
@@ -99,7 +99,7 @@ const getChartColors = () => ({
 })
 
 const renderCharts = (dailyLogs) => {
-  const labels = dailyLogs.map(d => new Date(d.date).toLocaleDateString('en', { weekday: 'short', month: 'short', day: 'numeric' }))
+  const labels = dailyLogs.map(d => new Date(d.date).toLocaleDateString('lv', { weekday: 'short', month: 'short', day: 'numeric' }))
   const hours = dailyLogs.map(d => (d.total_time_seconds / 3600).toFixed(2))
   const c = getChartColors()
 
@@ -147,8 +147,8 @@ onMounted(async () => {
 
       <!-- Page title -->
       <div class="mb-[4rem]">
-        <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personal Cabinet</p>
-        <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Dashboard</h1>
+        <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personīgā sadaļa</p>
+        <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Panelis</h1>
       </div>
 
       <!-- Stat cards -->
@@ -157,12 +157,12 @@ onMounted(async () => {
         <!-- Clock / Check-in card -->
         <div class="stat-card rounded-[1.6rem] p-[3rem] flex flex-col gap-[2rem]">
           <div class="flex flex-col gap-[0.4rem]">
-            <p class="card-label text-[1rem] tracking-[0.18em] uppercase">Current Time</p>
+            <p class="card-label text-[1rem] tracking-[0.18em] uppercase">Pašreizējais laiks</p>
             <p class="card-value text-[3.2rem] leading-none tabular-nums">
               {{ currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) }}
             </p>
             <p class="card-sub text-[1.2rem]">
-              {{ currentTime.toLocaleDateString('en', { weekday: 'long', month: 'long', day: 'numeric' }) }}
+              {{ currentTime.toLocaleDateString('lv', { weekday: 'long', month: 'long', day: 'numeric' }) }}
             </p>
           </div>
 
@@ -179,7 +179,7 @@ onMounted(async () => {
                 <svg class="w-[1.6rem] h-[1.6rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9"/>
                 </svg>
-                {{ loading ? 'Processing…' : 'Check In' }}
+                {{ loading ? 'Apstrādā...' : 'Ierakstīties' }}
                 <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
               </button>
 
@@ -192,7 +192,7 @@ onMounted(async () => {
                 <svg class="w-[1.6rem] h-[1.6rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9"/>
                 </svg>
-                {{ loading ? 'Processing…' : 'Check Out' }}
+                {{ loading ? 'Apstrādā...' : 'Izrakstīties' }}
               </button>
             </div>
 
@@ -200,12 +200,12 @@ onMounted(async () => {
               <svg class="w-[1.6rem] h-[1.6rem] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5"/>
               </svg>
-              <span class="text-[1.2rem]">No shift scheduled today</span>
+              <span class="text-[1.2rem]">Šodien nav grafika</span>
             </div>
 
             <div v-if="checkedInAt" class="flex items-center gap-[0.8rem]">
               <span class="w-[0.6rem] h-[0.6rem] rounded-full bg-green-400 animate-pulse flex-shrink-0"></span>
-              <span class="text-[1.1rem] text-green-500">Checked in at {{ new Date(checkedInAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
+              <span class="text-[1.1rem] text-green-500">Iereģistrēts pulksten {{ new Date(checkedInAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
             </div>
 
             <p v-if="error" class="text-[1.1rem] text-red-400 flex items-center gap-[0.6rem]">
@@ -217,7 +217,7 @@ onMounted(async () => {
         <!-- Hours this week -->
         <div class="stat-card rounded-[1.6rem] p-[3rem] flex flex-col justify-between">
           <div class="flex items-start justify-between mb-[2rem]">
-            <p class="card-label text-[1rem] tracking-[0.18em] uppercase">This Week</p>
+            <p class="card-label text-[1rem] tracking-[0.18em] uppercase">Šī nedēļa</p>
             <div class="icon-badge w-[3.6rem] h-[3.6rem] rounded-[0.8rem] flex items-center justify-center">
               <svg class="w-[1.8rem] h-[1.8rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5"/>
@@ -226,18 +226,18 @@ onMounted(async () => {
           </div>
           <div>
             <p class="card-value text-[4rem] leading-none tabular-nums mb-[0.6rem]">{{ stats.hoursWorkedWeek.toFixed(1) }}</p>
-            <p class="card-sub text-[1.2rem]">hours worked</p>
+            <p class="card-sub text-[1.2rem]">nostrādātās stundas</p>
           </div>
           <div class="mt-[2rem] progress-track h-[0.4rem] rounded-full overflow-hidden">
             <div class="progress-fill h-full rounded-full transition-all duration-700" :style="`width: ${Math.min((stats.hoursWorkedWeek / 40) * 100, 100)}%`"></div>
           </div>
-          <p class="card-label text-[1rem] mt-[0.6rem]">of 40hr target</p>
+          <p class="card-label text-[1rem] mt-[0.6rem]">no 40 stundu mērķa</p>
         </div>
 
         <!-- Hours this month -->
         <div class="stat-card rounded-[1.6rem] p-[3rem] flex flex-col justify-between">
           <div class="flex items-start justify-between mb-[2rem]">
-            <p class="card-label text-[1rem] tracking-[0.18em] uppercase">This Month</p>
+            <p class="card-label text-[1rem] tracking-[0.18em] uppercase">Šis mēnesis</p>
             <div class="icon-badge w-[3.6rem] h-[3.6rem] rounded-[0.8rem] flex items-center justify-center">
               <svg class="w-[1.8rem] h-[1.8rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -246,12 +246,12 @@ onMounted(async () => {
           </div>
           <div>
             <p class="card-value text-[4rem] leading-none tabular-nums mb-[0.6rem]">{{ stats.hoursWorkedMonth.toFixed(1) }}</p>
-            <p class="card-sub text-[1.2rem]">hours worked</p>
+            <p class="card-sub text-[1.2rem]">nostrādātās stundas</p>
           </div>
           <div class="mt-[2rem] progress-track h-[0.4rem] rounded-full overflow-hidden">
             <div class="progress-fill h-full rounded-full transition-all duration-700" :style="`width: ${Math.min((stats.hoursWorkedMonth / 160) * 100, 100)}%`"></div>
           </div>
-          <p class="card-label text-[1rem] mt-[0.6rem]">of 160hr target</p>
+          <p class="card-label text-[1rem] mt-[0.6rem]">no 160 stundu mērķa</p>
         </div>
 
       </div>
@@ -260,16 +260,16 @@ onMounted(async () => {
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-[2rem]">
         <div class="stat-card rounded-[1.6rem] p-[3rem]">
           <div class="mb-[2.4rem]">
-            <p class="card-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Trend</p>
-            <h2 class="page-title text-[1.8rem]">Attendance This Week</h2>
+            <p class="card-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Tendence</p>
+            <h2 class="page-title text-[1.8rem]">Apmeklējumi šonedēļ</h2>
           </div>
           <canvas id="attendanceChart"></canvas>
         </div>
 
         <div class="stat-card rounded-[1.6rem] p-[3rem]">
           <div class="mb-[2.4rem]">
-            <p class="card-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Overview</p>
-            <h2 class="page-title text-[1.8rem]">Weekly Hours</h2>
+            <p class="card-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Pārskats</p>
+            <h2 class="page-title text-[1.8rem]">Nedēļas stundas</h2>
           </div>
           <canvas id="weeklyChart"></canvas>
         </div>

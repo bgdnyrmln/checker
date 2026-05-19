@@ -110,7 +110,7 @@ onMounted(fetchUser)
             <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 12H9m0 0l3-3m-3 3l3 3"/>
             </svg>
-            Logout
+            Atteikties no konta
           </button>
         </template>
 
@@ -119,13 +119,13 @@ onMounted(fetchUser)
             to="/auth/login"
             class="login-link px-[1.6rem] py-[0.8rem] text-[1.1rem] tracking-[0.06em] rounded-[0.8rem] transition-all duration-200 no-underline"
           >
-            Login
+            Pieslēgties
           </NuxtLink>
           <NuxtLink
             to="/auth/register-company"
             class="register-link relative flex items-center gap-[0.6rem] px-[1.8rem] py-[0.9rem] rounded-[0.8rem] text-[1.1rem] text-white tracking-[0.08em] transition-all duration-200 hover:-translate-y-px active:translate-y-0 overflow-hidden no-underline"
           >
-            Register
+            Reģistrēties
             <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
             </svg>
@@ -188,7 +188,7 @@ onMounted(fetchUser)
           <svg class="w-[1.6rem] h-[1.6rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
           </svg>
-          Profile
+          Profils
         </NuxtLink>
 
         <button
@@ -198,7 +198,7 @@ onMounted(fetchUser)
           <svg class="w-[1.6rem] h-[1.6rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 12H9m0 0l3-3m-3 3l3 3"/>
           </svg>
-          Logout
+          Atteikties no konta
         </button>
       </template>
 
@@ -208,14 +208,14 @@ onMounted(fetchUser)
           @click="mobileMenuOpen = false"
           class="mobile-link flex items-center gap-[1rem] px-[1.4rem] py-[1.2rem] rounded-[0.8rem] text-[1.3rem] no-underline transition-all duration-150"
         >
-          Login
+          Pieslēgties
         </NuxtLink>
         <NuxtLink
           to="/auth/register-company"
           @click="mobileMenuOpen = false"
           class="mobile-register flex items-center justify-center gap-[0.8rem] px-[1.4rem] py-[1.2rem] rounded-[0.8rem] text-[1.3rem] text-white no-underline transition-all duration-150"
         >
-          Register
+          Reģistrēties
           <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
           </svg>

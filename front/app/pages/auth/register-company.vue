@@ -37,7 +37,7 @@ const submit = async () => {
     await axios.post('/api/register/company', form.value)
     success.value = true
   } catch (e) {
-    error.value = e.response?.data?.message || 'Registration failed.'
+    error.value = e.response?.data?.message || 'Reģistrācija neizdevās.'
   } finally {
     loading.value = false
   }
@@ -57,13 +57,13 @@ const submit = async () => {
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
-      <h2 class="page-title text-[2.8rem] mb-[1.2rem]">Company Registered!</h2>
-      <p class="page-sub text-[1.4rem] mb-[3.2rem]">Your company and admin account have been created. You can now sign in.</p>
+      <h2 class="page-title text-[2.8rem] mb-[1.2rem]">Uzņēmums reģistrēts!</h2>
+      <p class="page-sub text-[1.4rem] mb-[3.2rem]">Jūsu uzņēmums un administratora konts ir izveidoti. Tagad varat pierakstīties.</p>
       <NuxtLink
         to="/auth/login"
         class="auth-btn inline-flex items-center gap-[0.8rem] px-[2.8rem] py-[1.2rem] rounded-[0.8rem] text-[1.3rem] text-white tracking-[0.06em] no-underline hover:-translate-y-px transition-all duration-200"
       >
-        Go to Login
+        Iet uz pierakstīšanos
         <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
         </svg>
@@ -82,8 +82,8 @@ const submit = async () => {
         </div>
       </div>
 
-      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase text-center mb-[0.8rem]">Get Started</p>
-      <h1 class="page-title text-[3rem] leading-tight text-center mb-[3.6rem]">Register Your Company</h1>
+      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase text-center mb-[0.8rem]">Sākt</p>
+      <h1 class="page-title text-[3rem] leading-tight text-center mb-[3.6rem]">Reģistrējiet savu uzņēmumu</h1>
 
       <div class="flex flex-col gap-[2.8rem]">
 
@@ -91,14 +91,14 @@ const submit = async () => {
         <div class="flex flex-col gap-[1.4rem]">
           <div class="flex items-center gap-[1rem] mb-[0.4rem]">
             <span class="section-dot w-[0.6rem] h-[0.6rem] rounded-full"></span>
-            <p class="page-label text-[1rem] tracking-[0.18em] uppercase">Company Info</p>
+            <p class="page-label text-[1rem] tracking-[0.18em] uppercase">Uzņēmuma informācija</p>
           </div>
           <div class="flex flex-col gap-[0.4rem]">
-            <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Company Name</label>
+            <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Uzņēmuma nosaukums</label>
             <input v-model="form.company_name" placeholder="Acme Corp" class="form-input rounded-[0.8rem] px-[1.6rem] py-[1.1rem] text-[1.3rem] outline-none transition-all duration-200" />
           </div>
           <div class="flex flex-col gap-[0.4rem]">
-            <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Company Email</label>
+            <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Uzņēmuma e-pasts</label>
             <input v-model="form.company_email" type="email" placeholder="hello@acme.com" class="form-input rounded-[0.8rem] px-[1.6rem] py-[1.1rem] text-[1.3rem] outline-none transition-all duration-200" />
           </div>
         </div>
@@ -109,32 +109,32 @@ const submit = async () => {
         <div class="flex flex-col gap-[1.4rem]">
           <div class="flex items-center gap-[1rem] mb-[0.4rem]">
             <span class="section-dot w-[0.6rem] h-[0.6rem] rounded-full"></span>
-            <p class="page-label text-[1rem] tracking-[0.18em] uppercase">Admin Account</p>
+            <p class="page-label text-[1rem] tracking-[0.18em] uppercase">Administratora konts</p>
           </div>
 
           <div class="grid grid-cols-2 gap-[1.2rem]">
             <div class="flex flex-col gap-[0.4rem]">
-              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">First Name</label>
+              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Vārds</label>
               <input v-model="form.first_name" placeholder="John" class="form-input rounded-[0.8rem] px-[1.6rem] py-[1.1rem] text-[1.3rem] outline-none transition-all duration-200" />
             </div>
             <div class="flex flex-col gap-[0.4rem]">
-              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Last Name</label>
+              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Uzvārds</label>
               <input v-model="form.last_name" placeholder="Doe" class="form-input rounded-[0.8rem] px-[1.6rem] py-[1.1rem] text-[1.3rem] outline-none transition-all duration-200" />
             </div>
           </div>
 
           <div class="flex flex-col gap-[0.4rem]">
-            <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Admin Email</label>
+            <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Admina e-pasts</label>
             <input v-model="form.email" type="email" placeholder="admin@acme.com" class="form-input rounded-[0.8rem] px-[1.6rem] py-[1.1rem] text-[1.3rem] outline-none transition-all duration-200" />
           </div>
 
           <div class="grid grid-cols-2 gap-[1.2rem]">
             <div class="flex flex-col gap-[0.4rem]">
-              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Password</label>
+              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Parole</label>
               <input v-model="form.password" type="password" placeholder="••••••••" class="form-input rounded-[0.8rem] px-[1.6rem] py-[1.1rem] text-[1.3rem] outline-none transition-all duration-200" />
             </div>
             <div class="flex flex-col gap-[0.4rem]">
-              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Confirm</label>
+              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Apstiprināt</label>
               <input v-model="form.password_confirmation" type="password" placeholder="••••••••" class="form-input rounded-[0.8rem] px-[1.6rem] py-[1.1rem] text-[1.3rem] outline-none transition-all duration-200" />
             </div>
           </div>
@@ -153,14 +153,14 @@ const submit = async () => {
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
           </svg>
-          <span>{{ loading ? 'Registering...' : 'Register Company' }}</span>
+          <span>{{ loading ? 'Reģistrē...' : 'Reģistrēt uzņēmumu' }}</span>
           <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
         </button>
 
         <!-- Footer links -->
         <div class="flex items-center justify-between pt-[0.4rem]">
-          <NuxtLink to="/auth/register" class="auth-link text-[1.2rem]">Have an invite?</NuxtLink>
-          <NuxtLink to="/auth/login" class="auth-link text-[1.2rem]">Already have an account?</NuxtLink>
+          <NuxtLink to="/auth/register" class="auth-link text-[1.2rem]">Ir uzaicinājums?</NuxtLink>
+          <NuxtLink to="/auth/login" class="auth-link text-[1.2rem]">Jau ir konts?</NuxtLink>
         </div>
 
       </div>

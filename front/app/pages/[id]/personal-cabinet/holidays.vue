@@ -11,23 +11,23 @@
 
         <!-- Page header -->
         <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
-          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personal Cabinet</p>
-          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">My Holidays</h1>
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personīgā sadaļa</p>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Manas brīvdienas</h1>
         </div>
 
         <!-- Request form -->
         <div class="filter-card rounded-[1.6rem] p-[2.8rem] max-[768px]:p-[1.6rem] mb-[2.4rem]">
-          <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[2rem]">New Request</p>
+          <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[2rem]">Jauns pieprasījums</p>
 
           <div class="flex flex-col gap-[1.2rem]">
 
             <!-- Reason -->
             <div class="flex flex-col gap-[0.4rem]">
-              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Reason</label>
+              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Iemesls</label>
               <input
                 v-model="form.content"
                 type="text"
-                placeholder="Reason for holiday..."
+                placeholder="Iemesls atvaļinājumam..."
                 class="form-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200"
               />
             </div>
@@ -36,12 +36,12 @@
             <div class="flex flex-wrap items-end gap-[1.2rem]">
               <div class="flex items-end gap-[1rem] flex-1 min-w-0">
                 <div class="flex flex-col gap-[0.4rem] flex-1 min-w-0">
-                  <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Start Date</label>
+                  <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Sākuma datums</label>
                   <input type="date" v-model="form.date_start" class="date-input w-full rounded-[0.8rem] px-[1.2rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
                 </div>
                 <div class="arrow-sep text-[1.4rem] mb-[0.9rem] flex-shrink-0">→</div>
                 <div class="flex flex-col gap-[0.4rem] flex-1 min-w-0">
-                  <label class="page-label text-[1rem] tracking-[0.15em] uppercase">End Date</label>
+                  <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Beigu datums</label>
                   <input type="date" v-model="form.date_end" class="date-input w-full rounded-[0.8rem] px-[1.2rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
                 </div>
               </div>
@@ -53,7 +53,7 @@
                 <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/>
                 </svg>
-                Submit Request
+                Iesniegt pieprasījumu
                 <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
               </button>
             </div>
@@ -74,7 +74,7 @@
         <!-- Loading -->
         <div v-if="loading" class="flex items-center gap-[1.6rem] py-[4rem] justify-center">
           <div class="spinner w-[2.8rem] h-[2.8rem] rounded-full animate-spin"></div>
-          <span class="page-label text-[1.2rem] tracking-[0.12em]">Loading holidays...</span>
+          <span class="page-label text-[1.2rem] tracking-[0.12em]">Ielādē brīvdienas...</span>
         </div>
 
         <!-- Fetch error -->
@@ -87,8 +87,8 @@
 
           <div class="table-summary flex items-center justify-between px-[3rem] max-[768px]:px-[2rem] py-[2rem] flex-wrap gap-[1rem]">
             <div>
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Holiday Requests</p>
-              <p class="table-text text-[1.4rem]">{{ holidays.length }} total</p>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Atvaļinājumu pieprasījumi</p>
+              <p class="table-text text-[1.4rem]">{{ holidays.length }} kopā</p>
             </div>
             <div class="flex items-center gap-[1.2rem]">
               <div class="flex items-center gap-[0.6rem]">
@@ -106,11 +106,11 @@
           <table class="w-full max-[600px]:hidden">
             <thead>
               <tr class="table-head-row">
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Start</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">End</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Reason</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Status</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Actions</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Sākuma datums</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Beigu datums</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Iemesls</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Stāvoklis</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Darbības</th>
               </tr>
             </thead>
             <tbody>
@@ -131,7 +131,7 @@
                     :class="h.is_approved ? 'badge-approved' : 'badge-pending'"
                   >
                     <span class="w-[0.5rem] h-[0.5rem] rounded-full" :class="h.is_approved ? 'dot-approved' : 'dot-pending'"></span>
-                    {{ h.is_approved ? 'Approved' : 'Pending' }}
+                    {{ h.is_approved ? 'Apstiprināts' : 'Gaidīts' }}
                   </span>
                 </td>
                 <td class="px-[3rem] py-[1.6rem] text-right">
@@ -143,7 +143,7 @@
                     <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
                     </svg>
-                    Delete
+                    Dzēst
                   </button>
                   <span v-else class="table-empty text-[1.2rem]">—</span>
                 </td>
@@ -173,7 +173,7 @@
                   :class="h.is_approved ? 'badge-approved' : 'badge-pending'"
                 >
                   <span class="w-[0.5rem] h-[0.5rem] rounded-full" :class="h.is_approved ? 'dot-approved' : 'dot-pending'"></span>
-                  {{ h.is_approved ? 'Approved' : 'Pending' }}
+                  {{ h.is_approved ? 'Apstiprināts' : 'Gaidīts' }}
                 </span>
               </div>
 
@@ -186,7 +186,7 @@
                 <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
                 </svg>
-                Delete
+                Dzēst
               </button>
             </div>
           </div>
@@ -200,7 +200,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
             </svg>
           </div>
-          <p class="table-sub text-[1.4rem] tracking-[0.06em]">No holiday requests found.</p>
+          <p class="table-sub text-[1.4rem] tracking-[0.06em]">Nav atvaļinājuma pieprasījumu.</p>
         </div>
 
       </div>
@@ -219,12 +219,12 @@ const route = useRoute()
 const profileId = route.params.id
 
 const sidebarItems = [
-  { text: 'Dashboard',   to: `/${profileId}/personal-cabinet` },
-  { text: 'Attendance',  to: `/${profileId}/personal-cabinet/attendance` },
-  { text: 'Payroll',     to: `/${profileId}/personal-cabinet/payroll` },
-  { text: 'Schedule',    to: `/${profileId}/personal-cabinet/schedule` },
-  { text: 'Holidays',    to: `/${profileId}/personal-cabinet/holidays` },
-  { text: 'Sick Leaves', to: `/${profileId}/personal-cabinet/sick-leaves` },
+  { text: 'Sākums',       to: `/${profileId}/personal-cabinet` },
+  { text: 'Apmeklējumi',  to: `/${profileId}/personal-cabinet/attendance` },
+  { text: 'Algas',        to: `/${profileId}/personal-cabinet/payroll` },
+  { text: 'Grafiks',      to: `/${profileId}/personal-cabinet/schedule` },
+  { text: 'Brīvdienas',   to: `/${profileId}/personal-cabinet/holidays` },
+  { text: 'Slimības atvaļinājumi', to: `/${profileId}/personal-cabinet/sick-leaves` },
 ]
 
 axios.defaults.withCredentials = true
@@ -244,8 +244,8 @@ const fetchHolidays = async () => {
   try {
     const res = await axios.get('/api/holidays', { params: { profile_id: profileId } })
     holidays.value = res.data
-  } catch (e) {
-    error.value = 'Failed to load holidays.'
+    } catch (e) {
+    error.value = 'Neizdevās ielādēt brīvdienas.'
   } finally {
     loading.value = false
   }
@@ -263,28 +263,28 @@ const submitHoliday = async () => {
   formError.value = ''
   formSuccess.value = ''
   if (!form.value.content || !form.value.date_start) {
-    formError.value = 'Reason and start date are required.'
+    formError.value = 'Iemesls un sākuma datums ir obligāti.'
     return
   }
   try {
     await getCsrfToken()
     await axios.post('/api/holidays', { ...form.value, profile_id: profileId })
-    formSuccess.value = 'Holiday request submitted!'
+    formSuccess.value = 'Atvaļinājuma pieprasījums nosūtīts!'
     form.value = { content: '', date_start: '', date_end: '' }
     await fetchHolidays()
   } catch (e) {
-    formError.value = 'Failed to submit request.'
+    formError.value = 'Neizdevās iesniegt pieprasījumu.'
   }
 }
 
 const deleteHoliday = async (id) => {
-  if (!confirm('Delete this holiday request?')) return
+  if (!confirm('Dzēst šo atvaļinājuma pieprasījumu?')) return
   try {
     await getCsrfToken()
     await axios.delete(`/api/holidays/${id}`)
     await fetchHolidays()
   } catch (e) {
-    error.value = 'Failed to delete holiday.'
+  error.value = 'Neizdevās dzēst atvaļinājumu.'
   }
 }
 

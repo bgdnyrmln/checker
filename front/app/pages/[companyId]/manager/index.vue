@@ -15,15 +15,15 @@ const companyId = route.params.companyId
 const { isDark } = useTheme()
 
 const sidebarItems = [
-  { text: 'Home',        to: `/${companyId}/manager` },
-  { text: 'Company',     to: `/${companyId}/manager/company` },
-  { text: 'Team',        to: `/${companyId}/manager/team` },
-  { text: 'Schedule',    to: `/${companyId}/manager/schedule` },
-  { text: 'Attendance',  to: `/${companyId}/manager/attendancy` },
-  { text: 'Payrolls',    to: `/${companyId}/manager/payrolls` },
-  { text: 'Invites',     to: `/${companyId}/manager/invite` },
-  { text: 'Holidays',    to: `/${companyId}/manager/holidays` },
-  { text: 'Sick Leaves', to: `/${companyId}/manager/sick-leaves` },
+  { text: 'Sākums',       to: `/${companyId}/manager` },
+  { text: 'Uzņēmums',     to: `/${companyId}/manager/company` },
+  { text: 'Komanda',       to: `/${companyId}/manager/team` },
+  { text: 'Grafiks',      to: `/${companyId}/manager/schedule` },
+  { text: 'Apmeklējumi',   to: `/${companyId}/manager/attendancy` },
+  { text: 'Algas',         to: `/${companyId}/manager/payrolls` },
+  { text: 'Ielūgumi',      to: `/${companyId}/manager/invite` },
+  { text: 'Brīvdienas',    to: `/${companyId}/manager/holidays` },
+  { text: 'Slimības atvaļinājumi', to: `/${companyId}/manager/sick-leaves` },
 ]
 
 const stats        = ref({})
@@ -58,9 +58,9 @@ const renderCharts = (data) => {
   shiftsChart = new Chart(document.getElementById('shiftsChart'), {
     type: 'bar',
     data: {
-      labels: ['This Week'],
+      labels: ['Šī nedēļa'],
       datasets: [{
-        label: 'Shifts',
+        label: 'Maiņas',
         data: [data.stats.shiftsThisWeek || 0],
         backgroundColor: c.bar,
         borderColor: c.barBorder,
@@ -75,9 +75,9 @@ const renderCharts = (data) => {
   attendanceChart = new Chart(document.getElementById('attendanceChart'), {
     type: 'line',
     data: {
-      labels: ['Today'],
+      labels: ['Šodien'],
       datasets: [{
-        label: 'Attendance',
+        label: 'Apmeklējumi',
         data: [data.stats.attendanceToday || 0],
         borderColor: c.border,
         backgroundColor: c.fill,
@@ -119,8 +119,8 @@ onMounted(fetchDashboard)
 
         <!-- Page header -->
         <div class="mb-[4rem]">
-          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Manager Panel</p>
-          <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Dashboard</h1>
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Pārvaldnieka panelis</p>
+          <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Pārskats</h1>
         </div>
 
         <!-- ── Stat cards ───────────────────────────────────────────── -->
@@ -129,7 +129,7 @@ onMounted(fetchDashboard)
           <!-- Employees -->
           <div class="stat-card rounded-[1.6rem] p-[3rem] flex flex-col justify-between">
             <div class="flex items-start justify-between mb-[2rem]">
-              <p class="card-label text-[1rem] tracking-[0.18em] uppercase">Employees</p>
+              <p class="card-label text-[1rem] tracking-[0.18em] uppercase">Darbinieki</p>
               <div class="icon-badge w-[3.6rem] h-[3.6rem] rounded-[0.8rem] flex items-center justify-center">
                 <svg class="w-[1.8rem] h-[1.8rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
@@ -138,14 +138,14 @@ onMounted(fetchDashboard)
             </div>
             <div>
               <p class="card-value text-[4.8rem] leading-none tabular-nums mb-[0.4rem]">{{ stats.employees ?? '—' }}</p>
-              <p class="card-sub text-[1.2rem]">total members</p>
+              <p class="card-sub text-[1.2rem]">kopā</p>
             </div>
           </div>
 
           <!-- Shifts This Week -->
           <div class="stat-card rounded-[1.6rem] p-[3rem] flex flex-col justify-between">
             <div class="flex items-start justify-between mb-[2rem]">
-              <p class="card-label text-[1rem] tracking-[0.18em] uppercase">Shifts This Week</p>
+              <p class="card-label text-[1rem] tracking-[0.18em] uppercase">Maiņas šonedēļ</p>
               <div class="icon-badge w-[3.6rem] h-[3.6rem] rounded-[0.8rem] flex items-center justify-center">
                 <svg class="w-[1.8rem] h-[1.8rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
@@ -154,20 +154,20 @@ onMounted(fetchDashboard)
             </div>
             <div>
               <p class="card-value text-[4.8rem] leading-none tabular-nums mb-[0.4rem]">{{ stats.shiftsThisWeek ?? '—' }}</p>
-              <p class="card-sub text-[1.2rem]">scheduled shifts</p>
+              <p class="card-sub text-[1.2rem]">plānotās maiņas</p>
             </div>
             <div class="mt-[2rem] progress-track h-[0.4rem] rounded-full overflow-hidden">
               <div class="progress-fill h-full rounded-full transition-all duration-700"
                 :style="`width: ${Math.min(((stats.shiftsThisWeek ?? 0) / 50) * 100, 100)}%`">
               </div>
             </div>
-            <p class="card-label text-[1rem] mt-[0.6rem]">of 50 shift target</p>
+            <p class="card-label text-[1rem] mt-[0.6rem]">no 50 maiņu mērķa</p>
           </div>
 
           <!-- Attendance Today -->
           <div class="stat-card rounded-[1.6rem] p-[3rem] flex flex-col justify-between">
             <div class="flex items-start justify-between mb-[2rem]">
-              <p class="card-label text-[1rem] tracking-[0.18em] uppercase">Attendance Today</p>
+              <p class="card-label text-[1rem] tracking-[0.18em] uppercase">Apmeklējumi šodien</p>
               <div class="icon-badge w-[3.6rem] h-[3.6rem] rounded-[0.8rem] flex items-center justify-center">
                 <svg class="w-[1.8rem] h-[1.8rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -176,7 +176,7 @@ onMounted(fetchDashboard)
             </div>
             <div>
               <p class="card-value text-[4.8rem] leading-none tabular-nums mb-[0.4rem]">{{ stats.attendanceToday ?? '—' }}</p>
-              <p class="card-sub text-[1.2rem]">checked in</p>
+              <p class="card-sub text-[1.2rem]">ierakstījušies</p>
             </div>
             <div class="mt-[2rem] progress-track h-[0.4rem] rounded-full overflow-hidden">
               <div class="progress-fill h-full rounded-full transition-all duration-700"
@@ -184,7 +184,7 @@ onMounted(fetchDashboard)
               </div>
             </div>
             <p class="card-label text-[1rem] mt-[0.6rem]">
-              {{ stats.employees ? `of ${stats.employees} employees` : 'no data' }}
+              {{ stats.employees ? `no ${stats.employees} darbiniekiem` : 'nav datu' }}
             </p>
           </div>
 
@@ -195,16 +195,16 @@ onMounted(fetchDashboard)
 
           <div class="stat-card rounded-[1.6rem] p-[3rem]">
             <div class="mb-[2.4rem]">
-              <p class="card-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Overview</p>
-              <h2 class="page-title text-[1.8rem]">Shifts This Month</h2>
+              <p class="card-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Pārskats</p>
+              <h2 class="page-title text-[1.8rem]">Maiņas šomēnes</h2>
             </div>
             <canvas id="shiftsChart"></canvas>
           </div>
 
           <div class="stat-card rounded-[1.6rem] p-[3rem]">
             <div class="mb-[2.4rem]">
-              <p class="card-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Overview</p>
-              <h2 class="page-title text-[1.8rem]">Attendance Today</h2>
+              <p class="card-label text-[1rem] tracking-[0.18em] uppercase mb-[0.4rem]">Pārskats</p>
+              <h2 class="page-title text-[1.8rem]">Apmeklējumi šodien</h2>
             </div>
             <canvas id="attendanceChart"></canvas>
           </div>
@@ -216,14 +216,14 @@ onMounted(fetchDashboard)
 
           <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem]">
             <div>
-              <p class="card-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Recent Shifts</p>
-              <p class="table-text text-[1.4rem]">{{ recentShifts.length }} {{ recentShifts.length === 1 ? 'entry' : 'entries' }}</p>
+              <p class="card-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Nesenās maiņas</p>
+              <p class="table-text text-[1.4rem]">{{ recentShifts.length }} {{ recentShifts.length === 1 ? 'ieraksts' : 'ieraksti' }}</p>
             </div>
             <NuxtLink
               :to="`/${companyId}/manager/schedule`"
               class="view-all-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[0.8rem] rounded-[0.8rem] text-[1.1rem] font-medium transition-all duration-200 no-underline"
             >
-              View All
+              Skatīt visu
               <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
               </svg>
@@ -233,10 +233,10 @@ onMounted(fetchDashboard)
           <table class="w-full">
             <thead>
               <tr class="table-head-row">
-                <th class="card-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Employee</th>
-                <th class="card-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Date</th>
-                <th class="card-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Start</th>
-                <th class="card-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">End</th>
+                <th class="card-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Darbinieks</th>
+                <th class="card-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Datums</th>
+                <th class="card-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Sākums</th>
+                <th class="card-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Beigas</th>
               </tr>
             </thead>
             <tbody>
@@ -269,7 +269,7 @@ onMounted(fetchDashboard)
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5"/>
                       </svg>
                     </div>
-                    <p class="card-sub text-[1.3rem] tracking-[0.06em]">No shifts found.</p>
+                    <p class="card-sub text-[1.3rem] tracking-[0.06em]">Nav maiņu.</p>
                   </div>
                 </td>
               </tr>

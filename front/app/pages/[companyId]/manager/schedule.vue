@@ -7,8 +7,8 @@
       <div class="relative z-10 max-w-[120rem] mx-auto py-[4rem] px-[4rem] max-[768px]:px-[1.6rem] max-[768px]:py-[2rem] max-[768px]:pt-[3rem]">
         <!-- Page header -->
         <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
-          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Manager Panel</p>
-          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Team Shifts</h1>
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Vadītāja panelis</p>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Darbinieku maiņas</h1>
         </div>
 
         <!-- Error -->
@@ -35,30 +35,30 @@
               </svg>
             </div>
             <div>
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.1rem]">Schedule</p>
-              <h2 class="page-title text-[1.8rem] leading-tight">Create Shift</h2>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.1rem]">Grafiks</p>
+              <h2 class="page-title text-[1.8rem] leading-tight">Izveidot maiņu</h2>
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-4 gap-[1.6rem] mb-[2.4rem] max-[768px]:gap-[1.2rem]">
             <div class="flex flex-col gap-[0.6rem]">
-              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Employee</label>
+              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Darbinieks</label>
               <select v-model="form.profile_id" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200">
-                <option disabled value="">Select employee</option>
+                <option disabled value="">Izvēlēties darbinieku</option>
                 <option v-for="emp in employees" :key="emp.id" :value="emp.id">
                   {{ emp.first_name }} {{ emp.last_name }}
                 </option>
               </select>
             </div>
             <div class="flex flex-col gap-[0.6rem]">
-              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Date</label>
+              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Datums</label>
               <input type="date" v-model="form.shift_date" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
             </div>
             <div class="flex flex-col gap-[0.6rem]">
-              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Start Time</label>
+              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Sākuma laiks</label>
               <input type="time" v-model="form.starts_at" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
             </div>
             <div class="flex flex-col gap-[0.6rem]">
-              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">End Time</label>
+              <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Beigu laiks</label>
               <input type="time" v-model="form.ends_at" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
             </div>
           </div>
@@ -67,7 +67,7 @@
               <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
               </svg>
-              Add Shift
+              Pievienot maiņu
               <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
             </button>
           </div>
@@ -79,12 +79,12 @@
             <!-- Date range -->
             <div class="flex items-center gap-[1.2rem] max-[480px]:flex-col max-[480px]:items-stretch max-[480px]:gap-[1rem]">
               <div class="flex flex-col gap-[0.4rem]">
-                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">From</label>
+                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">No</label>
                 <input type="date" v-model="startDate" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
               <div class="arrow-sep mt-[1.8rem] text-[1.4rem] max-[480px]:hidden">→</div>
               <div class="flex flex-col gap-[0.4rem]">
-                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">To</label>
+                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Līdz</label>
                 <input type="date" v-model="endDate" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
             </div>
@@ -92,12 +92,12 @@
               <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
               </svg>
-              Apply
+              Pielietot
               <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
             </button>
             <!-- Export buttons -->
             <div class="flex items-center gap-[1rem] max-[768px]:ml-0 ml-auto max-[480px]:flex-wrap">
-              <span class="page-label text-[1rem] tracking-[0.15em] uppercase mr-[0.4rem] max-[480px]:w-full">Export</span>
+              <span class="page-label text-[1rem] tracking-[0.15em] uppercase mr-[0.4rem] max-[480px]:w-full">Eksportēt</span>
               <button @click="exportCSV" class="export-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
                 <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
@@ -106,7 +106,7 @@
               </button>
               <button @click="exportXLS" class="export-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
                 <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125"/>
                 </svg>
                 XLS
               </button>
@@ -123,7 +123,7 @@
         <!-- Loading -->
         <div v-if="loading" class="flex items-center gap-[1.6rem] py-[4rem] justify-center">
           <div class="spinner w-[2.8rem] h-[2.8rem] rounded-full animate-spin"></div>
-          <span class="page-label text-[1.2rem] tracking-[0.12em]">Loading shifts…</span>
+          <span class="page-label text-[1.2rem] tracking-[0.12em]">Ielādē maiņas…</span>
         </div>
 
         <!-- ── Shifts Table (desktop) + Cards (mobile) ── -->
@@ -131,7 +131,7 @@
           <!-- Summary / search bar -->
           <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem] flex-wrap gap-[1.6rem] max-[768px]:px-[1.6rem] max-[768px]:py-[1.4rem]">
             <div>
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Period</p>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Periods</p>
               <p class="table-text text-[1.4rem] max-[480px]:text-[1.2rem]">{{ startDate }} → {{ endDate }}</p>
             </div>
             <div class="search-wrapper relative flex-1 max-w-[32rem] max-[480px]:max-w-full max-[480px]:w-full">
@@ -140,10 +140,10 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0015.803 15.803z"/>
                 </svg>
               </div>
-              <input type="text" v-model="searchQuery" placeholder="Search by name or email…" class="search-input w-full pl-[3.8rem] pr-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.3rem] outline-none transition-all duration-200" />
+              <input type="text" v-model="searchQuery" placeholder="Meklēt pēc vārda vai e-pasta…" class="search-input w-full pl-[3.8rem] pr-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.3rem] outline-none transition-all duration-200" />
             </div>
             <div class="text-right">
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Shifts</p>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Maiņas</p>
               <p class="page-title text-[2.4rem] leading-none tabular-nums">{{ processedShifts.length }}</p>
             </div>
           </div>
@@ -153,21 +153,21 @@
             <thead>
               <tr class="table-head-row">
                 <th @click="sortBy('employee')" class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none">
-                  <span class="flex items-center gap-[0.5rem]">Employee <sort-arrow :active="sortKey==='employee'" :desc="sortDirection==='desc'" /></span>
+                  <span class="flex items-center gap-[0.5rem]">Darbinieks <sort-arrow :active="sortKey==='employee'" :desc="sortDirection==='desc'" /></span>
                 </th>
                 <th @click="sortBy('email')" class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none">
-                  <span class="flex items-center gap-[0.5rem]">Email <sort-arrow :active="sortKey==='email'" :desc="sortDirection==='desc'" /></span>
+                  <span class="flex items-center gap-[0.5rem]">E-pasts <sort-arrow :active="sortKey==='email'" :desc="sortDirection==='desc'" /></span>
                 </th>
                 <th @click="sortBy('date')" class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none">
-                  <span class="flex items-center gap-[0.5rem]">Date <sort-arrow :active="sortKey==='date'" :desc="sortDirection==='desc'" /></span>
+                  <span class="flex items-center gap-[0.5rem]">Datums <sort-arrow :active="sortKey==='date'" :desc="sortDirection==='desc'" /></span>
                 </th>
                 <th @click="sortBy('start')" class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none">
-                  <span class="flex items-center gap-[0.5rem]">Start <sort-arrow :active="sortKey==='start'" :desc="sortDirection==='desc'" /></span>
+                  <span class="flex items-center gap-[0.5rem]">Sākums <sort-arrow :active="sortKey==='start'" :desc="sortDirection==='desc'" /></span>
                 </th>
                 <th @click="sortBy('end')" class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal cursor-pointer select-none">
-                  <span class="flex items-center gap-[0.5rem]">End <sort-arrow :active="sortKey==='end'" :desc="sortDirection==='desc'" /></span>
+                  <span class="flex items-center gap-[0.5rem]">Beigas <sort-arrow :active="sortKey==='end'" :desc="sortDirection==='desc'" /></span>
                 </th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Actions</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Darbības</th>
               </tr>
             </thead>
             <tbody>
@@ -197,22 +197,18 @@
                   <div class="flex items-center justify-end gap-[0.8rem]">
                     <template v-if="editingId !== shift.id">
                       <button @click="startEdit(shift)" class="action-btn edit-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem]">
-                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>
-                        Edit
+                        Rediģēt
                       </button>
                       <button @click="deleteShift(shift)" class="action-btn delete-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem]">
-                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
-                        Delete
+                        Dzēst
                       </button>
                     </template>
                     <template v-else>
                       <button @click="confirmEdit(shift)" class="action-btn confirm-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem]">
-                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                        Confirm
+                        Apstiprināt
                       </button>
                       <button @click="cancelEdit" class="action-btn cancel-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.6rem] rounded-[0.6rem] text-[1.1rem]">
-                        <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                        Cancel
+                        Atcelt
                       </button>
                     </template>
                   </div>
@@ -221,7 +217,7 @@
             </tbody>
             <tfoot>
               <tr class="table-foot-row">
-                <td colspan="5" class="px-[3rem] py-[1.8rem] text-[1.1rem] tracking-[0.12em] uppercase text-right table-sub">Total Shifts</td>
+                <td colspan="5" class="px-[3rem] py-[1.8rem] text-[1.1rem] tracking-[0.12em] uppercase text-right table-sub">Kopējais maiņu skaits</td>
                 <td class="px-[3rem] py-[1.8rem] text-[1.8rem] text-right tabular-nums font-medium page-title">{{ processedShifts.length }}</td>
               </tr>
             </tfoot>
@@ -231,7 +227,7 @@
           <div class="hidden max-[768px]:block">
             <!-- Sort chips -->
             <div class="sort-bar flex items-center gap-[0.8rem] px-[1.6rem] py-[1.2rem] overflow-x-auto">
-              <span class="page-label text-[1rem] tracking-[0.15em] uppercase flex-shrink-0">Sort:</span>
+              <span class="page-label text-[1rem] tracking-[0.15em] uppercase flex-shrink-0">Kārtot:</span>
               <button
                 v-for="col in mobileSortCols" :key="col.key"
                 @click="sortBy(col.key)"
@@ -239,15 +235,12 @@
                 :class="sortKey === col.key ? 'sort-chip-active' : ''"
               >
                 {{ col.label }}
-                <svg v-if="sortKey === col.key" class="w-[1rem] h-[1rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" :d="sortDirection === 'asc' ? 'M4.5 15.75l7.5-7.5 7.5 7.5' : 'M19.5 8.25l-7.5 7.5-7.5-7.5'" />
-                </svg>
               </button>
             </div>
+
             <!-- Shift cards -->
             <div class="flex flex-col divide-y divide-[var(--border)]">
               <div v-for="shift in processedShifts" :key="shift.id" class="shift-card px-[1.6rem] py-[1.8rem]">
-                <!-- Header: avatar + name + date badge -->
                 <div class="flex items-center justify-between gap-[1.2rem] mb-[1.2rem]">
                   <div class="flex items-center gap-[1.2rem] min-w-0">
                     <div class="emp-avatar w-[3.6rem] h-[3.6rem] rounded-full flex items-center justify-center text-[1.3rem] text-white flex-shrink-0">
@@ -262,22 +255,22 @@
                     {{ new Date(shift.shift_date).toLocaleDateString('en-GB') }}
                   </span>
                 </div>
-                <!-- Edit mode fields -->
+
                 <div v-if="editingId === shift.id" class="flex flex-col gap-[1rem] mb-[1.2rem]">
                   <div class="flex items-center gap-[1rem]">
-                    <label class="page-label text-[1rem] tracking-[0.15em] uppercase w-[8rem] flex-shrink-0">Date</label>
+                    <label class="page-label text-[1rem] tracking-[0.15em] uppercase w-[8rem] flex-shrink-0">Datums</label>
                     <input type="date" v-model="editForm.shift_date" class="date-input rounded-[0.6rem] px-[1rem] py-[0.7rem] text-[1.3rem] outline-none flex-1" />
                   </div>
                   <div class="flex items-center gap-[1rem]">
-                    <label class="page-label text-[1rem] tracking-[0.15em] uppercase w-[8rem] flex-shrink-0">Start</label>
+                    <label class="page-label text-[1rem] tracking-[0.15em] uppercase w-[8rem] flex-shrink-0">Sākums</label>
                     <input type="time" v-model="editForm.starts_at" class="date-input rounded-[0.6rem] px-[1rem] py-[0.7rem] text-[1.3rem] outline-none flex-1" />
                   </div>
                   <div class="flex items-center gap-[1rem]">
-                    <label class="page-label text-[1rem] tracking-[0.15em] uppercase w-[8rem] flex-shrink-0">End</label>
+                    <label class="page-label text-[1rem] tracking-[0.15em] uppercase w-[8rem] flex-shrink-0">Beigas</label>
                     <input type="time" v-model="editForm.ends_at" class="date-input rounded-[0.6rem] px-[1rem] py-[0.7rem] text-[1.3rem] outline-none flex-1" />
                   </div>
                 </div>
-                <!-- View mode: time row -->
+
                 <div v-else class="flex items-center gap-[1.6rem] mb-[1.2rem]">
                   <div class="flex items-center gap-[0.6rem]">
                     <svg class="w-[1.2rem] h-[1.2rem] flex-shrink-0" style="color:var(--text-muted)" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
@@ -288,33 +281,29 @@
                   <span class="table-sub text-[1.1rem]">→</span>
                   <span class="table-text text-[1.3rem] tabular-nums">{{ shift.ends_at }}</span>
                 </div>
-                <!-- Actions -->
+
                 <div class="flex items-center gap-[0.8rem]">
                   <template v-if="editingId !== shift.id">
                     <button @click="startEdit(shift)" class="action-btn edit-btn flex-1 flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem]">
-                      <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>
-                      Edit
+                      Rediģēt
                     </button>
                     <button @click="deleteShift(shift)" class="action-btn delete-btn flex-1 flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem]">
-                      <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
-                      Delete
+                      Dzēst
                     </button>
                   </template>
                   <template v-else>
                     <button @click="confirmEdit(shift)" class="action-btn confirm-btn flex-1 flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem]">
-                      <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                      Confirm
+                      Apstiprināt
                     </button>
                     <button @click="cancelEdit" class="action-btn cancel-btn flex-1 flex items-center justify-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem]">
-                      <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                      Cancel
+                      Atcelt
                     </button>
                   </template>
                 </div>
               </div>
-              <!-- Mobile footer total -->
+
               <div class="flex items-center justify-between px-[1.6rem] py-[1.4rem] table-foot-row">
-                <span class="page-label text-[1rem] tracking-[0.15em] uppercase">Total Shifts</span>
+                <span class="page-label text-[1rem] tracking-[0.15em] uppercase">Kopējais maiņu skaits</span>
                 <span class="page-title text-[2rem] tabular-nums font-medium">{{ processedShifts.length }}</span>
               </div>
             </div>
@@ -328,7 +317,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
             </svg>
           </div>
-          <p class="table-sub text-[1.4rem] tracking-[0.06em]">No shifts found for this period.</p>
+          <p class="table-sub text-[1.4rem] tracking-[0.06em]">Šajā periodā maiņas nav atrastas.</p>
         </div>
       </div>
     </main>
@@ -349,15 +338,15 @@ const route     = useRoute()
 const companyId = route.params.companyId
 
 const sidebarItems = [
-  { text: 'Home',        to: `/${companyId}/manager` },
-  { text: 'Company',     to: `/${companyId}/manager/company` },
-  { text: 'Team',        to: `/${companyId}/manager/team` },
-  { text: 'Schedule',    to: `/${companyId}/manager/schedule` },
-  { text: 'Attendance',  to: `/${companyId}/manager/attendancy` },
-  { text: 'Payrolls',    to: `/${companyId}/manager/payrolls` },
-  { text: 'Invites',     to: `/${companyId}/manager/invite` },
-  { text: 'Holidays',    to: `/${companyId}/manager/holidays` },
-  { text: 'Sick Leaves', to: `/${companyId}/manager/sick-leaves` },
+  { text: 'Sākums',       to: `/${companyId}/manager` },
+  { text: 'Uzņēmums',     to: `/${companyId}/manager/company` },
+  { text: 'Komanda',       to: `/${companyId}/manager/team` },
+  { text: 'Grafiks',      to: `/${companyId}/manager/schedule` },
+  { text: 'Apmeklējumi',   to: `/${companyId}/manager/attendancy` },
+  { text: 'Algas',         to: `/${companyId}/manager/payrolls` },
+  { text: 'Ielūgumi',      to: `/${companyId}/manager/invite` },
+  { text: 'Brīvdienas',    to: `/${companyId}/manager/holidays` },
+  { text: 'Slimības atvaļinājumi', to: `/${companyId}/manager/sick-leaves` },
 ]
 
 axios.defaults.withCredentials              = true

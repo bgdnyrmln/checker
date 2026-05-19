@@ -29,9 +29,9 @@ onMounted(fetchData)
 
   <!-- ───── LOADING ───── -->
   <div v-if="loading" class="loading-screen min-h-screen flex items-center justify-center">
-    <div class="flex flex-col items-center gap-[1.6rem]">
+      <div class="flex flex-col items-center gap-[1.6rem]">
       <div class="spinner w-[3rem] h-[3rem] rounded-full animate-spin"></div>
-      <span class="page-label text-[1.2rem] tracking-[0.12em]">Loading...</span>
+      <span class="page-label text-[1.2rem] tracking-[0.12em]">Ielādē...</span>
     </div>
   </div>
 
@@ -45,13 +45,13 @@ onMounted(fetchData)
 
       <!-- Page header -->
       <div class="mb-[5rem]">
-        <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.8rem]">Homepage</p>
+        <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.8rem]">Sākumlapa</p>
         <h1 class="page-title text-[4.8rem] leading-none tracking-wide mb-[1.2rem]">
-          Welcome back, {{ user.first_name }}
+          Laipni atgriezies, {{ user.first_name }}
         </h1>
         <div class="flex items-center gap-[1rem]">
           <div class="divider-line h-px w-[4rem]"></div>
-          <p class="page-sub text-[1.3rem]">Select a company to continue</p>
+          <p class="page-sub text-[1.3rem]">Izvēlieties uzņēmumu, lai turpinātu</p>
         </div>
       </div>
 
@@ -74,7 +74,7 @@ onMounted(fetchData)
               class="text-[1rem] px-[1.2rem] py-[0.4rem] rounded-full tracking-[0.1em] uppercase"
               :class="profile.role === 'manager' ? 'badge-manager' : 'badge-employee'"
             >
-              {{ profile.role }}
+              {{ profile.role === 'manager' ? 'Vadītājs' : (profile.role === 'employee' ? 'Darbinieks' : profile.role) }}
             </span>
           </div>
 
@@ -97,7 +97,7 @@ onMounted(fetchData)
               <svg class="w-[1.6rem] h-[1.6rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
               </svg>
-              Personal Cabinet
+              Personīgā sadaļa
             </NuxtLink>
 
             <NuxtLink
@@ -105,7 +105,7 @@ onMounted(fetchData)
               :to="`/${profile.company_id}/manager`"
               class="admin-btn relative flex items-center gap-[0.6rem] px-[1.6rem] py-[0.8rem] rounded-[0.8rem] text-[1.1rem] text-white tracking-[0.06em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200 no-underline"
             >
-              Admin Panel
+              Administrācijas panelis
               <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
               </svg>
@@ -122,7 +122,7 @@ onMounted(fetchData)
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
           </svg>
         </div>
-        <p class="page-sub text-[1.4rem] tracking-[0.06em]">No companies assigned yet.</p>
+        <p class="page-sub text-[1.4rem] tracking-[0.06em]">Vēl nav pievienots neviens uzņēmums.</p>
       </div>
 
     </div>
@@ -139,15 +139,15 @@ onMounted(fetchData)
 
       <!-- Headline -->
       <h1 class="landing-title text-[7.2rem] leading-[0.95] tracking-tight mb-[3.2rem]">
-        Track work time<br/>
-        <span class="landing-muted">Simply.</span>
-        <span class="landing-title"> Reliably.</span>
+        Sekojiet darba laikam<br/>
+        <span class="landing-muted">Vienkārši.</span>
+        <span class="landing-title"> Uzticami.</span>
       </h1>
 
       <!-- Sub -->
       <p class="landing-sub text-[1.6rem] max-w-[52rem] mx-auto leading-relaxed mb-[4.8rem]">
-        Checker helps teams manage attendance, work hours, payroll,
-        and accountability — without friction.
+        Checker palīdz komandām pārvaldīt apmeklējumu, darba stundas, algu
+        un atbildību — bez liekām grūtībām.
       </p>
 
       <!-- CTA -->
@@ -156,13 +156,13 @@ onMounted(fetchData)
           to="/auth/login"
           class="signin-btn px-[2.4rem] py-[1.2rem] text-[1.3rem] tracking-[0.06em] rounded-[0.8rem] hover:-translate-y-px transition-all duration-200 no-underline"
         >
-          Sign In
+          Pierakstīties
         </NuxtLink>
         <NuxtLink
           to="/auth/register-company"
           class="getstarted-btn relative flex items-center gap-[0.8rem] px-[2.8rem] py-[1.2rem] rounded-[0.8rem] text-[1.3rem] text-white tracking-[0.08em] overflow-hidden hover:-translate-y-px active:translate-y-0 transition-all duration-200 no-underline"
         >
-          Get Started
+          Sākt
           <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
           </svg>

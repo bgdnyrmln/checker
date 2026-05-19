@@ -30,9 +30,9 @@
         </div>
 
         <div>
-          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.4rem]">Account Settings</p>
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.4rem]">Konta iestatījumi</p>
           <h1 class="page-title text-[3.2rem] font-light leading-none tracking-wide">
-            {{ profile?.first_name || 'Your' }} {{ profile?.last_name || 'Profile' }}
+            {{ (profile ? (profile.first_name + ' ' + (profile.last_name || '')) : 'Jūsu profils') }}
           </h1>
         </div>
       </div>
@@ -41,9 +41,9 @@
       <div class="profile-card rounded-[1.6rem] p-[3rem]">
 
         <!-- Loading -->
-        <div v-if="loading" class="flex flex-col items-center gap-[1.5rem] py-[3rem]">
+          <div v-if="loading" class="flex flex-col items-center gap-[1.5rem] py-[3rem]">
           <div class="spinner w-[2.8rem] h-[2.8rem] rounded-full animate-spin"></div>
-          <span class="page-label text-[1.1rem] tracking-[0.12em]">Fetching your data...</span>
+          <span class="page-label text-[1.1rem] tracking-[0.12em]">Iegūst datus...</span>
         </div>
 
         <div v-else-if="profile" class="flex flex-col gap-[2.4rem]">
@@ -51,12 +51,12 @@
           <!-- Name row -->
           <div class="grid grid-cols-2 gap-[2rem] max-[480px]:grid-cols-1">
             <div class="flex flex-col gap-[0.8rem]">
-              <label class="page-label text-[1rem] tracking-[0.18em] uppercase">First Name</label>
+              <label class="page-label text-[1rem] tracking-[0.18em] uppercase">Vārds</label>
               <div class="relative group">
                 <input
                   v-model="profile.first_name"
                   type="text"
-                  placeholder="First name"
+                  placeholder="Vārds"
                   class="profile-input w-full rounded-[0.8rem] px-[1.6rem] py-[1.2rem] text-[1.3rem] outline-none transition-all duration-200"
                 />
                 <div class="input-line absolute bottom-0 left-[10%] right-[10%] h-px opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 rounded-full"></div>
@@ -64,12 +64,12 @@
             </div>
 
             <div class="flex flex-col gap-[0.8rem]">
-              <label class="page-label text-[1rem] tracking-[0.18em] uppercase">Last Name</label>
+              <label class="page-label text-[1rem] tracking-[0.18em] uppercase">Uzvārds</label>
               <div class="relative group">
                 <input
                   v-model="profile.last_name"
                   type="text"
-                  placeholder="Last name"
+                  placeholder="Uzvārds"
                   class="profile-input w-full rounded-[0.8rem] px-[1.6rem] py-[1.2rem] text-[1.3rem] outline-none transition-all duration-200"
                 />
                 <div class="input-line absolute bottom-0 left-[10%] right-[10%] h-px opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 rounded-full"></div>
@@ -79,12 +79,12 @@
 
           <!-- Email -->
           <div class="flex flex-col gap-[0.8rem]">
-            <label class="page-label text-[1rem] tracking-[0.18em] uppercase">Email Address</label>
+            <label class="page-label text-[1rem] tracking-[0.18em] uppercase">E-pasts</label>
             <div class="relative group">
               <input
                 v-model="profile.email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="jusu@piemers.lv"
                 class="profile-input w-full rounded-[0.8rem] px-[1.6rem] py-[1.2rem] text-[1.3rem] outline-none transition-all duration-200"
               />
               <div class="input-line absolute bottom-0 left-[10%] right-[10%] h-px opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 rounded-full"></div>
@@ -106,11 +106,11 @@
                 </svg>
                 <span>{{ error }}</span>
               </div>
-              <div v-else-if="success" class="flex items-center gap-[0.6rem] text-[1.1rem] success-text">
+                <div v-else-if="success" class="flex items-center gap-[0.6rem] text-[1.1rem] success-text">
                 <svg class="w-[1.3rem] h-[1.3rem] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
                 </svg>
-                <span>Saved successfully</span>
+                <span>Saglabāts veiksmīgi</span>
               </div>
             </Transition>
 
@@ -119,7 +119,7 @@
               :disabled="saving"
               class="save-btn relative flex items-center gap-[0.8rem] px-[2.4rem] py-[1.2rem] rounded-[0.8rem] text-white text-[1.2rem] tracking-[0.1em] overflow-hidden transition-all duration-200 hover:-translate-y-px active:translate-y-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex-shrink-0 cursor-pointer ml-auto"
             >
-              <span>{{ saving ? 'Saving…' : 'Save Changes' }}</span>
+              <span>{{ saving ? 'Saglabā...' : 'Saglabāt izmaiņas' }}</span>
               <span class="transition-transform duration-200">→</span>
               <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_2.5s_ease-in-out_infinite] pointer-events-none"></span>
             </button>
@@ -129,7 +129,7 @@
       </div>
 
       <p class="text-center mt-[1.6rem] text-[1rem] tracking-[0.12em] page-label">
-        Changes are encrypted and stored securely.
+        Izmaiņas tiek šifrētas un droši saglabātas.
       </p>
     </div>
   </div>
@@ -159,7 +159,7 @@ const fetchProfile = async () => {
     const res     = await axios.get('/api/user')
     profile.value = res.data
   } catch {
-    error.value = 'Failed to load profile'
+    error.value = 'Neizdevās ielādēt profilu'
   } finally {
     loading.value = false
   }
@@ -183,7 +183,7 @@ const updateProfile = async () => {
     success.value = true
     setTimeout(() => (success.value = false), 3000)
   } catch (e) {
-    error.value = e.response?.data?.message || 'Update failed'
+    error.value = e.response?.data?.message || 'Atjaunināšana neizdevās'
   } finally {
     saving.value = false
   }

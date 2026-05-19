@@ -11,14 +11,14 @@
 
         <!-- Page header -->
         <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
-          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personal Cabinet</p>
-          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">My Schedule</h1>
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personīgā sadaļa</p>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Mans grafiks</h1>
         </div>
 
         <!-- Loading -->
         <div v-if="loading" class="flex items-center gap-[1.6rem] py-[4rem] justify-center">
           <div class="spinner w-[2.8rem] h-[2.8rem] rounded-full animate-spin"></div>
-          <span class="page-label text-[1.2rem] tracking-[0.12em]">Loading schedule...</span>
+          <span class="page-label text-[1.2rem] tracking-[0.12em]">Ielādē grafiku...</span>
         </div>
 
         <!-- Error -->
@@ -54,12 +54,12 @@ const profileId = route.params.id
 const { isDark } = useTheme()
 
 const sidebarItems = [
-  { text: 'Dashboard',   to: `/${profileId}/personal-cabinet` },
-  { text: 'Attendance',  to: `/${profileId}/personal-cabinet/attendance` },
-  { text: 'Payroll',     to: `/${profileId}/personal-cabinet/payroll` },
-  { text: 'Schedule',    to: `/${profileId}/personal-cabinet/schedule` },
-  { text: 'Holidays',    to: `/${profileId}/personal-cabinet/holidays` },
-  { text: 'Sick Leaves', to: `/${profileId}/personal-cabinet/sick-leaves` },
+  { text: 'Sākums',       to: `/${profileId}/personal-cabinet` },
+  { text: 'Apmeklējumi',  to: `/${profileId}/personal-cabinet/attendance` },
+  { text: 'Algas',        to: `/${profileId}/personal-cabinet/payroll` },
+  { text: 'Grafiks',      to: `/${profileId}/personal-cabinet/schedule` },
+  { text: 'Brīvdienas',   to: `/${profileId}/personal-cabinet/holidays` },
+  { text: 'Slimības atvaļinājumi', to: `/${profileId}/personal-cabinet/sick-leaves` },
 ]
 
 axios.defaults.withCredentials = true
@@ -84,7 +84,7 @@ const fetchSchedule = async () => {
       allDay: true
     }))
   } catch (e) {
-    error.value = 'Failed to load schedule'
+    error.value = 'Neizdevās ielādēt grafiku'
   } finally {
     loading.value = false
   }
@@ -104,16 +104,16 @@ const calendarOptions = ref({
     right: 'dayGridMonth,listMonth'
   },
   buttonText: {
-    today: 'Today',
-    month: 'Month',
-    list: 'List'
+    today: 'Šodien',
+    month: 'Mēnesis',
+    list: 'Saraksts'
   },
   dayMaxEvents: 2,
   views: {
-    listMonth: {
+      listMonth: {
       listDayFormat: { weekday: 'long', day: 'numeric', month: 'short' },
       listDaySideFormat: false,
-      noEventsText: 'No shifts this month'
+      noEventsText: 'Šomēnes nav grafika'
     }
   }
 })

@@ -12,12 +12,12 @@ const route = useRoute()
 const profileId = route.params.id
 
 const sidebarItems = [
-  { text: 'Dashboard',   to: `/${profileId}/personal-cabinet` },
-  { text: 'Attendance',  to: `/${profileId}/personal-cabinet/attendance` },
-  { text: 'Payroll',     to: `/${profileId}/personal-cabinet/payroll` },
-  { text: 'Schedule',    to: `/${profileId}/personal-cabinet/schedule` },
-  { text: 'Holidays',    to: `/${profileId}/personal-cabinet/holidays` },
-  { text: 'Sick Leaves', to: `/${profileId}/personal-cabinet/sick-leaves` },
+  { text: 'Sākums',       to: `/${profileId}/personal-cabinet` },
+  { text: 'Apmeklējumi',  to: `/${profileId}/personal-cabinet/attendance` },
+  { text: 'Algas',        to: `/${profileId}/personal-cabinet/payroll` },
+  { text: 'Grafiks',      to: `/${profileId}/personal-cabinet/schedule` },
+  { text: 'Brīvdienas',   to: `/${profileId}/personal-cabinet/holidays` },
+  { text: 'Slimības atvaļinājumi', to: `/${profileId}/personal-cabinet/sick-leaves` },
 ]
 
 axios.defaults.withCredentials = true
@@ -52,7 +52,7 @@ const fetchAttendance = async () => {
       totalTimeSeconds: res.data.total_time_seconds ?? 0
     }
   } catch (e) {
-    error.value = 'Failed to load attendance'
+    error.value = 'Neizdevās ielādēt apmeklējumus'
   } finally {
     loading.value = false
   }
@@ -60,32 +60,32 @@ const fetchAttendance = async () => {
 
 const exportCSV = () => {
   if (!attendance.value) return
-  let csv = 'Date,Time In,Time Out,Hours\n'
+  let csv = 'Datums,Ierakstīšanās,Izrakstīšanās,Stundas\n'
   attendance.value.daily.forEach(d => { csv += `${d.date},${d.timeIn},${d.timeOut},${d.hours}\n` })
-  csv += `\nTotal Hours,,,${attendance.value.totalHours}\n`
+  csv += `\nKopā stundas,,,${attendance.value.totalHours}\n`
   const link = document.createElement('a')
   link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }))
-  link.download = `attendance_${startDate.value}_${endDate.value}.csv`
+  link.download = `apmeklejumi_${startDate.value}_${endDate.value}.csv`
   link.click()
 }
 
 const exportXLS = () => {
   if (!attendance.value) return
-  const data = attendance.value.daily.map(d => ({ Date: d.date, 'Time In': d.timeIn, 'Time Out': d.timeOut, Hours: d.hours }))
-  data.push({}, { Date: 'Total Hours', Hours: attendance.value.totalHours })
+  const data = attendance.value.daily.map(d => ({ Datums: d.date, 'Ierakstīšanās': d.timeIn, 'Izrakstīšanās': d.timeOut, Stundas: d.hours }))
+  data.push({}, { Datums: 'Kopā stundas', Stundas: attendance.value.totalHours })
   const wb = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data), 'Attendance')
-  XLSX.writeFile(wb, `attendance_${startDate.value}_${endDate.value}.xlsx`)
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data), 'Apmeklējumi')
+  XLSX.writeFile(wb, `apmeklejumi_${startDate.value}_${endDate.value}.xlsx`)
 }
 
 const exportPDF = () => {
   if (!attendance.value) return
   const doc = new jsPDF()
-  doc.setFontSize(18); doc.text('Attendance Report', 14, 20)
-  doc.setFontSize(11); doc.text(`Period: ${startDate.value} - ${endDate.value}`, 14, 30)
-  doc.text(`Total Hours: ${attendance.value.totalHours}`, 14, 36)
-  autoTable(doc, { head: [['Date', 'Time In', 'Time Out', 'Hours']], body: attendance.value.daily.map(d => [d.date, d.timeIn, d.timeOut, d.hours]), startY: 45 })
-  doc.save(`attendance_${startDate.value}_${endDate.value}.pdf`)
+  doc.setFontSize(18); doc.text('Apmeklējumu pārskats', 14, 20)
+  doc.setFontSize(11); doc.text(`Periods: ${startDate.value} - ${endDate.value}`, 14, 30)
+  doc.text(`Kopā stundas: ${attendance.value.totalHours}`, 14, 36)
+  autoTable(doc, { head: [['Datums', 'Ierakstīšanās', 'Izrakstīšanās', 'Stundas']], body: attendance.value.daily.map(d => [d.date, d.timeIn, d.timeOut, d.hours]), startY: 45 })
+  doc.save(`apmeklejumi_${startDate.value}_${endDate.value}.pdf`)
 }
 
 onMounted(fetchAttendance)
@@ -104,8 +104,8 @@ onMounted(fetchAttendance)
 
         <!-- Page header -->
         <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
-          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personal Cabinet</p>
-          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">My Attendance</h1>
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personīgā sadaļa</p>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Mani apmeklējumi</h1>
         </div>
 
         <!-- Filters + Export bar -->
@@ -115,12 +115,12 @@ onMounted(fetchAttendance)
           <div class="flex flex-wrap items-end gap-[1.2rem] mb-[1.2rem]">
             <div class="flex items-end gap-[1rem] flex-1 min-w-0">
               <div class="flex flex-col gap-[0.4rem] flex-1 min-w-0">
-                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">From</label>
+                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">No</label>
                 <input type="date" v-model="startDate" class="date-input w-full rounded-[0.8rem] px-[1.2rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
               <div class="arrow-sep text-[1.4rem] mb-[0.9rem] flex-shrink-0">→</div>
               <div class="flex flex-col gap-[0.4rem] flex-1 min-w-0">
-                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">To</label>
+                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Līdz</label>
                 <input type="date" v-model="endDate" class="date-input w-full rounded-[0.8rem] px-[1.2rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
             </div>
@@ -132,14 +132,14 @@ onMounted(fetchAttendance)
               <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
               </svg>
-              <span class="max-[480px]:hidden">Calculate</span>
+              <span class="max-[480px]:hidden">Aprēķināt</span>
               <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
             </button>
           </div>
 
           <!-- Export row -->
           <div class="flex items-center gap-[0.8rem] flex-wrap">
-            <span class="page-label text-[1rem] tracking-[0.15em] uppercase mr-[0.4rem]">Export</span>
+            <span class="page-label text-[1rem] tracking-[0.15em] uppercase mr-[0.4rem]">Eksportēt</span>
             <button @click="exportCSV" class="export-btn flex items-center gap-[0.5rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
               <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
@@ -164,7 +164,7 @@ onMounted(fetchAttendance)
         <!-- Loading -->
         <div v-if="loading" class="flex items-center gap-[1.6rem] py-[4rem] justify-center">
           <div class="spinner w-[2.8rem] h-[2.8rem] rounded-full animate-spin"></div>
-          <span class="page-label text-[1.2rem] tracking-[0.12em]">Loading attendance...</span>
+          <span class="page-label text-[1.2rem] tracking-[0.12em]">Ielādē apmeklējumus...</span>
         </div>
 
         <!-- Error -->
@@ -178,13 +178,13 @@ onMounted(fetchAttendance)
           <!-- Summary header -->
           <div class="table-summary flex items-center justify-between px-[3rem] max-[768px]:px-[2rem] py-[2rem]">
             <div>
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Period</p>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Laika periods</p>
               <p class="table-text text-[1.3rem] max-[480px]:text-[1.1rem]">{{ startDate }} → {{ endDate }}</p>
             </div>
             <div class="text-right">
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Total</p>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Kopā</p>
               <p class="page-title text-[2.4rem] leading-none tabular-nums">
-                {{ attendance.totalHours.toFixed(2) }}<span class="table-sub text-[1.4rem] ml-[0.4rem]">hrs</span>
+                {{ attendance.totalHours.toFixed(2) }}<span class="table-sub text-[1.4rem] ml-[0.4rem]">st</span>
               </p>
             </div>
           </div>
@@ -193,10 +193,10 @@ onMounted(fetchAttendance)
           <table class="w-full max-[600px]:hidden">
             <thead>
               <tr class="table-head-row">
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Date</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Time In</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Time Out</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Hours</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Datums</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Ierakstīšanās</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Izrakstīšanās</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Stundas</th>
               </tr>
             </thead>
             <tbody>
@@ -210,16 +210,16 @@ onMounted(fetchAttendance)
                 <td class="px-[3rem] py-[1.6rem] text-[1.3rem]" :class="d.timeIn === '-' ? 'table-empty' : 'table-text'">{{ d.timeIn }}</td>
                 <td class="px-[3rem] py-[1.6rem] text-[1.3rem]" :class="d.timeOut === '-' ? 'table-empty' : 'table-text'">{{ d.timeOut }}</td>
                 <td class="px-[3rem] py-[1.6rem] text-[1.3rem] text-right tabular-nums">
-                  <span v-if="d.hours > 0" class="table-text">{{ d.hours }}<span class="table-empty text-[1.1rem] ml-[0.3rem]">h</span></span>
+                  <span v-if="d.hours > 0" class="table-text">{{ d.hours }}<span class="table-empty text-[1.1rem] ml-[0.3rem]">st</span></span>
                   <span v-else class="table-empty">—</span>
                 </td>
               </tr>
             </tbody>
             <tfoot>
               <tr class="table-foot-row">
-                <td colspan="3" class="px-[3rem] py-[1.8rem] text-[1.1rem] tracking-[0.12em] uppercase text-right table-sub">Total Hours</td>
+                <td colspan="3" class="px-[3rem] py-[1.8rem] text-[1.1rem] tracking-[0.12em] uppercase text-right table-sub">Kopā stundas</td>
                 <td class="px-[3rem] py-[1.8rem] text-[1.8rem] text-right tabular-nums font-medium page-title">
-                  {{ attendance.totalHours.toFixed(2) }}<span class="table-sub text-[1.2rem] ml-[0.3rem]">h</span>
+                  {{ attendance.totalHours.toFixed(2) }}<span class="table-sub text-[1.2rem] ml-[0.3rem]">st</span>
                 </td>
               </tr>
             </tfoot>
@@ -235,19 +235,19 @@ onMounted(fetchAttendance)
             >
               <div class="flex items-center justify-between mb-[0.8rem]">
                 <span class="table-text text-[1.3rem] font-medium">{{ d.date }}</span>
-                <span v-if="d.hours > 0" class="table-text text-[1.3rem] tabular-nums">
-                  {{ d.hours }}<span class="table-empty text-[1.1rem] ml-[0.2rem]">h</span>
+                  <span v-if="d.hours > 0" class="table-text text-[1.3rem] tabular-nums">
+                  {{ d.hours }}<span class="table-empty text-[1.1rem] ml-[0.2rem]">st</span>
                 </span>
                 <span v-else class="table-empty text-[1.3rem]">—</span>
               </div>
               <div class="flex items-center gap-[1.6rem]">
                 <div class="flex flex-col gap-[0.2rem]">
-                  <span class="page-label text-[0.9rem] tracking-[0.12em] uppercase">In</span>
+                  <span class="page-label text-[0.9rem] tracking-[0.12em] uppercase">Ienākšana</span>
                   <span class="text-[1.2rem] tabular-nums" :class="d.timeIn === '-' ? 'table-empty' : 'table-text'">{{ d.timeIn }}</span>
                 </div>
                 <span class="arrow-sep text-[1.2rem]">→</span>
                 <div class="flex flex-col gap-[0.2rem]">
-                  <span class="page-label text-[0.9rem] tracking-[0.12em] uppercase">Out</span>
+                  <span class="page-label text-[0.9rem] tracking-[0.12em] uppercase">Izeja</span>
                   <span class="text-[1.2rem] tabular-nums" :class="d.timeOut === '-' ? 'table-empty' : 'table-text'">{{ d.timeOut }}</span>
                 </div>
               </div>
@@ -255,9 +255,9 @@ onMounted(fetchAttendance)
 
             <!-- Mobile footer -->
             <div class="table-foot-row flex items-center justify-between px-[2rem] py-[1.6rem]">
-              <span class="table-sub text-[1.1rem] tracking-[0.12em] uppercase">Total Hours</span>
-              <span class="page-title text-[1.8rem] tabular-nums font-medium">
-                {{ attendance.totalHours.toFixed(2) }}<span class="table-sub text-[1.2rem] ml-[0.3rem]">h</span>
+              <span class="table-sub text-[1.1rem] tracking-[0.12em] uppercase">Kopā stundas</span>
+                <span class="page-title text-[1.8rem] tabular-nums font-medium">
+                {{ attendance.totalHours.toFixed(2) }}<span class="table-sub text-[1.2rem] ml-[0.3rem]">st</span>
               </span>
             </div>
           </div>
@@ -271,7 +271,7 @@ onMounted(fetchAttendance)
               <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5"/>
             </svg>
           </div>
-          <p class="table-sub text-[1.4rem] tracking-[0.06em]">No attendance data for this period.</p>
+          <p class="table-sub text-[1.4rem] tracking-[0.06em]">Šim periodam nav apmeklējumu datu.</p>
         </div>
 
       </div>

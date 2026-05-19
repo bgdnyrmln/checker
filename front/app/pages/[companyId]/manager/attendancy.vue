@@ -10,8 +10,8 @@
 
         <!-- Page header -->
         <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
-          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Manager Panel</p>
-          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Team Attendance</h1>
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Pārvaldnieka panelis</p>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Darbinieku apmeklējumi</h1>
         </div>
 
         <!-- Error -->
@@ -29,12 +29,12 @@
             <!-- Date range -->
             <div class="flex items-center gap-[1.2rem] max-[480px]:flex-col max-[480px]:items-stretch max-[480px]:gap-[1rem]">
               <div class="flex flex-col gap-[0.4rem]">
-                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">From</label>
+                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">No</label>
                 <input type="date" v-model="startDate" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
               <div class="arrow-sep mt-[1.8rem] text-[1.4rem] max-[480px]:hidden">→</div>
               <div class="flex flex-col gap-[0.4rem]">
-                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">To</label>
+                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Līdz</label>
                 <input type="date" v-model="endDate" class="date-input rounded-[0.8rem] px-[1.4rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
               </div>
             </div>
@@ -43,13 +43,13 @@
               <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
               </svg>
-              Calculate
+              Aprēķināt
               <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
             </button>
 
             <!-- Export -->
             <div class="flex items-center gap-[1rem] max-[768px]:ml-0 ml-auto max-[480px]:flex-wrap">
-              <span class="page-label text-[1rem] tracking-[0.15em] uppercase mr-[0.4rem] max-[480px]:w-full">Export</span>
+              <span class="page-label text-[1rem] tracking-[0.15em] uppercase mr-[0.4rem] max-[480px]:w-full">Eksportēt</span>
               <button @click="exportCSV" class="export-btn flex items-center gap-[0.6rem] px-[1.4rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200">
                 <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                 CSV
@@ -69,7 +69,7 @@
         <!-- Loading -->
         <div v-if="loading" class="flex items-center gap-[1.6rem] py-[4rem] justify-center">
           <div class="spinner w-[2.8rem] h-[2.8rem] rounded-full animate-spin"></div>
-          <span class="page-label text-[1.2rem] tracking-[0.12em]">Loading attendance…</span>
+          <span class="page-label text-[1.2rem] tracking-[0.12em]">Ielādē apmeklējumus…</span>
         </div>
 
         <!-- ── Data ── -->
@@ -78,11 +78,11 @@
           <!-- Summary header -->
           <div class="table-summary flex items-center justify-between px-[3rem] py-[2rem] max-[768px]:px-[1.6rem] max-[768px]:py-[1.4rem]">
             <div>
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Period</p>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Laika periods</p>
               <p class="table-text text-[1.4rem] max-[480px]:text-[1.2rem]">{{ startDate }} → {{ endDate }}</p>
             </div>
             <div class="text-right">
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Members</p>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Darbinieki</p>
               <p class="page-title text-[2.4rem] leading-none tabular-nums">
                 {{ employees.length }}<span class="table-sub text-[1.4rem] ml-[0.4rem]">emp</span>
               </p>
@@ -93,12 +93,12 @@
           <table class="w-full max-[768px]:hidden">
             <thead>
               <tr class="table-head-row">
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Employee</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Email</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Date</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Time In</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Time Out</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Hours</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Darbinieks</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">E-pasts</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Datums</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Ierakstīšanās</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Izrakstīšanās</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Stundas</th>
               </tr>
             </thead>
             <tbody>
@@ -264,15 +264,15 @@ const route = useRoute()
 const companyId = route.params.companyId
 
 const sidebarItems = [
-  { text: 'Home',        to: `/${companyId}/manager` },
-  { text: 'Company',     to: `/${companyId}/manager/company` },
-  { text: 'Team',        to: `/${companyId}/manager/team` },
-  { text: 'Schedule',    to: `/${companyId}/manager/schedule` },
-  { text: 'Attendance',  to: `/${companyId}/manager/attendancy` },
-  { text: 'Payrolls',    to: `/${companyId}/manager/payrolls` },
-  { text: 'Invites',     to: `/${companyId}/manager/invite` },
-  { text: 'Holidays',    to: `/${companyId}/manager/holidays` },
-  { text: 'Sick Leaves', to: `/${companyId}/manager/sick-leaves` },
+  { text: 'Sākums',       to: `/${companyId}/manager` },
+  { text: 'Uzņēmums',     to: `/${companyId}/manager/company` },
+  { text: 'Komanda',       to: `/${companyId}/manager/team` },
+  { text: 'Grafiks',      to: `/${companyId}/manager/schedule` },
+  { text: 'Apmeklējumi',   to: `/${companyId}/manager/attendancy` },
+  { text: 'Algas',         to: `/${companyId}/manager/payrolls` },
+  { text: 'Ielūgumi',      to: `/${companyId}/manager/invite` },
+  { text: 'Brīvdienas',    to: `/${companyId}/manager/holidays` },
+  { text: 'Slimības atvaļinājumi', to: `/${companyId}/manager/sick-leaves` },
 ]
 
 axios.defaults.withCredentials = true

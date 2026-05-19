@@ -43,7 +43,7 @@ const validateToken = async (token) => {
     form.value.token = token
     pageAllowed.value = true
   } catch {
-    error.value = 'Invalid or expired invite token.'
+    error.value = 'Nederīgs vai beidzies uzaicinājuma kods.'
     pageAllowed.value = false
   } finally {
     loading.value = false
@@ -55,7 +55,7 @@ onMounted(() => {
 })
 
 const submitToken = () => {
-  if (!tokenInput.value) { error.value = 'Please enter an invite token.'; return }
+  if (!tokenInput.value) { error.value = 'Lūdzu, ievadiet uzaicinājuma kodu.'; return }
   validateToken(tokenInput.value)
 }
 
@@ -66,9 +66,9 @@ const submit = async () => {
   try {
     await getCsrfToken()
     await axios.post('/api/register/member', form.value)
-    success.value = 'Registration successful! You can now log in.'
+    success.value = 'Reģistrācija veiksmīga! Tagad varat pierakstīties.'
   } catch (e) {
-    error.value = e.response?.data?.message || 'Registration failed.'
+    error.value = e.response?.data?.message || 'Reģistrācija neizdevās.'
   } finally {
     loading.value = false
   }
@@ -94,13 +94,13 @@ const submit = async () => {
         </div>
       </div>
 
-      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase text-center mb-[0.8rem]">Employee Onboarding</p>
-      <h1 class="page-title text-[3rem] leading-tight text-center mb-[0.8rem]">Enter Invite Token</h1>
-      <p class="page-sub text-[1.3rem] text-center mb-[3.2rem]">Paste the token from your invitation email to continue.</p>
+      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase text-center mb-[0.8rem]">Darbinieka pievienošana</p>
+      <h1 class="page-title text-[3rem] leading-tight text-center mb-[0.8rem]">Ievadiet uzaicinājuma kodu</h1>
+      <p class="page-sub text-[1.3rem] text-center mb-[3.2rem]">Ielīmējiet kodu no uzaicinājuma e-pasta, lai turpinātu.</p>
 
       <div class="flex flex-col gap-[1.2rem]">
         <div class="flex flex-col gap-[0.4rem]">
-          <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Invite Token</label>
+          <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Uzaicinājuma kods</label>
           <input
             v-model="tokenInput"
             placeholder="e.g. eyJhbGciOiJIUzI1NiIs..."
@@ -122,7 +122,7 @@ const submit = async () => {
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
           </svg>
-          <span>{{ loading ? 'Checking...' : 'Continue' }}</span>
+          <span>{{ loading ? 'Pārbauda...' : 'Turpināt' }}</span>
           <svg v-if="!loading" class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
           </svg>
@@ -196,13 +196,13 @@ const submit = async () => {
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
           </svg>
-          <span>{{ loading ? 'Creating account...' : 'Create Account' }}</span>
+          <span>{{ loading ? 'Izveido kontu...' : 'Izveidot kontu' }}</span>
           <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
         </button>
 
         <p class="page-sub text-[1.1rem] text-center">
           Already have an account?
-          <NuxtLink to="/auth/login" class="auth-link">Sign in</NuxtLink>
+          <NuxtLink to="/auth/login" class="auth-link">Pierakstīties</NuxtLink>
         </p>
 
       </div>

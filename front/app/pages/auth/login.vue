@@ -28,7 +28,7 @@ const login = async () => {
     await axios.post('/login', { email: email.value, password: password.value })
     window.location.href = '/'
   } catch (e) {
-    error.value = e.response?.data?.message || 'Invalid credentials.'
+    error.value = e.response?.data?.message || 'Nederīgi pieteikšanās dati.'
   } finally {
     loading.value = false
   }
@@ -52,13 +52,13 @@ const login = async () => {
         </div>
       </div>
 
-      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase text-center mb-[0.8rem]">Welcome back</p>
-      <h1 class="page-title text-[3rem] leading-tight text-center mb-[3.6rem]">Sign In</h1>
+      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase text-center mb-[0.8rem]">Laipni atgriezies</p>
+      <h1 class="page-title text-[3rem] leading-tight text-center mb-[3.6rem]">Pierakstīties</h1>
 
       <div class="flex flex-col gap-[1.4rem]">
 
         <div class="flex flex-col gap-[0.4rem]">
-          <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Email</label>
+          <label class="page-label text-[1rem] tracking-[0.15em] uppercase">E-pasts</label>
           <input
             v-model="email"
             type="email"
@@ -69,7 +69,7 @@ const login = async () => {
         </div>
 
         <div class="flex flex-col gap-[0.4rem]">
-          <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Password</label>
+          <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Parole</label>
           <input
             v-model="password"
             type="password"
@@ -92,7 +92,7 @@ const login = async () => {
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
           </svg>
-          <span>{{ loading ? 'Signing in...' : 'Sign In' }}</span>
+          <span>{{ loading ? 'Pieslēgšanās...' : 'Pierakstīties' }}</span>
           <svg v-if="!loading" class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
           </svg>
@@ -100,8 +100,8 @@ const login = async () => {
         </button>
 
         <div class="flex items-center justify-between pt-[0.4rem]">
-          <NuxtLink to="/auth/register" class="auth-link text-[1.2rem]">Have an invite?</NuxtLink>
-          <NuxtLink to="/auth/register-company" class="auth-link text-[1.2rem]">Create a company</NuxtLink>
+          <NuxtLink to="/auth/register" class="auth-link text-[1.2rem]">Ir uzaicinājums?</NuxtLink>
+          <NuxtLink to="/auth/register-company" class="auth-link text-[1.2rem]">Izveidot uzņēmumu</NuxtLink>
         </div>
 
       </div>

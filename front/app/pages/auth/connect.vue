@@ -54,7 +54,7 @@ const validateToken = async (token) => {
     }
   } catch (err) {
     const status = err.response?.status
-    const message = err.response?.data?.message || 'Invalid invite token.'
+    const message = err.response?.data?.message || 'Nederīgs uzaicinājuma kods.'
     
     if (status === 409) {  // or whatever status your backend returns
       alreadyConnected.value = true
@@ -80,14 +80,14 @@ const connectToCompany = async () => {
     success.value = companyName.value
     pageAllowed.value = false
   } catch (err) {
-    error.value = err.response?.data?.message || 'Connection failed.'
+    error.value = err.response?.data?.message || 'Pievienošanās neizdevās.'
   } finally {
     loading.value = false
   }
 }
 
 const submitToken = () => {
-  if (!tokenInput.value) { error.value = 'Please enter an invite token.'; return }
+  if (!tokenInput.value) { error.value = 'Lūdzu, ievadiet uzaicinājuma kodu.'; return }
   validateToken(tokenInput.value)
 }
 
@@ -117,13 +117,13 @@ onMounted(() => {
         </div>
       </div>
 
-      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase text-center mb-[0.8rem]">Join a Company</p>
-      <h1 class="page-title text-[3rem] leading-tight text-center mb-[0.8rem]">Enter Invite Token</h1>
-      <p class="page-sub text-[1.3rem] text-center mb-[3.2rem]">Paste the token from your invitation email to continue.</p>
+      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase text-center mb-[0.8rem]">Pievienoties uzņēmumam</p>
+      <h1 class="page-title text-[3rem] leading-tight text-center mb-[0.8rem]">Ievadiet uzaicinājuma kodu</h1>
+      <p class="page-sub text-[1.3rem] text-center mb-[3.2rem]">Ielīmējiet kodu no uzaicinājuma e-pasta, lai turpinātu.</p>
 
       <div class="flex flex-col gap-[1.2rem]">
         <div class="flex flex-col gap-[0.4rem]">
-          <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Invite Token</label>
+          <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Uzaicinājuma kods</label>
           <input
             v-model="tokenInput"
             placeholder="Paste your token here..."
@@ -153,8 +153,8 @@ onMounted(() => {
         </button>
 
         <p class="page-sub text-[1.1rem] text-center">
-          Need a company account instead?
-          <NuxtLink to="/auth/register-company" class="auth-link">Register here</NuxtLink>
+          Nepieciešams uzņēmuma konts?
+          <NuxtLink to="/auth/register-company" class="auth-link">Reģistrējieties šeit</NuxtLink>
         </p>
       </div>
     </div>
@@ -170,9 +170,9 @@ onMounted(() => {
         </div>
       </div>
 
-      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.8rem]">Token Verified</p>
-      <h2 class="page-title text-[2.8rem] leading-tight mb-[0.8rem]">Connect to Company</h2>
-      <p class="page-sub text-[1.3rem] mb-[0.8rem]">You're about to join</p>
+      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.8rem]">Kods pārbaudīts</p>
+      <h2 class="page-title text-[2.8rem] leading-tight mb-[0.8rem]">Pievienoties uzņēmumam</h2>
+      <p class="page-sub text-[1.3rem] mb-[0.8rem]">Jūs gatavojaties pievienoties</p>
       <p class="company-name text-[2.2rem] mb-[3.2rem]">{{ companyName }}</p>
 
       <!-- User pill -->
@@ -193,7 +193,7 @@ onMounted(() => {
           @click="pageAllowed = false"
           class="cancel-btn px-[2.4rem] py-[1rem] rounded-[0.8rem] text-[1.2rem] transition-all duration-200"
         >
-          Cancel
+          Atcelt
         </button>
         <button
           @click="connectToCompany"
@@ -204,7 +204,7 @@ onMounted(() => {
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
           </svg>
-          <span>{{ loading ? 'Connecting...' : 'Yes, Connect' }}</span>
+          <span>{{ loading ? 'Savieno...' : 'Jā, pievienoties' }}</span>
           <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
         </button>
       </div>
@@ -219,16 +219,16 @@ onMounted(() => {
         </svg>
       </div>
 
-      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.8rem]">All Done</p>
-      <h2 class="page-title text-[2.8rem] mb-[0.8rem]">You're Connected!</h2>
-      <p class="page-sub text-[1.4rem] mb-[0.4rem]">Successfully joined</p>
+      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.8rem]">Viss gatavs</p>
+      <h2 class="page-title text-[2.8rem] mb-[0.8rem]">Jūs esat pievienojies!</h2>
+      <p class="page-sub text-[1.4rem] mb-[0.4rem]">Veiksmīgi pievienojāties</p>
       <p class="company-name text-[2rem] mb-[3.2rem]">{{ success }}</p>
 
       <NuxtLink
         to="/"
         class="auth-btn inline-flex items-center gap-[0.8rem] px-[2.8rem] py-[1.2rem] rounded-[0.8rem] text-[1.3rem] text-white tracking-[0.06em] no-underline hover:-translate-y-px transition-all duration-200"
       >
-        Go to Dashboard
+        Doties uz paneli
         <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
         </svg>
@@ -243,16 +243,16 @@ onMounted(() => {
         </svg>
       </div>
 
-      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.8rem]">Already a Member</p>
-      <h2 class="page-title text-[2.8rem] leading-tight mb-[0.8rem]">You're already connected</h2>
-      <p class="page-sub text-[1.3rem] mb-[0.4rem]">Your account is already linked to</p>
+      <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.8rem]">Jūs jau esat dalībnieks</p>
+      <h2 class="page-title text-[2.8rem] leading-tight mb-[0.8rem]">Jūsu konts jau ir saistīts</h2>
+      <p class="page-sub text-[1.3rem] mb-[0.4rem]">Jūsu konts jau ir saistīts ar</p>
       <p class="company-name text-[2.2rem] mb-[3.2rem]">{{ companyName }}</p>
 
       <NuxtLink
         to="/"
         class="auth-btn inline-flex items-center gap-[0.8rem] px-[2.8rem] py-[1.2rem] rounded-[0.8rem] text-[1.3rem] text-white tracking-[0.06em] no-underline hover:-translate-y-px transition-all duration-200"
       >
-        Go to Dashboard
+        Doties uz paneli
         <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
         </svg>

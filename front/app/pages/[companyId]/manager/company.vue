@@ -11,14 +11,14 @@
 
         <!-- Page header -->
         <div class="mb-[4rem]">
-          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Manager Panel</p>
-          <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Company Profile</h1>
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Pārvaldnieka panelis</p>
+          <h1 class="page-title text-[3.6rem] leading-none tracking-wide">Uzņēmuma profils</h1>
         </div>
 
         <!-- Loading state -->
         <div v-if="loading" class="flex items-center gap-[1.2rem] py-[4rem]">
           <div class="spinner w-[2rem] h-[2rem] rounded-full border-[2px] border-transparent"></div>
-          <p class="table-sub text-[1.3rem]">Loading company data…</p>
+          <p class="table-sub text-[1.3rem]">Ielādē uzņēmuma datus…</p>
         </div>
 
         <!-- Form card -->
@@ -32,8 +32,8 @@
               </svg>
             </div>
             <div>
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Settings</p>
-              <h2 class="page-title text-[1.8rem] leading-tight">Edit Company Details</h2>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Iestatījumi</p>
+              <h2 class="page-title text-[1.8rem] leading-tight">Rediģēt uzņēmuma informāciju</h2>
             </div>
           </div>
 
@@ -41,7 +41,7 @@
           <div class="space-y-[2.4rem] mb-[3.2rem]">
 
             <div class="field-group">
-              <label class="page-label text-[1rem] tracking-[0.18em] uppercase block mb-[1rem]">Company Name</label>
+              <label class="page-label text-[1rem] tracking-[0.18em] uppercase block mb-[1rem]">Uzņēmuma nosaukums</label>
               <div class="input-wrapper relative">
                 <div class="input-icon absolute left-[1.4rem] top-1/2 -translate-y-1/2 pointer-events-none">
                   <svg class="w-[1.6rem] h-[1.6rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -51,14 +51,14 @@
                 <input
                   v-model="form.name"
                   type="text"
-                  placeholder="Enter company name"
+                  placeholder="Ievadiet uzņēmuma nosaukumu"
                   class="field-input w-full pl-[4.4rem] pr-[1.6rem] py-[1.3rem] rounded-[0.8rem] text-[1.3rem] outline-none transition-all duration-200"
                 />
               </div>
             </div>
 
             <div class="field-group">
-              <label class="page-label text-[1rem] tracking-[0.18em] uppercase block mb-[1rem]">Company Email</label>
+              <label class="page-label text-[1rem] tracking-[0.18em] uppercase block mb-[1rem]">Uzņēmuma e-pasts</label>
               <div class="input-wrapper relative">
                 <div class="input-icon absolute left-[1.4rem] top-1/2 -translate-y-1/2 pointer-events-none">
                   <svg class="w-[1.6rem] h-[1.6rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@
                 <input
                   v-model="form.email"
                   type="email"
-                  placeholder="Enter company email"
+                  placeholder="Ievadiet uzņēmuma e-pastu"
                   class="field-input w-full pl-[4.4rem] pr-[1.6rem] py-[1.3rem] rounded-[0.8rem] text-[1.3rem] outline-none transition-all duration-200"
                 />
               </div>
@@ -87,7 +87,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               <div v-else class="spinner-sm w-[1.4rem] h-[1.4rem] rounded-full border-[2px] border-transparent border-t-white"></div>
-              {{ saving ? 'Saving…' : 'Save Changes' }}
+              {{ saving ? 'Saglabā…' : 'Saglabāt izmaiņas' }}
             </button>
 
             <!-- Success toast -->
@@ -96,7 +96,7 @@
                 <svg class="w-[1.3rem] h-[1.3rem]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
                 </svg>
-                Updated successfully
+                Veiksmīgi atjaunināts
               </div>
             </transition>
           </div>
@@ -123,15 +123,15 @@ const companyId = route.params.companyId
 axios.defaults.withCredentials = true
 
 const sidebarItems = [
-  { text: 'Home',        to: `/${companyId}/manager` },
-  { text: 'Company',     to: `/${companyId}/manager/company` },
-  { text: 'Team',        to: `/${companyId}/manager/team` },
-  { text: 'Schedule',    to: `/${companyId}/manager/schedule` },
-  { text: 'Attendance',  to: `/${companyId}/manager/attendancy` },
-  { text: 'Payrolls',    to: `/${companyId}/manager/payrolls` },
-  { text: 'Invites',     to: `/${companyId}/manager/invite` },
-  { text: 'Holidays',    to: `/${companyId}/manager/holidays` },
-  { text: 'Sick Leaves', to: `/${companyId}/manager/sick-leaves` },
+  { text: 'Sākums',       to: `/${companyId}/manager` },
+  { text: 'Uzņēmums',     to: `/${companyId}/manager/company` },
+  { text: 'Komanda',       to: `/${companyId}/manager/team` },
+  { text: 'Grafiks',      to: `/${companyId}/manager/schedule` },
+  { text: 'Apmeklējumi',   to: `/${companyId}/manager/attendancy` },
+  { text: 'Algas',         to: `/${companyId}/manager/payrolls` },
+  { text: 'Ielūgumi',      to: `/${companyId}/manager/invite` },
+  { text: 'Brīvdienas',    to: `/${companyId}/manager/holidays` },
+  { text: 'Slimības atvaļinājumi', to: `/${companyId}/manager/sick-leaves` },
 ]
 
 const loading = ref(true)

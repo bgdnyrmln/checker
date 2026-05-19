@@ -656,7 +656,7 @@ const _inlineRuntimeConfig = {
   "public": {
     "apiBase": "/api",
     "sanctum": {
-      "baseUrl": "/api",
+      "baseUrl": "/",
       "mode": "cookie",
       "userStateKey": "sanctum.user.identity",
       "redirectIfAuthenticated": false,
@@ -692,7 +692,7 @@ const _inlineRuntimeConfig = {
     }
   },
   "sanctum": {
-    "baseUrl": "/api",
+    "baseUrl": "/",
     "mode": "cookie",
     "userStateKey": "sanctum.user.identity",
     "redirectIfAuthenticated": false,
@@ -1428,23 +1428,6 @@ async function errorHandler(error, event) {
   // H3 will handle fallback
 }
 
-const script = `
-if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
-  Object.defineProperty(window, '__NUXT_DEVTOOLS_TIME_METRIC__', {
-    value: {},
-    enumerable: false,
-    configurable: true,
-  })
-}
-window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
-`;
-
-const _FMnHxsRb1XnhSkgrcxwDEP1elfSPjrP7Wr27yXkb3Aw = (function(nitro) {
-  nitro.hooks.hook("render:html", (htmlContext) => {
-    htmlContext.head.push(`<script>${script}<\/script>`);
-  });
-});
-
 const rootDir = "/app";
 
 const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1.0"}],"link":[],"style":[],"script":[],"noscript":[]};
@@ -1538,8 +1521,7 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _FMnHxsRb1XnhSkgrcxwDEP1elfSPjrP7Wr27yXkb3Aw,
-_1xyvuM2CQDhMlDxE8qY1t3Wi66ocgNUNDNce4pREOrU
+  _1xyvuM2CQDhMlDxE8qY1t3Wi66ocgNUNDNce4pREOrU
 ];
 
 const assets = {};

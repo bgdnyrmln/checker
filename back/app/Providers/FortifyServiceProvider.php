@@ -13,6 +13,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
+
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -34,7 +37,25 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
+        Fortify::loginView(null);
 
+        $this->app->singleton(LoginResponse::class, function () {
+            return new class implements LoginResponse {
+                public function toResponse($request)
+                {
+                    return response()->json(['status' => 'authenticated']);
+                }
+            };
+        });
+
+        $this->app->singleton(LogoutResponse::class, function () {
+            return new class implements LogoutResponse {
+                public function toResponse($request)
+                {
+                    return response()->json(['status' => 'logged_out']);
+                }
+            };
+        });
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 

@@ -11,13 +11,13 @@
 
         <!-- Page header -->
         <div class="mb-[4rem] max-[768px]:mb-[2.4rem]">
-          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personal Cabinet</p>
-          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">My Sick Leaves</h1>
+          <p class="page-label text-[1.1rem] tracking-[0.2em] uppercase mb-[0.6rem]">Personīgā sadaļa</p>
+          <h1 class="page-title text-[3.6rem] max-[768px]:text-[2.8rem] leading-none tracking-wide">Mani slimības atvaļinājumi</h1>
         </div>
 
         <!-- Submit form -->
         <div class="filter-card rounded-[1.6rem] p-[2.8rem] max-[768px]:p-[1.6rem] mb-[2.4rem]">
-          <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[2rem]">New Record</p>
+          <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[2rem]">Jauns ieraksts</p>
 
           <div class="flex flex-col gap-[1.2rem]">
 
@@ -25,12 +25,12 @@
             <div class="flex flex-wrap items-end gap-[1.2rem]">
               <div class="flex items-end gap-[1rem] flex-1 min-w-0">
                 <div class="flex flex-col gap-[0.4rem] flex-1 min-w-0">
-                  <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Start Date</label>
+                  <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Sākuma datums</label>
                   <input type="date" v-model="form.date_start" class="date-input w-full rounded-[0.8rem] px-[1.2rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
                 </div>
                 <div class="arrow-sep text-[1.4rem] mb-[0.9rem] flex-shrink-0">→</div>
                 <div class="flex flex-col gap-[0.4rem] flex-1 min-w-0">
-                  <label class="page-label text-[1rem] tracking-[0.15em] uppercase">End Date</label>
+                  <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Beigu datums</label>
                   <input type="date" v-model="form.date_end" class="date-input w-full rounded-[0.8rem] px-[1.2rem] py-[0.9rem] text-[1.3rem] outline-none transition-all duration-200" />
                 </div>
               </div>
@@ -39,7 +39,7 @@
             <!-- File + submit row -->
             <div class="flex flex-wrap items-end gap-[1.2rem]">
               <div class="flex flex-col gap-[0.4rem] flex-1 min-w-0">
-                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Medical Document</label>
+                <label class="page-label text-[1rem] tracking-[0.15em] uppercase">Medicīniskais dokuments</label>
                 <label class="file-label flex items-center gap-[1rem] rounded-[0.8rem] px-[1.4rem] py-[0.9rem] cursor-pointer transition-all duration-200">
                   <svg class="w-[1.6rem] h-[1.6rem] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/>
@@ -58,7 +58,7 @@
                 <svg class="w-[1.4rem] h-[1.4rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
                 </svg>
-                Submit
+                Iesniegt
                 <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] pointer-events-none"></span>
               </button>
             </div>
@@ -79,7 +79,7 @@
         <!-- Loading -->
         <div v-if="loading" class="flex items-center gap-[1.6rem] py-[4rem] justify-center">
           <div class="spinner w-[2.8rem] h-[2.8rem] rounded-full animate-spin"></div>
-          <span class="page-label text-[1.2rem] tracking-[0.12em]">Loading sick leaves...</span>
+          <span class="page-label text-[1.2rem] tracking-[0.12em]">Ielādē slimības atvaļinājumus...</span>
         </div>
 
         <!-- Fetch error -->
@@ -92,14 +92,14 @@
 
           <div class="table-summary flex items-center justify-between px-[3rem] max-[768px]:px-[2rem] py-[2rem] flex-wrap gap-[1rem]">
             <div>
-              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Sick Leave Records</p>
-              <p class="table-text text-[1.4rem]">{{ sickLeaves.length }} total</p>
+              <p class="page-label text-[1rem] tracking-[0.18em] uppercase mb-[0.2rem]">Slimības ieraksti</p>
+              <p class="table-text text-[1.4rem]">{{ sickLeaves.length }} kopā</p>
             </div>
             <div class="doc-count-badge flex items-center gap-[0.6rem] px-[1.2rem] py-[0.4rem] rounded-full">
               <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/>
               </svg>
-              <span class="text-[1.1rem]">{{ sickLeaves.filter(s => s.has_file).length }} with documents</span>
+              <span class="text-[1.1rem]">{{ sickLeaves.filter(s => s.has_file).length }} ar dokumentiem</span>
             </div>
           </div>
 
@@ -107,11 +107,11 @@
           <table class="w-full max-[600px]:hidden">
             <thead>
               <tr class="table-head-row">
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Start</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">End</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Duration</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Document</th>
-                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Actions</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Sākuma datums</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Beigu datums</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Ilgums</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-left text-[1rem] tracking-[0.18em] uppercase font-normal">Dokuments</th>
+                <th class="page-label px-[3rem] py-[1.6rem] text-right text-[1rem] tracking-[0.18em] uppercase font-normal">Darbības</th>
               </tr>
             </thead>
             <tbody>
@@ -126,7 +126,7 @@
                   {{ s.date_end ?? '—' }}
                 </td>
                 <td class="px-[3rem] py-[1.6rem] text-[1.3rem]">
-                  <span v-if="s.date_end" class="table-sub tabular-nums">{{ daysBetween(s.date_start, s.date_end) }} days</span>
+                  <span v-if="s.date_end" class="table-sub tabular-nums">{{ daysBetween(s.date_start, s.date_end) }} dienas</span>
                   <span v-else class="table-empty">—</span>
                 </td>
                 <td class="px-[3rem] py-[1.6rem]">
@@ -134,13 +134,13 @@
                     <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/>
                     </svg>
-                    View
+                    Skatīt
                   </button>
                   <span v-else class="no-file-badge flex items-center gap-[0.5rem] px-[1rem] py-[0.3rem] rounded-full text-[1rem]">
                     <svg class="w-[1.1rem] h-[1.1rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
                     </svg>
-                    No file
+                    Nav faila
                   </span>
                 </td>
                 <td class="px-[3rem] py-[1.6rem] text-right">
@@ -148,7 +148,7 @@
                     <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
                     </svg>
-                    Delete
+                    Dzēst
                   </button>
                 </td>
               </tr>
@@ -172,7 +172,7 @@
                     <span v-if="s.date_end" class="table-sub"> → {{ s.date_end }}</span>
                   </p>
                   <p v-if="s.date_end" class="table-sub text-[1.1rem] mt-[0.2rem]">
-                    {{ daysBetween(s.date_start, s.date_end) }} days
+                    {{ daysBetween(s.date_start, s.date_end) }} dienas
                   </p>
                 </div>
                 <!-- Doc badge -->
@@ -180,10 +180,10 @@
                   <svg class="w-[1.2rem] h-[1.2rem]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/>
                   </svg>
-                  View Doc
+                  Skatīt dokumentu
                 </button>
                 <span v-else class="no-file-badge flex items-center gap-[0.4rem] px-[1rem] py-[0.4rem] rounded-full text-[1rem] flex-shrink-0 ml-[1rem]">
-                  No file
+                  Nav faila
                 </span>
               </div>
 
@@ -206,7 +206,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
             </svg>
           </div>
-          <p class="table-sub text-[1.4rem] tracking-[0.06em]">No sick leave records found.</p>
+          <p class="table-sub text-[1.4rem] tracking-[0.06em]">Nav slimības ierakstu.</p>
         </div>
 
       </div>
@@ -225,12 +225,12 @@ const route = useRoute()
 const profileId = route.params.id
 
 const sidebarItems = [
-  { text: 'Dashboard',   to: `/${profileId}/personal-cabinet` },
-  { text: 'Attendance',  to: `/${profileId}/personal-cabinet/attendance` },
-  { text: 'Payroll',     to: `/${profileId}/personal-cabinet/payroll` },
-  { text: 'Schedule',    to: `/${profileId}/personal-cabinet/schedule` },
-  { text: 'Holidays',    to: `/${profileId}/personal-cabinet/holidays` },
-  { text: 'Sick Leaves', to: `/${profileId}/personal-cabinet/sick-leaves` },
+  { text: 'Sākums',       to: `/${profileId}/personal-cabinet` },
+  { text: 'Apmeklējumi',  to: `/${profileId}/personal-cabinet/attendance` },
+  { text: 'Algas',        to: `/${profileId}/personal-cabinet/payroll` },
+  { text: 'Grafiks',      to: `/${profileId}/personal-cabinet/schedule` },
+  { text: 'Brīvdienas',   to: `/${profileId}/personal-cabinet/holidays` },
+  { text: 'Slimības atvaļinājumi', to: `/${profileId}/personal-cabinet/sick-leaves` },
 ]
 
 axios.defaults.withCredentials = true
@@ -256,7 +256,7 @@ const fetchSickLeaves = async () => {
     const res = await axios.get('/api/sick-leaves', { params: { profile_id: profileId } })
     sickLeaves.value = res.data
   } catch (e) {
-    error.value = 'Failed to load sick leaves.'
+    error.value = 'Neizdevās ielādēt slimības atvaļinājumus.'
   } finally {
     loading.value = false
   }
@@ -273,7 +273,7 @@ const getCsrfToken = async () => {
 const submitSickLeave = async () => {
   formError.value = ''
   formSuccess.value = ''
-  if (!form.value.date_start) { formError.value = 'Start date is required.'; return }
+  if (!form.value.date_start) { formError.value = 'Sākuma datums ir obligāts.'; return }
   try {
     await getCsrfToken()
     const payload = new FormData()
@@ -282,25 +282,25 @@ const submitSickLeave = async () => {
     if (form.value.date_end) payload.append('date_end', form.value.date_end)
     if (selectedFile.value)  payload.append('file', selectedFile.value)
     await axios.post('/api/sick-leaves', payload, { headers: { 'Content-Type': 'multipart/form-data' } })
-    formSuccess.value = 'Sick leave submitted!'
+    formSuccess.value = 'Slimības atvaļinājums iesniegts!'
     form.value = { date_start: '', date_end: '' }
     selectedFile.value = null
     await fetchSickLeaves()
   } catch (e) {
-    formError.value = 'Failed to submit sick leave.'
+    formError.value = 'Neizdevās iesniegt slimības atvaļinājumu.'
   }
 }
 
 const viewFile = (id) => window.open(`${config.public.apiBase}/api/sick-leaves/${id}/file`, '_blank')
 
 const deleteSickLeave = async (id) => {
-  if (!confirm('Delete this sick leave record?')) return
+  if (!confirm('Dzēst šo slimības ierakstu?')) return
   try {
     await getCsrfToken()
     await axios.delete(`/api/sick-leaves/${id}`)
     await fetchSickLeaves()
   } catch (e) {
-    error.value = 'Failed to delete record.'
+    error.value = 'Neizdevās dzēst ierakstu.'
   }
 }
 
