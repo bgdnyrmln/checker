@@ -38,4 +38,3 @@ export { useSanctumClient } from '../node_modules/nuxt-auth-sanctum/dist/runtime
 export { useSanctumConfig } from '../node_modules/nuxt-auth-sanctum/dist/runtime/composables/useSanctumConfig';
 export { useSanctumFetch } from '../node_modules/nuxt-auth-sanctum/dist/runtime/composables/useSanctumFetch';
 export { useSanctumUser } from '../node_modules/nuxt-auth-sanctum/dist/runtime/composables/useSanctumUser';
-export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';

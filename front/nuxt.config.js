@@ -7,6 +7,7 @@ export default defineNuxtConfig({
       ]
     }
   },
+  devtools: { enabled:false },
   compatibilityDate: '2025-07-15',
   modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-sanctum'],
 

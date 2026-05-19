@@ -1,6 +1,5 @@
 /// <reference types="@nuxtjs/tailwindcss" />
 /// <reference types="nuxt-auth-sanctum" />
-/// <reference types="@nuxt/devtools" />
 /// <reference types="@nuxt/telemetry" />
 /// <reference path="types/modules.d.ts" />
 /// <reference path="types/runtime-config.d.ts" />

@@ -96,7 +96,7 @@
                     <div class="flex items-center gap-[1rem]">
                       <div class="link-dot w-[0.6rem] h-[0.6rem] rounded-full flex-shrink-0"></div>
                       <span class="table-text text-[1.2rem] break-all font-mono">
-                        {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
+                        {{ `http://web-hosting.tail89497f.ts.net/auth/register?token=${invite.token}` }}
                       </span>
                     </div>
                   </td>
@@ -132,7 +132,7 @@
                 <div class="flex items-start gap-[1rem] mb-[1.2rem]">
                   <div class="link-dot w-[0.6rem] h-[0.6rem] rounded-full flex-shrink-0 mt-[0.6rem]"></div>
                   <span class="table-text text-[1.2rem] break-all font-mono leading-relaxed flex-1">
-                    {{ `http://localhost:3000/auth/register?token=${invite.token}` }}
+                    {{ `http://web-hosting.tail89497f.ts.net/auth/register?token=${invite.token}` }}
                   </span>
                 </div>
 
